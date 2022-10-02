@@ -1,7 +1,8 @@
 import React from 'react';
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Button } from "react-native";
 import { StatusBar } from 'expo-status-bar';
 import Header from '../components/Header';
+import { useState } from 'react';
 
 const Profile = () => {
   return (

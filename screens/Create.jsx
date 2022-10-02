@@ -3,11 +3,11 @@ import { StyleSheet, View } from "react-native";
 import { StatusBar } from 'expo-status-bar';
 import Header from '../components/Header';
 
-const History = () => {
+const Create = () => {
   return (
     <View style={styles.container}>
       <StatusBar />
-      <Header title={"History"} />
+      <Header title={"Create"} />
     </View>
   );
 }
@@ -20,4 +20,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default History
+export default Create
