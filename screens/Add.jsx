@@ -1,10 +1,10 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 
-export default function Groups() {
+export default function Add() {
   return (
     <View>
-        <Text>Groups</Text>
+        <Text>Add</Text>
     </View>
   )
 }

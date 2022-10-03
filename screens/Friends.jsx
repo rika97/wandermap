@@ -1,23 +1,10 @@
 import React from 'react';
-import { StyleSheet, View } from "react-native";
-import { StatusBar } from 'expo-status-bar';
-import Header from '../components/Header';
+import { View, Text } from 'react-native';
 
-const Friends = () => {
+export default function Friends() {
   return (
-    <View style={styles.container}>
-      <StatusBar />
-      <Header title={"Friends"} />
+    <View>
+        <Text>Friends</Text>
     </View>
-  );
+  )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#94c8d4',
-  },
-});
-
-
-export default Friends

@@ -1,24 +1,10 @@
 import React from 'react';
-import { StyleSheet, View, Button } from "react-native";
-import { StatusBar } from 'expo-status-bar';
-import Header from '../components/Header';
-import { useState } from 'react';
+import { View, Text } from 'react-native';
 
-const Profile = () => {
+export default function Profile() {
   return (
-    <View style={styles.container}>
-      <StatusBar />
-      <Header title={"Profile"} />
+    <View>
+        <Text>Profile</Text>
     </View>
-  );
+  )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#94c8d4',
-  },
-});
-
-
-export default Profile

@@ -1,13 +1,96 @@
-import { Provider as PaperProvider } from 'react-native-paper';
-import Navbar from "./components/Navbar";
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
-const App = () => {
+import React, { Component } from 'react'
+import { View, Text } from 'react-native';
 
-  return (
-    <PaperProvider>
-      <Navbar />
-    </PaperProvider>
-  );
+import firebase from 'firebase/app'
+import "firebase/auth"
+
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux'
+import rootReducer from './components/redux/reducers'
+import thunk from 'redux-thunk'
+const store = createStore(rootReducer, applyMiddleware(thunk))
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCsbA0GruKqC1RIf_BbHGwrW7foTWXUVAw",
+  authDomain: "wandermap-ec1a0.firebaseapp.com",
+  projectId: "wandermap-ec1a0",
+  storageBucket: "wandermap-ec1a0.appspot.com",
+  messagingSenderId: "784942620400",
+  appId: "1:784942620400:web:c4b231276037833e6c6c35",
+  measurementId: "G-GJYXYR0HGY"
+};
+
+if(firebase.apps.length === 0){
+  firebase.initializeApp(firebaseConfig)
 }
 
-export default App;
+import LandingScreen from './screens/Landing'
+import RegisterScreen from './screens/Register'
+import LoginScreen from './screens/Login'
+import HomeScreen from './screens/Home'
+import AddScreen from './screens/Add'
+
+const Stack = createStackNavigator();
+
+export class App extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      loaded: false,
+    }
+  }
+
+  componentDidMount(){
+    firebase.auth().onAuthStateChanged((user)=> {
+      if(!user){
+        this.setState({
+          loggedIn: false,
+          loaded: true,
+        })
+      } else {
+        this.setState({
+          loggedIn: true,
+          loaded: true,
+        })
+      }
+    })
+  }
+
+  render() {
+    const { loggedIn, loaded } = this.state;
+    if(!loaded){
+      return(
+        <View style={{ flex: 1, justifyContent: "center" }}>
+          <Text>Loading</Text>
+        </View>
+      )
+    }
+
+    if(!loggedIn){
+      return (
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName="Landing">
+            <Stack.Screen name="Landing" component={LandingScreen} options={{ headerShown: false }} />
+            <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }} />
+            <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      );
+    }
+    return (
+      <Provider store={store}>
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName="Landing">
+            <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
+            <Stack.Screen name="Add" component={AddScreen} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </Provider>
+    )
+  }
+}
+
+export default App
