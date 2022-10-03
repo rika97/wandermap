@@ -1,10 +1,10 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 
-export default function Friends() {
+export default function Photo() {
   return (
     <View>
-        <Text>Friends</Text>
+        <Text>Photo</Text>
     </View>
   )
 }

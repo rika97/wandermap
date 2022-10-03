@@ -7,8 +7,8 @@ import { bindActionCreators } from 'redux'
 import { fetchUser } from '../components/redux/actions/index'
 
 import FeedScreen from './Feed'
-import FriendsScreen from './Friends'
-import GroupsScreen from './Groups'
+import EventsScreen from './Events'
+import CommunityScreen from './Community'
 import ProfileScreen from './Profile'
 
 const Tab = createMaterialBottomTabNavigator();
@@ -30,25 +30,25 @@ export class Home extends Component {
                         <MaterialCommunityIcons name="home" color={color} size={26} />
                     ),
                 }} />
-            <Tab.Screen name="Friends" component={FriendsScreen} 
+            <Tab.Screen name="Events" component={EventsScreen} 
                 options={{
                     tabBarIcon: ({ color, size }) => (
-                        <MaterialCommunityIcons name="account-heart" color={color} size={26} />
+                        <MaterialCommunityIcons name="calendar-month" color={color} size={26} />
                     ),
                 }} />
-            <Tab.Screen name="AddContainer" component={EmptyScreen} 
+            <Tab.Screen name="PhotoContainer" component={EmptyScreen} 
                 listeners={({ navigation }) => ({
                     tabPress: event => {
                         event.preventDefault();
-                        navigation.navigate("Add")
+                        navigation.navigate("Photo")
                     }
                 })}
                 options={{
                     tabBarIcon: ({ color, size }) => (
-                        <MaterialCommunityIcons name="plus-box" color={color} size={26} />
+                        <MaterialCommunityIcons name="camera" color={color} size={26} />
                     ),
                 }} />
-            <Tab.Screen name="Groups" component={GroupsScreen} 
+            <Tab.Screen name="Community" component={CommunityScreen} 
                 options={{
                     tabBarIcon: ({ color, size }) => (
                         <MaterialCommunityIcons name="account-group" color={color} size={26} />

@@ -1,10 +1,10 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 
-export default function Groups() {
+export default function Community() {
   return (
     <View>
-        <Text>Groups</Text>
+        <Text>Community</Text>
     </View>
   )
 }
