@@ -4,9 +4,9 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { fetchUser } from '../components/redux/actions/index'
+import { fetchUser, fetchUserEvents } from '../components/redux/actions/index'
 
-import FeedScreen from './Feed'
+import MapScreen from './Map'
 import EventsScreen from './Events'
 import CommunityScreen from './Community'
 import ProfileScreen from './Profile'
@@ -17,25 +17,14 @@ const EmptyScreen = () => {
     return(null)
 }
 
-export class Home extends Component {
+export class Main extends Component {
   componentDidMount(){
     this.props.fetchUser();
+    this.props.fetchUserEvents();
   }
   render() {
     return (
-        <Tab.Navigator initialRouteName='Feed' labeled={false}>
-            <Tab.Screen name="Feed" component={FeedScreen} 
-                options={{
-                    tabBarIcon: ({ color, size }) => (
-                        <MaterialCommunityIcons name="home" color={color} size={26} />
-                    ),
-                }} />
-            <Tab.Screen name="Events" component={EventsScreen} 
-                options={{
-                    tabBarIcon: ({ color, size }) => (
-                        <MaterialCommunityIcons name="calendar-month" color={color} size={26} />
-                    ),
-                }} />
+        <Tab.Navigator initialRouteName='Map' labeled={false}>
             <Tab.Screen name="PhotoContainer" component={EmptyScreen} 
                 listeners={({ navigation }) => ({
                     tabPress: event => {
@@ -54,6 +43,18 @@ export class Home extends Component {
                         <MaterialCommunityIcons name="account-group" color={color} size={26} />
                     ),
                 }} />
+            <Tab.Screen name="Map" component={MapScreen} 
+                options={{
+                    tabBarIcon: ({ color, size }) => (
+                        <MaterialCommunityIcons name="google-maps" color={color} size={26} />
+                    ),
+                }} />
+            <Tab.Screen name="Events" component={EventsScreen} 
+                options={{
+                    tabBarIcon: ({ color, size }) => (
+                        <MaterialCommunityIcons name="calendar-month" color={color} size={26} />
+                    ),
+                }} />
             <Tab.Screen name="Profile" component={ProfileScreen} 
                 options={{
                     tabBarIcon: ({ color, size }) => (
@@ -68,6 +69,6 @@ export class Home extends Component {
 const mapStateToProps = (store) => ({
     currentUser: store.userState.currentUser
 })
-const mapDispatchProps = (dispatch) => bindActionCreators({fetchUser}, dispatch);
+const mapDispatchProps = (dispatch) => bindActionCreators({fetchUser, fetchUserEvents}, dispatch);
 
-export default connect(mapStateToProps, mapDispatchProps)(Home);
+export default connect(mapStateToProps, mapDispatchProps)(Main);

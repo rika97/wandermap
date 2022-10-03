@@ -30,7 +30,7 @@ if(firebase.apps.length === 0){
 import LandingScreen from './screens/Landing'
 import RegisterScreen from './screens/Register'
 import LoginScreen from './screens/Login'
-import HomeScreen from './screens/Home'
+import MainScreen from './screens/Main'
 import PhotoScreen from './screens/Photo'
 import EditeventScreen from './screens/Editevent'
 import SaveeventScreen from './screens/Saveevent'
@@ -86,7 +86,7 @@ export class App extends Component {
       <Provider store={store}>
         <NavigationContainer>
           <Stack.Navigator initialRouteName="Landing">
-            <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
+            <Stack.Screen name="Main" component={MainScreen} options={{ headerShown: false }} />
             <Stack.Screen name="Photo" component={PhotoScreen} />
             <Stack.Screen name="Editevent" component={EditeventScreen} navigation={this.props.navigation} />
             <Stack.Screen name="Saveevent" component={SaveeventScreen} navigation={this.props.navigation} />
