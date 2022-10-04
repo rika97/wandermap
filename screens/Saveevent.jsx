@@ -5,7 +5,10 @@ import firebase from 'firebase/app'
 require("firebase/firestore")
 
 export default function Saveevent(props, {navigation}) {
-  const [caption, setCaption] = useState("")
+  const [title, setTitle] = useState("")
+  const [description, setDescription] = useState("")
+  const [location, setLocation] = useState("")
+
   const childPath = `post/${firebase.auth().currentUser.uid}/${Math.random().toString(36)}`;
 
   const uploadImage = async () => {
@@ -41,7 +44,9 @@ export default function Saveevent(props, {navigation}) {
         .collection("userEvents")
         .add({
             downloadURL,
-            caption,
+            title,
+            description,
+            location,
             creation: firebase.firestore.FieldValue.serverTimestamp()
         }).then((function(){
             props.navigation.popToTop()
@@ -52,7 +57,15 @@ export default function Saveevent(props, {navigation}) {
         <Image source={{uri: props.route.params.image}} />
         <TextInput 
             placeholder='Event Title'
-            onChangeText={(caption) => setCaption(caption)}
+            onChangeText={(title) => setTitle(title)}
+        />
+        <TextInput 
+            placeholder='Description'
+            onChangeText={(description) => setDescription(description)}
+        />
+        <TextInput 
+            placeholder='Location'
+            onChangeText={(location) => setLocation(location)}
         />
         <Button title="Create Event" onPress={() => uploadImage()} />
     </View>
