@@ -86,7 +86,7 @@ export class App extends Component {
       <Provider store={store}>
         <NavigationContainer>
           <Stack.Navigator initialRouteName="Landing">
-            <Stack.Screen name="Main" component={MainScreen} options={{ headerShown: false }} />
+            <Stack.Screen name="Main" component={MainScreen} />
             <Stack.Screen name="Photo" component={PhotoScreen} />
             <Stack.Screen name="Editevent" component={EditeventScreen} navigation={this.props.navigation} />
             <Stack.Screen name="Saveevent" component={SaveeventScreen} navigation={this.props.navigation} />

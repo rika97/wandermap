@@ -1,5 +1,7 @@
-import { USER_STATE_CHANGE, USER_EVENTS_STATE_CHANGE } from '../constants/index'
-import firebase from 'firebase'
+import { USER_STATE_CHANGE, USER_EVENTS_STATE_CHANGE, USER_FOLLOWING_STATE_CHANGE } from '../constants/index'
+import firebase from 'firebase/app'
+import {SnapshotViewIOSComponent} from 'react-native'
+require('firebase/firestore')
 
 export function fetchUser(){
     return((dispatch) => {
@@ -32,6 +34,22 @@ export function fetchUserEvents(){
                     return{id, ...data}
                 })
                 dispatch({ type: USER_EVENTS_STATE_CHANGE, events })
+            })
+    })
+}
+
+export function fetchUserFollowing(){
+    return((dispatch) => {
+        firebase.firestore()
+            .collection("following")
+            .doc(firebase.auth().currentUser.uid)
+            .collection("userFollowing")
+            .onSnapshot((snapshot) => {
+                let following = snapshot.docs.map(doc => {
+                    const id = doc.id;
+                    return id
+                })
+                dispatch({ type: USER_FOLLOWING_STATE_CHANGE, following })
             })
     })
 }
