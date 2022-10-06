@@ -4,7 +4,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import firebase from 'firebase/app'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { fetchUser, fetchUserEvents, fetchUserFollowing } from '../components/redux/actions/index'
+import { fetchUser, fetchUserEvents, fetchUserFollowing, clearData } from '../components/redux/actions/index'
 
 import MapScreen from './Map'
 import EventsScreen from './Events'
@@ -20,6 +20,7 @@ const EmptyScreen = () => {
 
 export class Main extends Component {
   componentDidMount(){
+    this.props.clearData();
     this.props.fetchUser();
     this.props.fetchUserEvents();
     this.props.fetchUserFollowing();
@@ -83,6 +84,6 @@ export class Main extends Component {
 const mapStateToProps = (store) => ({
     currentUser: store.userState.currentUser
 })
-const mapDispatchProps = (dispatch) => bindActionCreators({fetchUser, fetchUserEvents, fetchUserFollowing}, dispatch);
+const mapDispatchProps = (dispatch) => bindActionCreators({fetchUser, fetchUserEvents, fetchUserFollowing, clearData}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchProps)(Main);

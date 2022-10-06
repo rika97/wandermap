@@ -1,9 +1,14 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import { Text, View } from 'react-native';
+import Eventsfeed from './Eventsfeed';
 
 export class Community extends Component {
   render() {
     return (
-      <div>Community</div>
+      <View>
+        <Text>Community</Text>
+        <Eventsfeed />
+      </View>
     )
   }
 }
