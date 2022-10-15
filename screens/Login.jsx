@@ -1,7 +1,12 @@
 import React, { Component } from 'react'
-import { View, Button, TextInput } from 'react-native'
+import { SafeAreaView, View, Image, Text, StyleSheet, TouchableOpacity, Dimensions, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView } from 'react-native';
+import { TextInput } from 'react-native-paper';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import firebase from 'firebase';
+
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 export class Login extends Component {
   constructor(props){
@@ -29,23 +34,77 @@ export class Login extends Component {
 
   render() {
     return (
-      <View>
-        <TextInput 
-          placeholder="email"
-          onChangeText={(email) => this.setState({ email })}
-        />
-        <TextInput 
-          placeholder="password"
-          secureTextEntry={true}
-          onChangeText={(password) => this.setState({ password })}
-        />
-        <Button
-          onPress={() => this.onSignIn()}
-          title="Sign In"
-        />
-      </View>
+      <KeyboardAwareScrollView 
+                    style={{
+                        flex: 1,
+                        backgroundColor: 'white'
+                    }}
+                    extraScrollHeight={100}
+                    >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+          <SafeAreaView style={styles.appContainer}>
+              <Image
+                    style={styles.headerImage}
+                    source={require('../assets/LoginHeader.png')}
+                />
+                <View style={styles.inputContainer}>
+                    <TextInput 
+                      label="Email"
+                      style={styles.textInput}
+                      onChangeText={(email) => this.setState({ email })}
+                    />
+                    <TextInput 
+                      label="Password"
+                      style={styles.textInput}
+                      secureTextEntry={true}
+                      onChangeText={(password) => this.setState({ password })}
+                    />
+                    <TouchableOpacity
+                        style={styles.button}
+                        onPress={() => this.onSignIn()}
+                    ><Text style={{color: 'white'}}>LOG-IN</Text></TouchableOpacity>
+                    </View>
+          </SafeAreaView>
+        </TouchableWithoutFeedback>
+        </KeyboardAwareScrollView>
     )
   }
-}
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  appContainer: {
+    flex: 1,
+    alignItems: 'center',
+    backgroundColor: '#30b5c7',
+  },
+  inputContainer: {
+    backgroundColor: 'white',
+    width: windowWidth,
+    alignItems: "center",
+  },
+  headerImage: {
+    width: windowWidth,
+    height: undefined,
+    aspectRatio: 1324 / 1254,
+  },
+  textInput: {
+    width: windowWidth-50,
+    marginTop: 15,
+  },
+  button: {
+    alignItems: "center",
+    backgroundColor: "#6b4fab",
+    padding: 10,
+    borderRadius: 20,
+    width: 250,
+    height: 45,
+    justifyContent: 'center',
+    marginTop: 20,
+    marginBottom: 200,
+  },
+});
 
 export default Login

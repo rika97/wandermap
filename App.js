@@ -34,6 +34,7 @@ import MainScreen from './screens/Main'
 import PhotoScreen from './screens/Photo'
 import EditeventScreen from './screens/Editevent'
 import SaveeventScreen from './screens/Saveevent'
+import SearchScreen from './screens/Search'
 
 const Stack = createStackNavigator();
 
@@ -88,6 +89,7 @@ export class App extends Component {
           <Stack.Navigator initialRouteName="Landing">
             <Stack.Screen name="Main" component={MainScreen} />
             <Stack.Screen name="Photo" component={PhotoScreen} />
+            <Stack.Screen name="Search" component={SearchScreen} />
             <Stack.Screen name="Editevent" component={EditeventScreen} navigation={this.props.navigation} />
             <Stack.Screen name="Saveevent" component={SaveeventScreen} navigation={this.props.navigation} />
           </Stack.Navigator>

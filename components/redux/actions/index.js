@@ -1,7 +1,6 @@
 import { USER_STATE_CHANGE, USER_EVENTS_STATE_CHANGE, USER_FOLLOWING_STATE_CHANGE, USERS_DATA_STATE_CHANGE, USERS_EVENTS_STATE_CHANGE, CLEAR_DATA } from '../constants/index'
 import firebase from 'firebase/app'
 require('firebase/firestore')
-import { SnapshotViewIOSComponent } from 'react-native'
 
 export function clearData() {
     return ((dispatch) => {

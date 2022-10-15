@@ -10,7 +10,6 @@ import MapScreen from './Map'
 import EventsScreen from './Events'
 import CommunityScreen from './Community'
 import ProfileScreen from './Profile'
-import SearchScreen from './Search'
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -38,12 +37,6 @@ export class Main extends Component {
                 options={{
                     tabBarIcon: ({ color, size }) => (
                         <MaterialCommunityIcons name="camera" color={color} size={26} />
-                    ),
-                }} />
-            <Tab.Screen name="Search" component={SearchScreen} navigation={this.props.navigation}
-                options={{
-                    tabBarIcon: ({ color, size }) => (
-                        <MaterialCommunityIcons name="magnify" color={color} size={26} />
                     ),
                 }} />
             <Tab.Screen name="Community" component={CommunityScreen} 

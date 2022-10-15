@@ -1,16 +1,19 @@
 import React, { Component } from 'react';
-import { Text, View } from 'react-native';
-import Eventsfeed from './Eventsfeed';
+import { Text, View, Button } from 'react-native';
 
-export class Community extends Component {
-  render() {
+import { StatusBar } from 'expo-status-bar';
+
+const Community = ({ navigation }) => {
     return (
-      <View>
+      <View style={{ flex: 1, justifyContent: 'center' }}>
+        <StatusBar />
         <Text>Community</Text>
-        <Eventsfeed />
+        <Button 
+            title="Search User"
+            onPress={() => navigation.navigate("Search")}
+        />
       </View>
     )
-  }
 }
 
 export default Community

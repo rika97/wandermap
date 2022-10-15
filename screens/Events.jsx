@@ -1,5 +1,6 @@
 import React from 'react'
-import { View, Button } from 'react-native'
+import { View, Button, Text } from 'react-native'
+import Eventsfeed from './Eventsfeed';
 
 import { StatusBar } from 'expo-status-bar';
 
@@ -11,6 +12,8 @@ const Events = ({ navigation }) => {
             title="Add Event"
             onPress={() => navigation.navigate("Editevent")}
         />
+        <Text>Upcoming Events:</Text>
+        <Eventsfeed />
     </View>
   )
 }
