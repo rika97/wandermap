@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { Button, Image, View, TextInput, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { Button, Image, View, TextInput, TouchableWithoutFeedback, Keyboard, Text, ActivityIndicator, Dimensions } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+
+const windowHeight = Dimensions.get('window').height;
 
 import firebase from 'firebase/app'
 require("firebase/firestore")
@@ -11,6 +13,7 @@ export default function Createevent( {navigation} ) {
   const [title, setTitle] = useState("")
   const [description, setDescription] = useState("")
   const [location, setLocation] = useState("")
+  const [loading, setLoading] = useState(false)
 
   const childPath = `post/${firebase.auth().currentUser.uid}/${Math.random().toString(36)}`;
 
@@ -37,6 +40,7 @@ export default function Createevent( {navigation} ) {
     const task = firebase.storage().ref().child(childPath).put(blob)
 
     const taskProgress = snapshot => {
+        setLoading(true)
         console.log(`transferred: ${snapshot.bytesTransferred}`)
     }
 
@@ -79,23 +83,31 @@ export default function Createevent( {navigation} ) {
                     extraScrollHeight={100}
                     >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Button title="Choose Image" onPress={() => pickImage()} />
-            {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
-            <TextInput 
-                placeholder='Event Title'
-                onChangeText={(title) => setTitle(title)}
-            />
-            <TextInput 
-                placeholder='Description'
-                onChangeText={(description) => setDescription(description)}
-            />
-            <TextInput 
-                placeholder='Location'
-                onChangeText={(location) => setLocation(location)}
-            />
-            <Button title="Create Event" onPress={() => uploadImage()} />
-        </View>
+            { loading ? 
+                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                    <View style={{ marginTop: windowHeight/3 }}>
+                        <ActivityIndicator size="large" color="#30b5c7" />
+                    </View>
+                    <Text style={{ fontSize: 15, marginTop: 10, color: "#30b5c7"}}>Uploading...</Text>
+                </View>:
+                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                    <Button title="Choose Image" onPress={() => pickImage()} />
+                    {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
+                    <TextInput 
+                        placeholder='Event Title'
+                        onChangeText={(title) => setTitle(title)}
+                    />
+                    <TextInput 
+                        placeholder='Description'
+                        onChangeText={(description) => setDescription(description)}
+                    />
+                    <TextInput 
+                        placeholder='Location'
+                        onChangeText={(location) => setLocation(location)}
+                    />
+                    <Button title="Create Event" onPress={() => uploadImage()} />
+                </View>
+            }
         </TouchableWithoutFeedback>
     </KeyboardAwareScrollView>
   );

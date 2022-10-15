@@ -49,7 +49,6 @@ const Account = (props) => {
             ><Text style={{color: 'white'}}>Create Event</Text></TouchableOpacity>
           </View>
       </View>
-      
       <Text style={{fontSize: 20}}>My Events</Text>
       <View style={styles.containerGallery}>
         <FlatList
