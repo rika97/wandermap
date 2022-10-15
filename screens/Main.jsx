@@ -9,7 +9,7 @@ import { fetchUser, fetchUserEvents, fetchUserFollowing, clearData } from '../co
 import MapScreen from './Map'
 import EventsScreen from './Events'
 import CommunityScreen from './Community'
-import ProfileScreen from './Profile'
+import AccountScreen from './Account'
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -26,8 +26,8 @@ export class Main extends Component {
   }
   render() {
     return (
-        <Tab.Navigator initialRouteName='Map' labeled={false}>
-            <Tab.Screen name="PhotoContainer" component={EmptyScreen} 
+        <Tab.Navigator initialRouteName='Map'>
+            <Tab.Screen name="Camera" component={EmptyScreen} 
                 listeners={({ navigation }) => ({
                     tabPress: event => {
                         event.preventDefault();
@@ -36,7 +36,7 @@ export class Main extends Component {
                 })}
                 options={{
                     tabBarIcon: ({ color, size }) => (
-                        <MaterialCommunityIcons name="camera" color={color} size={26} />
+                        <MaterialCommunityIcons name="camera-marker" color={color} size={26} />
                     ),
                 }} />
             <Tab.Screen name="Community" component={CommunityScreen} 
@@ -57,11 +57,11 @@ export class Main extends Component {
                         <MaterialCommunityIcons name="calendar-month" color={color} size={26} />
                     ),
                 }} />
-            <Tab.Screen name="Profile" component={ProfileScreen} 
+            <Tab.Screen name="Account" component={AccountScreen} 
                 listeners={({ navigation }) => ({
                     tabPress: event => {
                         event.preventDefault();
-                        navigation.navigate("Profile", {uid: firebase.auth().currentUser.uid})
+                        navigation.navigate("Account", {uid: firebase.auth().currentUser.uid})
                     }
                 })}
                 options={{

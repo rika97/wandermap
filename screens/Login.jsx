@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
-import { SafeAreaView, View, Image, Text, StyleSheet, TouchableOpacity, Dimensions, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView } from 'react-native';
+import { SafeAreaView, View, Image, Text, StyleSheet, TouchableOpacity, Dimensions, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import firebase from 'firebase';
 
 const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
 
 export class Login extends Component {
   constructor(props){
@@ -66,7 +65,7 @@ export class Login extends Component {
                     </View>
           </SafeAreaView>
         </TouchableWithoutFeedback>
-        </KeyboardAwareScrollView>
+      </KeyboardAwareScrollView>
     )
   }
 };

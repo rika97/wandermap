@@ -1,21 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, Image, FlatList, Button } from 'react-native';
-import firebase from 'firebase/app'
-require('firebase/firestore')
-import { connect } from 'react-redux'
+import { StyleSheet, View, Text, Image, FlatList, Button, TouchableOpacity, Dimensions } from 'react-native';
+import firebase from 'firebase/app';
+require('firebase/firestore');
+import { connect } from 'react-redux';
 
-function Profile(props) {
+const windowWidth = Dimensions.get('window').width;
+
+const Profile = (props) => {
   const [userEvents, setUserEvents] = useState([]);
   const [user, setUser] = useState(null);
   const [following, setFollowing] = useState(false);
 
   useEffect(() => {
-    const { currentUser, events } = props
-
-    if(props.route.params.uid === firebase.auth().currentUser.uid){
-      setUser(currentUser)
-      setUserEvents(events)
-    } else {
       firebase.firestore()
             .collection("users")
             .doc(props.route.params.uid)
@@ -41,7 +37,6 @@ function Profile(props) {
           })
           setUserEvents(events)
       })
-    }
 
     if(props.following.indexOf(props.route.params.uid) > -1) {
       setFollowing(true);
@@ -66,41 +61,35 @@ function Profile(props) {
       .doc(props.route.params.uid)
       .delete()
   }
-  const onLogout = () => {
-    firebase.auth().signOut();
-  }
   if(user === null) {
-    return <View></View>
+    return (
+    <View>
+        <Text>No matching user.</Text>
+    </View>)
   }
   return (
     <View style={styles.container}>
       <View style={styles.containerInfo}>
-        <Text>{user.name}</Text>
-        <Text>{user.email}</Text>
+        <Text style={{fontSize: 20}}>{user.name}</Text>
 
-        {props.route.params.uid !== firebase.auth().currentUser.uid ? (
           <View>
             {following ? (
-              <Button
-                title="Following"
-                onPress={() => onUnfollow()}
-              />
+              <TouchableOpacity 
+              style={styles.button}
+              onPress={() => onUnfollow()}
+            ><Text style={{color: 'white'}}>Unfollow</Text></TouchableOpacity>
             ):
             (
-              <Button
-                title="Follow"
-                onPress={() => onFollow()}
-              />
+              <TouchableOpacity 
+              style={styles.button}
+              onPress={() => onFollow()}
+            ><Text style={{color: 'white'}}>Follow</Text></TouchableOpacity>
             )
             }
           </View>
-        ) : 
-            <Button
-            title="Logout"
-            onPress={() => onLogout()}
-          />}
       </View>
       
+      <Text style={{fontSize: 20}}>Events</Text>
       <View style={styles.containerGallery}>
         <FlatList
           numColumns={1}
@@ -123,6 +112,8 @@ function Profile(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    alignItems: 'center',
+    width: windowWidth,
   },
   containerInfo: {
     margin: 20,
@@ -132,11 +123,24 @@ const styles = StyleSheet.create({
   },
   containerImage: {
     flex: 1,
+    alignItems: 'center'
   },
   image: {
     flex: 1,
     aspectRatio: 1,
-  }
+    marginTop: 10,
+    width: windowWidth-50,
+  },
+  button: {
+    alignItems: "center",
+    backgroundColor: "#6b4fab",
+    padding: 10,
+    borderRadius: 20,
+    width: 300,
+    height: 45,
+    justifyContent: 'center',
+    marginTop: 5,
+  },
 })
 
 const mapStateToProps = (store) => ({

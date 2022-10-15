@@ -2,7 +2,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import React, { Component } from 'react'
-import { View, Text } from 'react-native';
+import { View, Text, Image } from 'react-native';
 
 import firebase from 'firebase/app'
 import "firebase/auth"
@@ -35,6 +35,8 @@ import PhotoScreen from './screens/Photo'
 import EditeventScreen from './screens/Editevent'
 import SaveeventScreen from './screens/Saveevent'
 import SearchScreen from './screens/Search'
+import ProfileScreen from './screens/Profile'
+import CreateeventScreen from './screens/Createevent'
 
 const Stack = createStackNavigator();
 
@@ -87,11 +89,52 @@ export class App extends Component {
       <Provider store={store}>
         <NavigationContainer>
           <Stack.Navigator initialRouteName="Landing">
-            <Stack.Screen name="Main" component={MainScreen} />
-            <Stack.Screen name="Photo" component={PhotoScreen} />
-            <Stack.Screen name="Search" component={SearchScreen} />
-            <Stack.Screen name="Editevent" component={EditeventScreen} navigation={this.props.navigation} />
-            <Stack.Screen name="Saveevent" component={SaveeventScreen} navigation={this.props.navigation} />
+            <Stack.Screen name="Main" component={MainScreen} 
+              options={{
+                title: 'WanderMap',
+                headerStyle: {
+                  backgroundColor: '#30b5c7',
+                },
+                headerTintColor: '#47515F',
+              }}
+            />
+            <Stack.Screen name="Photo" component={PhotoScreen}
+              options={{
+                title: 'Camera',
+                headerStyle: {
+                  backgroundColor: '#30b5c7',
+                },
+                headerTintColor: '#47515F',
+                headerBackTitle: 'Back',
+              }}
+            />
+            <Stack.Screen name="Search" component={SearchScreen}
+              options={{
+                title: 'Search',
+                headerStyle: {
+                  backgroundColor: '#30b5c7',
+                },
+                headerTintColor: '#47515F',
+                headerBackTitle: 'Back',
+              }}/>
+            <Stack.Screen name="Createevent" component={CreateeventScreen} navigation={this.props.navigation} 
+            options={{
+              title: 'Create Event',
+              headerStyle: {
+                backgroundColor: '#30b5c7',
+              },
+              headerTintColor: '#47515F',
+              headerBackTitle: 'Back',
+            }}/>
+            <Stack.Screen name="Profile" component={ProfileScreen} navigation={this.props.navigation}
+            options={{
+              title: 'User Profile',
+              headerStyle: {
+                backgroundColor: '#30b5c7',
+              },
+              headerTintColor: '#47515F',
+              headerBackTitle: 'Back',
+            }} />
           </Stack.Navigator>
         </NavigationContainer>
       </Provider>

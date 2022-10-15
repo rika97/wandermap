@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
+import { TextInput } from 'react-native-paper';
 
 import firebase from 'firebase/app'
 require('firebase/firestore');
 
-export default function Search(props) {
+const Search = (props) => {
   const [ users, setUsers ] = useState([])
+  const [ searchValue, setSearchValue ] = useState("")
 
   const fetchUsers = (search) => {
     firebase.firestore()
@@ -22,19 +24,39 @@ export default function Search(props) {
     })
   }
   return (
-    <View>
-        <TextInput placeholder="type here" onChangeText={ (search)=>fetchUsers(search) } />
+      <View>
+        <TextInput
+          label="Search"
+          onChangeText={ (search)=>{
+            fetchUsers(search);
+            setSearchValue(search);
+          } }
+          mode="outlined"
+          value={searchValue}
+          right={<TextInput.Icon icon="close-circle" onPress={() => {
+            setSearchValue("");
+            setUsers([]);
+          }}/>}
+        />
 
-        <FlatList 
+        <FlatList style={styles.searchResultsContainer}
           numColumns={1}
           horizontal={false}
           data={users}
           renderItem={({item}) => (
             <TouchableOpacity onPress={() => props.navigation.navigate("Profile", {uid: item.id})}>
-                <Text>{item.name}</Text>
+                <Text style={{fontSize: 17, marginTop: 5}}>{item.name}</Text>
             </TouchableOpacity>
           )}
         />
-    </View>
+      </View>
   )
-}
+};
+
+const styles = StyleSheet.create({
+  searchResultsContainer: {
+
+  }
+});
+
+export default Search
