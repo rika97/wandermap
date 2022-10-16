@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, Image, FlatList, Button } from 'react-native';
-import firebase from 'firebase/app'
-require('firebase/firestore')
-import { connect } from 'react-redux'
+import { StyleSheet, View, Text, Image, FlatList, Dimensions } from 'react-native';
+import firebase from 'firebase/app';
+require('firebase/firestore');
+import { connect } from 'react-redux';
+
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 function Eventsfeed(props) {
   const [events, setEvents] = useState([]);
@@ -22,6 +25,7 @@ function Eventsfeed(props) {
         })
 
         setEvents(events);
+
     }
   }, [props.usersLoaded])
 
@@ -52,17 +56,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  containerInfo: {
-    margin: 20,
-  },
   containerGallery: {
     flex: 1,
   },
   containerImage: {
-    flex: 1,
+    width: windowHeight/6,
+    height: windowHeight/6,
+    overflow: 'hidden',
   },
   image: {
-    flex: 1,
+    // flex: 1,
     aspectRatio: 1,
   }
 })

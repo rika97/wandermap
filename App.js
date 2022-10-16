@@ -35,6 +35,7 @@ import PhotoScreen from './screens/Photo'
 import SearchScreen from './screens/Search'
 import ProfileScreen from './screens/Profile'
 import CreateeventScreen from './screens/Createevent'
+import AddphotoScreen from './screens/Addphoto'
 
 const Stack = createStackNavigator();
 
@@ -132,6 +133,15 @@ export class App extends Component {
               },
               headerTintColor: '#47515F',
               headerBackTitle: 'Back',
+            }} />
+            <Stack.Screen name="Addphoto" component={AddphotoScreen} navigation={this.props.navigation}
+            options={{
+              title: 'Add Photo',
+              headerStyle: {
+                backgroundColor: '#30b5c7',
+              },
+              headerTintColor: '#47515F',
+              headerBackTitle: 'Re-take',
             }} />
           </Stack.Navigator>
         </NavigationContainer>

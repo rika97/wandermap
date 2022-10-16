@@ -51,7 +51,7 @@ export class Main extends Component {
                         <MaterialCommunityIcons name="google-maps" color={color} size={26} />
                     ),
                 }} />
-            <Tab.Screen name="Events" component={EventsScreen} 
+            <Tab.Screen name="Events" component={EventsScreen} navigation={this.props.navigation}
                 options={{
                     tabBarIcon: ({ color, size }) => (
                         <MaterialCommunityIcons name="calendar-month" color={color} size={26} />

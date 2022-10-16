@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-import { SafeAreaView, View, Image, Text, StyleSheet, TouchableOpacity, Dimensions, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { SafeAreaView, View, Image, Text, StyleSheet, TouchableOpacity, Dimensions, TouchableWithoutFeedback, Keyboard, Platform } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import firebase from 'firebase';
 
 const windowWidth = Dimensions.get('window').width;
+const dismissKeyboard = () => { if (Platform.OS != "web"){ Keyboard.dismiss(); } }
 
 export class Login extends Component {
   constructor(props){
@@ -40,7 +41,7 @@ export class Login extends Component {
                     }}
                     extraScrollHeight={100}
                     >
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+        <TouchableWithoutFeedback onPress={() => dismissKeyboard()} accessible={false}>
           <SafeAreaView style={styles.appContainer}>
               <Image
                     style={styles.headerImage}

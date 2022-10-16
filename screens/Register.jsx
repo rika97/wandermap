@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-import { SafeAreaView, View, Image, StyleSheet, Dimensions, TouchableOpacity, Text, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { SafeAreaView, View, Image, StyleSheet, Dimensions, TouchableOpacity, Text, TouchableWithoutFeedback, Keyboard, Platform } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import firebase from 'firebase';
 
 const windowWidth = Dimensions.get('window').width;
+const dismissKeyboard = () => { if (Platform.OS != "web"){ Keyboard.dismiss(); } }
 
 export class Register extends Component {
   constructor(props){
@@ -16,20 +17,22 @@ export class Register extends Component {
       email: '',
       password: '',
       name: '',
+      downloadURL: 'https://raw.githubusercontent.com/rika97/wandermap/main/assets/defaultuser-icon.png',
     }
 
     this.onSignUp = this.onSignUp.bind(this)
   }
 
   onSignUp(){
-    const { email, password, name } = this.state;
+    const { email, password, name, downloadURL } = this.state;
     firebase.auth().createUserWithEmailAndPassword(email, password)
     .then((result) => {
       firebase.firestore().collection("users")
         .doc(firebase.auth().currentUser.uid)
         .set({
           name,
-          email
+          email,
+          downloadURL,
         })
       console.log(result)
     })
@@ -47,7 +50,7 @@ export class Register extends Component {
                     }}
                     extraScrollHeight={100}
                     >
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+        <TouchableWithoutFeedback onPress={() => dismissKeyboard()} accessible={false}>
           <SafeAreaView style={styles.appContainer}>
             <Image
                 style={styles.headerImage}

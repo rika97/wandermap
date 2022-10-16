@@ -31,23 +31,28 @@ const Account = (props) => {
   return (
     <View style={styles.container}>
       <View style={styles.containerInfo}>
-        <Text style={{fontSize: 20}}>{user.name}</Text>
-
-          <View>
-            <Text>Email: {user.email}</Text>
-            <TouchableOpacity 
-              style={styles.button}
-              // onPress={() => onLogout()}
-            ><Text style={{color: 'white'}}>Edit Profile</Text></TouchableOpacity>
-            <TouchableOpacity 
-              style={styles.button}
-              onPress={() => onLogout()}
-            ><Text style={{color: 'white'}}>Sign Out</Text></TouchableOpacity>
-            <TouchableOpacity 
-              style={styles.button}
-              onPress={() => props.navigation.navigate("Createevent")}
-            ><Text style={{color: 'white'}}>Create Event</Text></TouchableOpacity>
-          </View>
+        <View>
+          <Image
+          style={styles.profilePicture}
+          source={{
+            uri: user.downloadURL,
+          }}
+          />
+          <Text style={{fontSize: 20}}>{user.name}</Text>
+        </View>
+        <Text>Email: {user.email}</Text>
+        <TouchableOpacity 
+          style={styles.button}
+          // onPress={() => onLogout()}
+        ><Text style={{color: 'white'}}>Edit Profile</Text></TouchableOpacity>
+        <TouchableOpacity 
+          style={styles.button}
+          onPress={() => onLogout()}
+        ><Text style={{color: 'white'}}>Sign Out</Text></TouchableOpacity>
+        <TouchableOpacity 
+          style={styles.button}
+          onPress={() => props.navigation.navigate("Createevent")}
+        ><Text style={{color: 'white'}}>Create Event</Text></TouchableOpacity>
       </View>
       <Text style={{fontSize: 20}}>My Events</Text>
       <View style={styles.containerGallery}>
@@ -84,6 +89,10 @@ const styles = StyleSheet.create({
   containerImage: {
     flex: 1,
     alignItems: 'center'
+  },
+  profilePicture: {
+    width: 80,
+    height: 80,
   },
   image: {
     flex: 1,

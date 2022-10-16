@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
-import { Button, Image, View, TextInput, TouchableWithoutFeedback, Keyboard, Text, ActivityIndicator, Dimensions } from 'react-native';
+import { Image, View, TouchableWithoutFeedback, Keyboard, Text, ActivityIndicator, Dimensions, StyleSheet, TouchableOpacity, Platform } from 'react-native';
+import { TextInput } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const windowHeight = Dimensions.get('window').height;
+const windowWidth = Dimensions.get('window').width;
+
+const dismissKeyboard = () => { if (Platform.OS != "web"){ Keyboard.dismiss(); } }
 
 import firebase from 'firebase/app'
 require("firebase/firestore")
 
-export default function Createevent( {navigation} ) {
+const Createevent = ( {navigation} ) => {
   const [image, setImage] = useState(null);
   const [title, setTitle] = useState("")
   const [description, setDescription] = useState("")
@@ -82,7 +86,7 @@ export default function Createevent( {navigation} ) {
                     }}
                     extraScrollHeight={100}
                     >
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+        <TouchableWithoutFeedback onPress={() => dismissKeyboard()} accessible={false}>
             { loading ? 
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                     <View style={{ marginTop: windowHeight/3 }}>
@@ -90,25 +94,63 @@ export default function Createevent( {navigation} ) {
                     </View>
                     <Text style={{ fontSize: 15, marginTop: 10, color: "#30b5c7"}}>Uploading...</Text>
                 </View>:
-                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                    <Button title="Choose Image" onPress={() => pickImage()} />
-                    {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
-                    <TextInput 
-                        placeholder='Event Title'
-                        onChangeText={(title) => setTitle(title)}
-                    />
-                    <TextInput 
-                        placeholder='Description'
-                        onChangeText={(description) => setDescription(description)}
-                    />
-                    <TextInput 
-                        placeholder='Location'
-                        onChangeText={(location) => setLocation(location)}
-                    />
-                    <Button title="Create Event" onPress={() => uploadImage()} />
+                <View style={{ flex: 1, justifyContent: 'center' }}>
+                    <View>
+                        <TextInput 
+                            label='Event Title'
+                            placeholder='Give it a cool name'
+                            mode='outlined'
+                            onChangeText={(title) => setTitle(title)}
+                            style={styles.textInput}
+                        />
+                        <TouchableOpacity
+                            style={styles.button}
+                            onPress={() => pickImage()}
+                        ><Text style={{color: 'white'}}>Choose Image</Text></TouchableOpacity>
+                        {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
+                        <TextInput 
+                            label='Description'
+                            placeholder='Enter description'
+                            mode='outlined'
+                            multiline
+                            onChangeText={(description) => setDescription(description)}
+                            style={styles.textInput}
+                        />
+                        <TextInput 
+                            label='Location'
+                            mode='outlined'
+                            onChangeText={(location) => setLocation(location)}
+                            style={styles.textInput}
+                        />
+                    </View>
+                    <View>
+                        <TouchableOpacity
+                            style={styles.button}
+                            onPress={() => uploadImage()}
+                        ><Text style={{color: 'white'}}>Create Event</Text></TouchableOpacity>
+                    </View>
                 </View>
             }
         </TouchableWithoutFeedback>
     </KeyboardAwareScrollView>
   );
-}
+};
+
+const styles = StyleSheet.create({
+    textInput: {
+      width: windowWidth-50,
+      marginTop: 5,
+    },
+    button: {
+      alignItems: "center",
+      backgroundColor: "#6b4fab",
+      padding: 10,
+      borderRadius: 20,
+      width: 250,
+      height: 45,
+      justifyContent: 'center',
+      marginTop: 10,
+    },
+  });
+
+export default Createevent;

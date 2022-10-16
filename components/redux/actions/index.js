@@ -76,7 +76,7 @@ export function fetchUsersData(uid){
                     user.uid = snapshot.id;
 
                     dispatch({ type: USERS_DATA_STATE_CHANGE, user })
-                    dispatch(fetchUsersFollowingEvents(user.id))
+                    dispatch(fetchUsersFollowingEvents(user.uid))
 
                 } else {
                     console.log("User doesn't exist.")
@@ -95,7 +95,8 @@ export function fetchUsersFollowingEvents(uid){
             .orderBy("creation", "asc")
             .get()
             .then((snapshot) => {
-                const uid = snapshot.query._.C_.path.segments[1];
+                const uid = snapshot._.query.C_.path.segments[1]
+
                 const user = getState().usersState.users.find(element => element.uid === uid)
 
                 let events = snapshot.docs.map(doc => {
@@ -103,6 +104,7 @@ export function fetchUsersFollowingEvents(uid){
                     const id = doc.id;
                     return{id, ...data, user }
                 })
+
                 dispatch({ type: USERS_EVENTS_STATE_CHANGE, events, uid })
             })
     })

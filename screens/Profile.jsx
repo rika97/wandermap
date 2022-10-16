@@ -64,14 +64,13 @@ const Profile = (props) => {
   if(user === null) {
     return (
     <View>
-        <Text>No matching user.</Text>
+        <Text>User doesn't exist.</Text>
     </View>)
   }
   return (
     <View style={styles.container}>
       <View style={styles.containerInfo}>
         <Text style={{fontSize: 20}}>{user.name}</Text>
-
           <View>
             {following ? (
               <TouchableOpacity 
