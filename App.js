@@ -97,7 +97,7 @@ export class App extends Component {
                 headerTintColor: '#47515F',
               }}
             />
-            <Stack.Screen name="Photo" component={PhotoScreen}
+            <Stack.Screen name="Photo" component={PhotoScreen} 
               options={{
                 title: 'Camera',
                 headerStyle: {
@@ -105,6 +105,7 @@ export class App extends Component {
                 },
                 headerTintColor: '#47515F',
                 headerBackTitle: 'Back',
+                headerShown: false
               }}
             />
             <Stack.Screen name="Search" component={SearchScreen}

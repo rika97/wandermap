@@ -26,7 +26,7 @@ const Search = (props) => {
   return (
       <View>
         <TextInput
-          label="Search"
+          label="Search User"
           onChangeText={ (search)=>{
             fetchUsers(search);
             setSearchValue(search);

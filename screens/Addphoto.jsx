@@ -4,7 +4,6 @@ import { TextInput } from 'react-native-paper';
 
 const Addphoto = (props) => {
   const image = props.route.params.uri;
-  console.log("Add Photo: ", image)
 
   return (
       <View>

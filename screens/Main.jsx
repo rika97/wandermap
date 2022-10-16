@@ -26,7 +26,7 @@ export class Main extends Component {
   }
   render() {
     return (
-        <Tab.Navigator initialRouteName='Map'>
+        <Tab.Navigator initialRouteName='Map' labeled={false} barStyle={{backgroundColor: '#fff', height: 90}}>
             <Tab.Screen name="Camera" component={EmptyScreen} 
                 listeners={({ navigation }) => ({
                     tabPress: event => {
@@ -36,25 +36,25 @@ export class Main extends Component {
                 })}
                 options={{
                     tabBarIcon: ({ color, size }) => (
-                        <MaterialCommunityIcons name="camera-marker" color={color} size={26} />
+                        <MaterialCommunityIcons name="camera-marker" color={color} size={30} />
                     ),
                 }} />
             <Tab.Screen name="Community" component={CommunityScreen} 
                 options={{
                     tabBarIcon: ({ color, size }) => (
-                        <MaterialCommunityIcons name="account-group" color={color} size={26} />
+                        <MaterialCommunityIcons name="account-group" color={color} size={30} />
                     ),
                 }} />
             <Tab.Screen name="Map" component={MapScreen} 
                 options={{
                     tabBarIcon: ({ color, size }) => (
-                        <MaterialCommunityIcons name="google-maps" color={color} size={26} />
+                        <MaterialCommunityIcons name="map-marker" color={color} size={30} />
                     ),
                 }} />
             <Tab.Screen name="Events" component={EventsScreen} navigation={this.props.navigation}
                 options={{
                     tabBarIcon: ({ color, size }) => (
-                        <MaterialCommunityIcons name="calendar-month" color={color} size={26} />
+                        <MaterialCommunityIcons name="calendar-month" color={color} size={30} />
                     ),
                 }} />
             <Tab.Screen name="Account" component={AccountScreen} 
@@ -66,7 +66,7 @@ export class Main extends Component {
                 })}
                 options={{
                     tabBarIcon: ({ color, size }) => (
-                        <MaterialCommunityIcons name="account" color={color} size={26} />
+                        <MaterialCommunityIcons name="account" color={color} size={30} />
                     ),
                 }} />
         </Tab.Navigator>

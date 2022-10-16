@@ -2,6 +2,7 @@ import { Camera, CameraType } from 'expo-camera';
 import { useState } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View, ActivityIndicator, Dimensions } from 'react-native';
 import { Button, IconButton } from 'react-native-paper';
+import Slider from '@react-native-community/slider';
 
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
@@ -9,6 +10,7 @@ const windowWidth = Dimensions.get('window').width;
 export default function Photo(props) {
   const [type, setType] = useState(CameraType.back);
   const [camera, setCamera] = useState(null);
+  const [zoomRatio, setZoomRatio] = useState(0);
   const [image, setImage] = useState(null);
   const [flashModeType, setFlashModeType] = useState([Camera.Constants.FlashMode.auto, "flash-auto"]);
   const [permission, requestPermission] = Camera.useCameraPermissions();
@@ -76,12 +78,23 @@ export default function Photo(props) {
         type={type}
         flashMode={flashModeType[0]}
         ref={ref => setCamera(ref)}
+        zoom={zoomRatio}
       >
+      <TouchableOpacity
+        style={{flex: 1, alignSelf: 'flex-start', alignItems: 'center', marginLeft: 5, marginTop: 30}}
+        onPress={()=> props.navigation.navigate("Map")}
+        >
+        <IconButton
+          icon="window-close"
+          size={30}
+          iconColor='white'
+        />
+      </TouchableOpacity>
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.button} onPress={toggleCameraType}>
           <IconButton
             icon="camera-flip"
-            size={30}
+            size={25}
             iconColor='white'
             mode='outlined'
           />
@@ -89,7 +102,7 @@ export default function Photo(props) {
         <TouchableOpacity style={styles.button} >
           <IconButton
             icon={"checkbox-blank-circle-outline"}
-            size={45}
+            size={40}
             iconColor='white'
             mode='outlined'
             onPress={() => {
@@ -105,12 +118,21 @@ export default function Photo(props) {
         >
           <IconButton
             icon={flashModeType[1]}
-            size={30}
+            size={25}
             iconColor='white'
             mode='outlined'
           />
         </TouchableOpacity>
       </View>
+      <Slider
+        style={{width: 250, height: 30, marginBottom: 50, marginTop: -60, marginLeft: (windowWidth-250)/2}}
+        minimumValue={0}
+        maximumValue={1}
+        minimumTrackTintColor="#000000"
+        maximumTrackTintColor="#000000"
+        tapToSeek
+        onValueChange={(ratio)=>setZoomRatio(-1+Math.pow(2.71828, 0.4*ratio))}
+      />
       </Camera>
       {image && <Image source={{uri: image}} style={{flex:1}}/>}
     </View>
@@ -138,7 +160,7 @@ const styles = StyleSheet.create({
   },
   touchableButton: {
     alignItems: "center",
-    backgroundColor: "#6b4fab",
+    backgroundColor: "#8abbc2",
     padding: 10,
     borderRadius: 20,
     width: 300,

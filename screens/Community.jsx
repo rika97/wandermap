@@ -10,7 +10,6 @@ const Community = ({ navigation }) => {
       <TouchableWithoutFeedback onPress={() => dismissKeyboard()} accessible={false}>
         <View style={{ flex: 1, justifyContent: 'center' }}>
           <StatusBar />
-          <Text style={{fontSize: 20}}>Community</Text>
           <Search navigation={navigation}/>
         </View>
       </TouchableWithoutFeedback>
