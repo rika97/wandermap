@@ -1,6 +1,6 @@
 import { Camera, CameraType } from 'expo-camera';
 import { useState } from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View, ActivityIndicator, Dimensions } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View, ActivityIndicator, Dimensions, ImageBackground } from 'react-native';
 import { Button, IconButton } from 'react-native-paper';
 import Slider from '@react-native-community/slider';
 
@@ -59,15 +59,28 @@ export default function Photo(props) {
   if (image) {
     return (
       <View style={{ flex: 1, alignItems: 'center'}}>
-        <Image source={{uri: image}} style={{flex:1, width: windowWidth, height: undefined}}/>
-        <TouchableOpacity
-            style={styles.touchableButton}
+        <ImageBackground source={{uri: image}} style={{flex:1, width: windowWidth, height: undefined}}>
+          <TouchableOpacity
+            style={{flex: 1, alignSelf: 'flex-start', alignItems: 'center', marginLeft: 5, marginTop: 30}}
             onPress={() => setImage(null)}
-        ><Text style={{color: 'white'}}>Re-take</Text></TouchableOpacity>
-        <TouchableOpacity
-            style={styles.touchableButton}
+            >
+            <IconButton
+              icon="arrow-left"
+              size={30}
+              iconColor='white'
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{flex: 1, alignSelf: 'flex-end', position: "absolute", marginRight: 5, bottom: 30}}
             // onPress={() => setImage(null)}
-        ><Text style={{color: 'white'}}>Post</Text></TouchableOpacity>
+            >
+            <IconButton
+              icon="send"
+              size={30}
+              iconColor='white'
+            />
+          </TouchableOpacity>
+        </ImageBackground>
       </View>
     )
   } else {
@@ -102,7 +115,7 @@ export default function Photo(props) {
         <TouchableOpacity style={styles.button} >
           <IconButton
             icon={"checkbox-blank-circle-outline"}
-            size={40}
+            size={50}
             iconColor='white'
             mode='outlined'
             onPress={() => {

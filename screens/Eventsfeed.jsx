@@ -4,7 +4,6 @@ import firebase from 'firebase/app';
 require('firebase/firestore');
 import { connect } from 'react-redux';
 
-const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 function Eventsfeed(props) {
@@ -33,7 +32,8 @@ function Eventsfeed(props) {
   return (
     <View style={styles.container}>
       <View style={styles.containerGallery}>
-        <FlatList
+        { (events.length !== 0) ? 
+          <FlatList
           numColumns={1}
           horizontal={false}
           data={events}
@@ -46,7 +46,9 @@ function Eventsfeed(props) {
               />
             </View>
           )}
-        />
+        /> :
+        <Text>No events available.</Text>
+      }
       </View>
     </View>
   )

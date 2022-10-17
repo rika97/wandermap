@@ -51,7 +51,6 @@ const Createevent = ( {navigation} ) => {
     const taskCompleted = () => {
         task.snapshot.ref.getDownloadURL().then((snapshot)=>{
             saveEventData(snapshot)
-            console.log(snapshot)
         })
     }
 
