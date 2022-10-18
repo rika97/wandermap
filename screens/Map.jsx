@@ -46,65 +46,97 @@ export default function Map() {
     )}
   return (
       <TouchableWithoutFeedback onPress={() => dismissKeyboard()} accessible={false}>
-        <View style={{ flex: 1, width: windowWidth, height: windowHeight-180 }}>
-          <MapView
-            style={StyleSheet.absoluteFillObject}
-            provider={PROVIDER_GOOGLE}
-            showsUserLocation={true}
-            followsUserLocation={true}
-            showsMyLocationButton={true}
-            showsIndoors={true}
-            showsIndoorLevelPicker={true}
-            loadingEnabled={true}
-            rotateEnabled={true}
-            scrollDuringRotateOrZoomEnabled={true}
-            initialRegion={{latitude: location[0], longitude: location[1], latitudeDelta: 0.09, longitudeDelta: 0.04}}
-            region={{latitude: location[0], longitude: location[1], latitudeDelta: 0.09, longitudeDelta: 0.04}}
-            >
-            <GooglePlacesAutocomplete
-              placeholder='Enter Location'
-              onPress={(data, details = null) => {
-                setLocation([details.geometry.location.lat, details.geometry.location.lng])
-              }}
-              fetchDetails
-              query={{
-                key: '',
-                language: 'en',
-              }}
-              getAddressText={(input)=>console.log(input)}
-              renderLeftButton={()  => <MaterialCommunityIcons name="map-marker" color='grey' size={30} style={{marginLeft: 10, marginTop: 7.5}} />}
-              styles={{
-                container: {
-                  marginTop: 15,
-                  shadowColor: '#171717',
-                  shadowOffset: {width: -2, height: 4},
-                  shadowOpacity: 0.2,
-                  shadowRadius: 3,
-                },
-                textInput: {
-                  height: 45,
-                  marginLeft: 0,
-                  marginRight: 15,
-                },
-                textInputContainer: {
-                  backgroundColor: 'white',
-                  borderRadius: 30,
-                  height: 45,
-                  marginLeft: 15,
-                  marginRight: 15,
-                },
-                listView: {
-                  marginLeft: 35,
-                  marginRight: 35,
-                }
-              }}
-            />
-          </MapView>
-          <TouchableOpacity
-              style={styles.toggleButton}
-              // onPress={() => this.onSignIn()}
-          ><MaterialCommunityIcons name="account-group" size={26} /><Text>Friends</Text></TouchableOpacity>
-      </View>
+        { toggle ? 
+          <View style={{ flex: 1, width: windowWidth, height: windowHeight-180 }}>
+            <MapView
+              style={StyleSheet.absoluteFillObject}
+              provider={PROVIDER_GOOGLE}
+              showsUserLocation={true}
+              followsUserLocation={true}
+              showsMyLocationButton={true}
+              showsIndoors={true}
+              showsIndoorLevelPicker={true}
+              loadingEnabled={true}
+              rotateEnabled={true}
+              scrollDuringRotateOrZoomEnabled={true}
+              initialRegion={{latitude: location[0], longitude: location[1], latitudeDelta: 0.09, longitudeDelta: 0.04}}
+              region={{latitude: location[0], longitude: location[1], latitudeDelta: 0.09, longitudeDelta: 0.04}}
+              >
+              <GooglePlacesAutocomplete
+                placeholder='Enter Location'
+                onPress={(data, details = null) => {
+                  setLocation([details.geometry.location.lat, details.geometry.location.lng])
+                }}
+                fetchDetails
+                query={{
+                  key: '',
+                  language: 'en',
+                }}
+                getAddressText={(input)=>console.log(input)}
+                renderLeftButton={()  => <MaterialCommunityIcons name="account-search" color='grey' size={30} style={{marginLeft: 15, marginTop: 7.5}} />}
+                styles={styles.searchBar}
+              />
+            </MapView>
+            <TouchableOpacity
+                style={styles.toggleButton}
+                onPress={() => setToggle(false)}
+            ><MaterialCommunityIcons name="calendar-month" size={23} /><Text>Events</Text></TouchableOpacity>
+          </View>
+          :
+          <View style={{ flex: 1, width: windowWidth, height: windowHeight-180 }}>
+              <MapView
+                style={StyleSheet.absoluteFillObject}
+                provider={PROVIDER_GOOGLE}
+                showsUserLocation={true}
+                followsUserLocation={true}
+                showsMyLocationButton={true}
+                showsIndoors={true}
+                showsIndoorLevelPicker={true}
+                loadingEnabled={true}
+                rotateEnabled={true}
+                scrollDuringRotateOrZoomEnabled={true}
+                initialRegion={{latitude: location[0], longitude: location[1], latitudeDelta: 0.09, longitudeDelta: 0.04}}
+                region={{latitude: location[0], longitude: location[1], latitudeDelta: 0.09, longitudeDelta: 0.04}}
+                >
+                <GooglePlacesAutocomplete
+                  placeholder='Enter Location'
+                  onPress={(data, details = null) => {
+                    setLocation([details.geometry.location.lat, details.geometry.location.lng])
+                  }}
+                  fetchDetails
+                  query={{
+                    key: 'AIzaSyC0TK5W0fBVJTyURHbP5yuHiF8b8jUGghA',
+                    language: 'en',
+                  }}
+                  getAddressText={(input)=>console.log(input)}
+                  renderLeftButton={()  => <MaterialCommunityIcons name="map-marker" color='grey' size={30} style={{marginLeft: 15, marginTop: 7.5}} />}
+                  styles={styles.searchBar}
+                />
+                {/* <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center'}}>
+                  <View style={styles.chips}>
+                    <TouchableOpacity
+                      // onPress={() => this.onSignIn()}
+                    ><Text>Today</Text></TouchableOpacity>
+                  </View>
+                  <View style={styles.chips}>
+                    <TouchableOpacity
+                      // onPress={() => this.onSignIn()}
+                    ><Text>Now</Text></TouchableOpacity>
+                  </View>
+                  <View style={styles.chips}>
+                    <TouchableOpacity
+                      // onPress={() => this.onSignIn()}
+                    ><Text>This Week</Text></TouchableOpacity>
+                  </View>
+              </View> */}
+              </MapView>
+              
+              <TouchableOpacity
+                  style={styles.toggleButton}
+                  onPress={() => setToggle(true)}
+              ><MaterialCommunityIcons name="account-group" size={26} /><Text>Friends</Text></TouchableOpacity>
+          </View>
+        }
       </TouchableWithoutFeedback>
   )
 }
@@ -126,5 +158,47 @@ const styles = StyleSheet.create({
     shadowOffset: {width: -2, height: 4},
     shadowOpacity: 0.2,
     shadowRadius: 3,
+  },
+  chips: {
+    width: 80,
+    height: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 0,
+    borderRadius: 50,
+    marginTop: 70,
+    marginLeft: 15,
+    backgroundColor: 'white',
+    shadowColor: '#171717',
+    shadowOffset: {width: -2, height: 4},
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+  },
+  searchBar: {
+      container: {
+        marginTop: 15,
+        shadowColor: '#171717',
+        shadowOffset: {width: -2, height: 4},
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+      },
+      textInput: {
+        height: 45,
+        marginLeft: 0,
+        marginRight: 15,
+        marginTop: 0,
+        backgroundColor: 'white',
+      },
+      textInputContainer: {
+        backgroundColor: 'white',
+        borderRadius: 30,
+        height: 45,
+        marginLeft: 15,
+        marginRight: 15,
+      },
+      listView: {
+        marginLeft: 35,
+        marginRight: 35,
+      }
   },
 })

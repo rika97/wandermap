@@ -14,7 +14,6 @@ import thunk from 'redux-thunk'
 const store = createStore(rootReducer, applyMiddleware(thunk))
 
 const firebaseConfig = {
-
 };
 
 if(firebase.apps.length === 0){

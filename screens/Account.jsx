@@ -5,6 +5,7 @@ require('firebase/firestore');
 import { connect } from 'react-redux';
 
 const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 const Account = (props) => {
   const [userEvents, setUserEvents] = useState([]);
@@ -16,7 +17,7 @@ const Account = (props) => {
     setUser(currentUser)
     setUserEvents(events)
 
-  }, [props.route.params.uid])
+  }, [])
 
   const onLogout = () => {
     firebase.auth().signOut();
@@ -28,6 +29,7 @@ const Account = (props) => {
       </View>
       )
   }
+
   return (
     <View style={styles.container}>
       <View style={styles.containerInfo}>
@@ -51,7 +53,7 @@ const Account = (props) => {
         ><Text style={{color: 'white'}}>Sign Out</Text></TouchableOpacity>
         <TouchableOpacity 
           style={styles.button}
-          onPress={() => props.navigation.navigate("Createevent")}
+          onPress={() => props.navigation.navigate("Createevent", {user})}
         ><Text style={{color: 'white'}}>Create Event</Text></TouchableOpacity>
       </View>
       <Text style={{fontSize: 20}}>My Events</Text>
@@ -66,6 +68,8 @@ const Account = (props) => {
                 style={styles.image}
                 source={{uri: item.downloadURL}}
               />
+              <Text>{item.title}</Text>
+              <Text>{item.location}</Text>
             </View>
           )}
         />
@@ -77,8 +81,8 @@ const Account = (props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    width: windowWidth,
+    // alignItems: 'center',
+    // width: windowWidth,
   },
   containerInfo: {
     margin: 20,
@@ -87,8 +91,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   containerImage: {
-    flex: 1,
-    alignItems: 'center'
+    width: windowHeight/6,
+    height: windowHeight/6,
+    overflow: 'hidden',
   },
   profilePicture: {
     width: 80,
@@ -98,7 +103,6 @@ const styles = StyleSheet.create({
     flex: 1,
     aspectRatio: 1,
     marginTop: 10,
-    width: windowWidth-50,
   },
   button: {
     alignItems: "center",

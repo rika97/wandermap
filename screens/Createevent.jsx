@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Image, View, TouchableWithoutFeedback, Keyboard, Text, ActivityIndicator, Dimensions, StyleSheet, TouchableOpacity, Platform } from 'react-native';
+import { Button, Image, View, TouchableWithoutFeedback, Keyboard, Text, ActivityIndicator, Dimensions, StyleSheet, TouchableOpacity, Platform } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
@@ -12,12 +13,41 @@ const dismissKeyboard = () => { if (Platform.OS != "web"){ Keyboard.dismiss(); }
 import firebase from 'firebase/app'
 require("firebase/firestore")
 
-const Createevent = ( {navigation} ) => {
-  const [image, setImage] = useState(null);
-  const [title, setTitle] = useState("")
-  const [description, setDescription] = useState("")
-  const [location, setLocation] = useState("")
-  const [loading, setLoading] = useState(false)
+const Createevent = ( props ) => {
+  const [image, setImage] = useState(null); 
+  const [title, setTitle] = useState("");
+  const [modalState, setModalState] = useState(1);
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
+  const [description, setDescription] = useState("");
+  const [location, setLocation] = useState("");
+  const [price, setPrice] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const FormatDate = (data) => {
+    let dateTimeString =
+      (data.getMonth() + 1) +
+      '/' +
+      data.getDate() +
+      '/' +
+      data.getFullYear() +
+      ' ' +
+      (data.getHours()<10?'0':'') + data.getHours() +
+      ':' +
+      (data.getMinutes()<10?'0':'') + data.getMinutes();
+  
+    return dateTimeString;
+  };
 
   const childPath = `post/${firebase.auth().currentUser.uid}/${Math.random().toString(36)}`;
 
@@ -71,9 +101,14 @@ const Createevent = ( {navigation} ) => {
             title,
             description,
             location,
+            price,
+            startDate,
+            endDate,
+            creator: props.route.params.user.name,
             creation: firebase.firestore.FieldValue.serverTimestamp()
         }).then((function(){
-            navigation.popToTop()
+            console.log('task completed')
+            props.navigation.navigate("Account")
         }))
   }
 
@@ -97,7 +132,7 @@ const Createevent = ( {navigation} ) => {
                     <View>
                         <TextInput 
                             label='Event Title'
-                            placeholder='Give it a cool name'
+                            placeholder='Give it a cool name!'
                             mode='outlined'
                             onChangeText={(title) => setTitle(title)}
                             style={styles.textInput}
@@ -106,7 +141,7 @@ const Createevent = ( {navigation} ) => {
                             style={styles.button}
                             onPress={() => pickImage()}
                         ><Text style={{color: 'white'}}>Choose Image</Text></TouchableOpacity>
-                        {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
+                        {image && <Image source={{ uri: image }} style={{ width: 150, height: 150 }} />}
                         <TextInput 
                             label='Description'
                             placeholder='Enter description'
@@ -121,11 +156,63 @@ const Createevent = ( {navigation} ) => {
                             onChangeText={(location) => setLocation(location)}
                             style={styles.textInput}
                         />
+                        <TextInput 
+                            label='Price (units)'
+                            mode='outlined'
+                            onChangeText={(price) => setPrice(price)}
+                            style={styles.textInput}
+                        />
+                        <View>
+                            <Button title="Choose Start Date" onPress={()=>{
+                              setModalState(1);
+                              showDatePicker();
+                              }} />
+                            <Text>{startDate}</Text>
+                            <Button title="Choose End Date" onPress={()=>{
+                              setModalState(2);
+                              showDatePicker();
+                              }} />
+                            <Text>{endDate}</Text>
+                            <DateTimePickerModal
+                                isVisible={isDatePickerVisible}
+                                mode="datetime"
+                                date={new Date()}
+                                onConfirm={(date)=>{
+                                    if (modalState === 1) {
+                                      if (FormatDate(date) < FormatDate(new Date())) {
+                                        setStartDate("");
+                                        setErrorMsg("Start date must be later than current date.");
+                                      } else {
+                                        setStartDate(FormatDate(date));
+                                        setErrorMsg("");
+                                      }
+                                    } else {
+                                      if (FormatDate(date) < startDate) {
+                                        setEndDate("");
+                                        setErrorMsg("End date must be later than start date.");
+                                      } else {
+                                        setEndDate(FormatDate(date));
+                                        setErrorMsg("");
+                                      }
+                                    }
+                                    hideDatePicker();
+                                }}
+                                onCancel={hideDatePicker}
+                                textColor={'black'}
+                            />
+                            <Text style={{color: 'red'}}>{errorMsg}</Text>
+                        </View>
                     </View>
                     <View>
                         <TouchableOpacity
                             style={styles.button}
-                            onPress={() => uploadImage()}
+                            onPress={() => {
+                              if (title == "" || title == " " || description == "" || description == " " || location == "" || price == "" || startDate == "" || endDate == "") {
+                                setErrorMsg("You must fill in all required fields.")
+                              } else {
+                                uploadImage()
+                              }
+                            }}
                         ><Text style={{color: 'white'}}>Create Event</Text></TouchableOpacity>
                     </View>
                 </View>
