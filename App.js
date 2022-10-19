@@ -14,6 +14,7 @@ import thunk from 'redux-thunk'
 const store = createStore(rootReducer, applyMiddleware(thunk))
 
 const firebaseConfig = {
+  
 };
 
 if(firebase.apps.length === 0){
@@ -28,6 +29,7 @@ import PhotoScreen from './screens/Photo'
 import SearchScreen from './screens/Search'
 import ProfileScreen from './screens/Profile'
 import CreateeventScreen from './screens/Createevent'
+import AddeventScreen from './screens/Addevent'
 import AddphotoScreen from './screens/Addphoto'
 
 const Stack = createStackNavigator();
@@ -111,6 +113,15 @@ export class App extends Component {
                 headerBackTitle: 'Back',
               }}/>
             <Stack.Screen name="Createevent" component={CreateeventScreen} navigation={this.props.navigation} 
+            options={{
+              title: 'Create Event',
+              headerStyle: {
+                backgroundColor: '#30b5c7',
+              },
+              headerTintColor: '#47515F',
+              headerBackTitle: 'Back',
+            }}/>
+            <Stack.Screen name="Addevent" component={AddeventScreen} navigation={this.props.navigation}
             options={{
               title: 'Create Event',
               headerStyle: {

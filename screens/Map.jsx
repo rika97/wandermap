@@ -72,7 +72,6 @@ export default function Map() {
                   key: '',
                   language: 'en',
                 }}
-                getAddressText={(input)=>console.log(input)}
                 renderLeftButton={()  => <MaterialCommunityIcons name="account-search" color='grey' size={30} style={{marginLeft: 15, marginTop: 7.5}} />}
                 styles={styles.searchBar}
               />
@@ -105,7 +104,7 @@ export default function Map() {
                   }}
                   fetchDetails
                   query={{
-                    key: 'AIzaSyC0TK5W0fBVJTyURHbP5yuHiF8b8jUGghA',
+                    key: 'AIzaSyBbmjt-AZR5ku8yYN_18RwZq01jNKveETg',
                     language: 'en',
                   }}
                   getAddressText={(input)=>console.log(input)}
