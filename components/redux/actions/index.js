@@ -1,4 +1,4 @@
-import { USER_STATE_CHANGE, USER_EVENTS_STATE_CHANGE, USER_FOLLOWING_STATE_CHANGE, USERS_DATA_STATE_CHANGE, USERS_EVENTS_STATE_CHANGE, CLEAR_DATA } from '../constants/index'
+import { USER_STATE_CHANGE, USER_EVENTS_STATE_CHANGE, USER_PHOTOS_STATE_CHANGE, USER_FOLLOWING_STATE_CHANGE, USERS_DATA_STATE_CHANGE, USERS_EVENTS_STATE_CHANGE, USERS_PHOTOS_STATE_CHANGE, CLEAR_DATA } from '../constants/index'
 import firebase from 'firebase/app'
 require('firebase/firestore')
 
@@ -42,6 +42,25 @@ export function fetchUserEvents(){
     })
 }
 
+export function fetchUserPhotos(){
+    return((dispatch) => {
+        firebase.firestore()
+            .collection("photos")
+            .doc(firebase.auth().currentUser.uid)
+            .collection("userPhotos")
+            .orderBy("creation", "asc")
+            .get()
+            .then((snapshot) => {
+                let photos = snapshot.docs.map(doc => {
+                    const data = doc.data();
+                    const id = doc.id;
+                    return{id, ...data}
+                })
+                dispatch({ type: USER_PHOTOS_STATE_CHANGE, photos })
+            })
+    })
+}
+
 export function fetchUserFollowing(){
     return((dispatch) => {
         firebase.firestore()
@@ -77,6 +96,7 @@ export function fetchUsersData(uid){
 
                     dispatch({ type: USERS_DATA_STATE_CHANGE, user })
                     dispatch(fetchUsersFollowingEvents(user.uid))
+                    dispatch(fetchUsersFollowingPhotos(user.uid))
 
                 } else {
                     console.log("User doesn't exist.")
@@ -104,8 +124,30 @@ export function fetchUsersFollowingEvents(uid){
                     const id = doc.id;
                     return{id, ...data, user }
                 })
-
                 dispatch({ type: USERS_EVENTS_STATE_CHANGE, events, uid })
+            })
+    })
+}
+
+export function fetchUsersFollowingPhotos(uid){
+    return((dispatch, getState) => {
+        firebase.firestore()
+            .collection("photos")
+            .doc(uid)
+            .collection("userPhotos")
+            .orderBy("creation", "asc")
+            .get()
+            .then((snapshot) => {
+                const uid = snapshot._.query.C_.path.segments[1]
+
+                const user = getState().usersState.users.find(element => element.uid === uid)
+
+                let photos = snapshot.docs.map(doc => {
+                    const data = doc.data();
+                    const id = doc.id;
+                    return{id, ...data, user }
+                })
+                dispatch({ type: USERS_PHOTOS_STATE_CHANGE, photos, uid })
             })
     })
 }

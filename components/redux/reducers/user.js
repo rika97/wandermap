@@ -1,8 +1,9 @@
-import{ USER_STATE_CHANGE, USER_EVENTS_STATE_CHANGE, USER_FOLLOWING_STATE_CHANGE, CLEAR_DATA } from '../constants/index';
+import{ USER_STATE_CHANGE, USER_EVENTS_STATE_CHANGE, USER_PHOTOS_STATE_CHANGE, USER_FOLLOWING_STATE_CHANGE, CLEAR_DATA } from '../constants/index';
 
 const initialState = {
     currentUser: null,
     events: [],
+    photos: [],
     following: [],
 }
 
@@ -18,6 +19,11 @@ export const user = (state = initialState, action) => {
                 ...state,
                 events: action.events
             }
+        case USER_PHOTOS_STATE_CHANGE:
+            return {
+                ...state,
+                photos: action.photos
+            }
         case USER_FOLLOWING_STATE_CHANGE:
         return {
             ...state,
@@ -27,6 +33,7 @@ export const user = (state = initialState, action) => {
             return {
                 currentUser: null,
                 events: [],
+                photos: [],
                 following: []
             }
         default:

@@ -1,19 +1,27 @@
+import React, { useState, useEffect } from 'react';
 import { Camera, CameraType } from 'expo-camera';
-import { useState } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View, ActivityIndicator, Dimensions, ImageBackground } from 'react-native';
 import { Button, IconButton } from 'react-native-paper';
 import Slider from '@react-native-community/slider';
+import { connect } from 'react-redux';
 
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
 
-export default function Photo(props) {
+const Photo = (props) => {
   const [type, setType] = useState(CameraType.back);
   const [camera, setCamera] = useState(null);
   const [zoomRatio, setZoomRatio] = useState(0);
   const [image, setImage] = useState(null);
   const [flashModeType, setFlashModeType] = useState([Camera.Constants.FlashMode.auto, "flash-auto"]);
   const [permission, requestPermission] = Camera.useCameraPermissions();
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const { currentUser } = props
+    setUser(currentUser)
+
+  }, [])
 
   if (!permission) {
     return (
@@ -72,7 +80,7 @@ export default function Photo(props) {
           </TouchableOpacity>
           <TouchableOpacity
             style={{flex: 1, alignSelf: 'flex-end', position: "absolute", marginRight: 5, bottom: 30}}
-            // onPress={() => setImage(null)}
+            onPress={() => props.navigation.navigate("Addphoto", { image, user })}
             >
             <IconButton
               icon="send"
@@ -188,3 +196,9 @@ const styles = StyleSheet.create({
     color: 'white',
   },
 });
+
+const mapStateToProps = (store) => ({
+  currentUser: store.userState.currentUser,
+})
+
+export default connect(mapStateToProps, null)(Photo);

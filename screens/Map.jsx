@@ -59,8 +59,8 @@ export default function Map() {
               loadingEnabled={true}
               rotateEnabled={true}
               scrollDuringRotateOrZoomEnabled={true}
-              initialRegion={{latitude: location[0], longitude: location[1], latitudeDelta: 0.09, longitudeDelta: 0.04}}
-              region={{latitude: location[0], longitude: location[1], latitudeDelta: 0.09, longitudeDelta: 0.04}}
+              initialRegion={{latitude: location[0], longitude: location[1], latitudeDelta: 0.04, longitudeDelta: 0.04}}
+              region={{latitude: location[0], longitude: location[1], latitudeDelta: 0.04, longitudeDelta: 0.04}}
               >
               <GooglePlacesAutocomplete
                 placeholder='Enter Location'
@@ -94,8 +94,8 @@ export default function Map() {
                 loadingEnabled={true}
                 rotateEnabled={true}
                 scrollDuringRotateOrZoomEnabled={true}
-                initialRegion={{latitude: location[0], longitude: location[1], latitudeDelta: 0.09, longitudeDelta: 0.04}}
-                region={{latitude: location[0], longitude: location[1], latitudeDelta: 0.09, longitudeDelta: 0.04}}
+                initialRegion={{latitude: location[0], longitude: location[1], latitudeDelta: 0.04, longitudeDelta: 0.04}}
+                region={{latitude: location[0], longitude: location[1], latitudeDelta: 0.04, longitudeDelta: 0.04}}
                 >
                 <GooglePlacesAutocomplete
                   placeholder='Enter Location'
@@ -104,7 +104,7 @@ export default function Map() {
                   }}
                   fetchDetails
                   query={{
-                    key: 'AIzaSyBbmjt-AZR5ku8yYN_18RwZq01jNKveETg',
+                    key: '',
                     language: 'en',
                   }}
                   getAddressText={(input)=>console.log(input)}

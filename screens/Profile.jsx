@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, Image, FlatList, Button, TouchableOpacity, Dimensions } from 'react-native';
+import { SegmentedButtons } from 'react-native-paper';
 import firebase from 'firebase/app';
 require('firebase/firestore');
 import { connect } from 'react-redux';
@@ -8,8 +9,10 @@ const windowWidth = Dimensions.get('window').width;
 
 const Profile = (props) => {
   const [userEvents, setUserEvents] = useState([]);
+  const [userPhotos, setUserPhotos] = useState([]);
   const [user, setUser] = useState(null);
   const [following, setFollowing] = useState(false);
+  const [segmentedValue, setSegmentedValue] = React.useState('events');
 
   useEffect(() => {
       firebase.firestore()
@@ -36,6 +39,20 @@ const Profile = (props) => {
               return{id, ...data}
           })
           setUserEvents(events)
+      })
+      firebase.firestore()
+      .collection("photos")
+      .doc(props.route.params.uid)
+      .collection("userPhotos")
+      .orderBy("creation", "asc")
+      .get()
+      .then((snapshot) => {
+          let photos = snapshot.docs.map(doc => {
+              const data = doc.data();
+              const id = doc.id;
+              return{id, ...data}
+          })
+          setUserPhotos(photos)
       })
 
     if(props.following.indexOf(props.route.params.uid) > -1) {
@@ -87,23 +104,57 @@ const Profile = (props) => {
             }
           </View>
       </View>
-      
-      <Text style={{fontSize: 20}}>Events</Text>
+      <SegmentedButtons
+        value={segmentedValue}
+        onValueChange={setSegmentedValue}
+        buttons={[
+          {
+            value: 'events',
+            label: 'Events',
+          },
+          {
+            value: 'photos',
+            label: 'Photos',
+          },
+        ]}
+        style={styles.segmentedButton}
+   />
+      { segmentedValue === "events" ? 
       <View style={styles.containerGallery}>
+      <FlatList
+        numColumns={1}
+        horizontal={false}
+        data={userEvents}
+        renderItem={({item}) => (
+          <View style={styles.containerImage}>
+            <Image
+              style={styles.image}
+              source={{uri: item.downloadURL}}
+            />
+            <Text>{item.title}</Text>
+            <Text>{item.startDate}</Text>
+            <Text>{item.location}</Text>
+          </View>
+        )}
+      />
+    </View> :
+    <View style={styles.containerGallery}>
         <FlatList
           numColumns={1}
           horizontal={false}
-          data={userEvents}
+          data={userPhotos}
           renderItem={({item}) => (
             <View style={styles.containerImage}>
               <Image
                 style={styles.image}
                 source={{uri: item.downloadURL}}
               />
+              <Text>{item.caption}</Text>
             </View>
           )}
         />
       </View>
+  }
     </View>
   )
 }
@@ -145,6 +196,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = (store) => ({
   currentUser: store.userState.currentUser,
   events: store.userState.events,
+  photos: store.userState.photos,
   following: store.userState.following
 })
 

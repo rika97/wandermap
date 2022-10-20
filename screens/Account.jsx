@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, Image, FlatList, Button, TouchableOpacity, Dimensions } from 'react-native';
+import { SegmentedButtons } from 'react-native-paper';
 import firebase from 'firebase/app';
 require('firebase/firestore');
 import { connect } from 'react-redux';
@@ -9,16 +10,18 @@ const windowHeight = Dimensions.get('window').height;
 
 const Account = (props) => {
   const [userEvents, setUserEvents] = useState([]);
+  const [userPhotos, setUserPhotos] = useState([]);
   const [user, setUser] = useState(null);
+  const [segmentedValue, setSegmentedValue] = React.useState('events');
 
   useEffect(() => {
-    const { currentUser, events } = props
+    const { currentUser, events, photos } = props
 
     setUser(currentUser)
     setUserEvents(events)
+    setUserPhotos(photos)
 
   }, [])
-
   const onLogout = () => {
     firebase.auth().signOut();
   }
@@ -56,24 +59,58 @@ const Account = (props) => {
           onPress={() => props.navigation.navigate("Createevent", {user})}
         ><Text style={{color: 'white'}}>Create Event</Text></TouchableOpacity>
       </View>
-      <Text style={{fontSize: 20}}>My Events</Text>
+      <SegmentedButtons
+        value={segmentedValue}
+        onValueChange={setSegmentedValue}
+        buttons={[
+          {
+            value: 'events',
+            label: 'My Events',
+          },
+          {
+            value: 'photos',
+            label: 'My Photos',
+          },
+        ]}
+        style={styles.segmentedButton}
+   />
+    { segmentedValue === "events" ? 
       <View style={styles.containerGallery}>
+      <FlatList
+        numColumns={1}
+        horizontal={false}
+        data={userEvents}
+        renderItem={({item}) => (
+          <View style={styles.containerImage}>
+            <Image
+              style={styles.image}
+              source={{uri: item.downloadURL}}
+            />
+            <Text>{item.title}</Text>
+            <Text>{item.startDate}</Text>
+            <Text>{item.location}</Text>
+          </View>
+        )}
+      />
+    </View> :
+    <View style={styles.containerGallery}>
         <FlatList
           numColumns={1}
           horizontal={false}
-          data={userEvents}
+          data={userPhotos}
           renderItem={({item}) => (
             <View style={styles.containerImage}>
               <Image
                 style={styles.image}
                 source={{uri: item.downloadURL}}
               />
-              <Text>{item.title}</Text>
-              <Text>{item.location}</Text>
+              <Text>{item.caption}</Text>
             </View>
           )}
         />
       </View>
+  }
+      
     </View>
   )
 }
@@ -114,11 +151,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 5,
   },
+  segmentedButton: {
+  }
 })
 
 const mapStateToProps = (store) => ({
   currentUser: store.userState.currentUser,
   events: store.userState.events,
+  photos: store.userState.photos,
 })
 
 export default connect(mapStateToProps, null)(Account);

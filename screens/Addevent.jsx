@@ -3,7 +3,6 @@ import { Button, Image, View, TouchableWithoutFeedback, Keyboard, Text, Activity
 import { TextInput } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;

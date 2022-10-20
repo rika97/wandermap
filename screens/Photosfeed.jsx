@@ -6,39 +6,33 @@ import { connect } from 'react-redux';
 
 const windowHeight = Dimensions.get('window').height;
 
-function Eventsfeed(props) {
-  const [events, setEvents] = useState([]);
-
+function Photosfeed(props) {
+  const [photos, setPhotos] = useState([]);
   useEffect(() => {
-    let events = [];
-
+    let photos = [];
     if(props.usersLoaded == props.following.length){
         for(let i = 0; i < props.following.length; i++) {
             const user = props.users.find(element => element.uid === props.following[i])
-
             if(user != undefined) {
-                events = [...events, ...user.events]
+                photos = [...photos, ...user.photos]
             }
         }
-
-        events.sort(function(x,y) {
-            return x.creation - y.creation;
+        photos.sort(function(x,y) {
+            return y.creation - x.creation;
         })
 
-        setEvents(events);
-
+        setPhotos(photos);
     }
   }, [props.usersLoaded])
-
   
   return (
     <View style={styles.container}>
       <View style={styles.containerGallery}>
-        { (events.length !== 0) ? 
+        { (photos.length !== 0) ? 
           <FlatList
           numColumns={1}
           horizontal={false}
-          data={events}
+          data={photos}
           renderItem={({item}) => (
             <View style={styles.containerImage}>
               <Text>{item.user.name}</Text>
@@ -49,7 +43,7 @@ function Eventsfeed(props) {
             </View>
           )}
         /> :
-        <Text>No events available.</Text>
+        <Text>No photos available. Follow users to see photos.</Text>
       }
       </View>
     </View>
@@ -81,4 +75,4 @@ const mapStateToProps = (store) => ({
   usersLoaded: store.usersState.usersLoaded,
 })
 
-export default connect(mapStateToProps, null)(Eventsfeed);
+export default connect(mapStateToProps, null)(Photosfeed);

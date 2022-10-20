@@ -1,20 +1,18 @@
-import React, { Component } from 'react';
-import { Text, View, TouchableWithoutFeedback, Keyboard, Platform } from 'react-native';
+import React from 'react'
+import { View } from 'react-native'
+import Photosfeed from './Photosfeed';
 import Search from './Search';
 
 import { StatusBar } from 'expo-status-bar';
-const dismissKeyboard = () => { if (Platform.OS != "web"){ Keyboard.dismiss(); } }
 
-const Community = ({ navigation }) => {
-    return (
-      <TouchableWithoutFeedback onPress={() => dismissKeyboard()} accessible={false}>
-        <View style={{ flex: 1, justifyContent: 'center' }}>
-          <StatusBar />
-          <Search navigation={navigation}/>
-        </View>
-      </TouchableWithoutFeedback>
-      
-    )
-}
+const Community = (props) => {
+  return (
+      <View style={{ flex: 1, justifyContent: 'center' }}>
+        <StatusBar />
+        <Search navigation={props.navigation}/>
+        <Photosfeed uid={props.route.params.uid}/>
+      </View>
+  )
+};
 
 export default Community

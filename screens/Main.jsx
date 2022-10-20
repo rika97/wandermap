@@ -4,7 +4,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import firebase from 'firebase/app'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { fetchUser, fetchUserEvents, fetchUserFollowing, clearData } from '../components/redux/actions/index'
+import { fetchUser, fetchUserEvents, fetchUserPhotos, fetchUserFollowing, clearData } from '../components/redux/actions/index'
 
 import MapScreen from './Map'
 import EventsScreen from './Events'
@@ -22,6 +22,7 @@ export class Main extends Component {
     this.props.clearData();
     this.props.fetchUser();
     this.props.fetchUserEvents();
+    this.props.fetchUserPhotos();
     this.props.fetchUserFollowing();
   }
   render() {
@@ -39,7 +40,13 @@ export class Main extends Component {
                         <MaterialCommunityIcons name="camera-marker" color={color} size={26} />
                     ),
                 }} />
-            <Tab.Screen name="Community" component={CommunityScreen} 
+            <Tab.Screen name="Community" component={CommunityScreen}
+                listeners={({ navigation }) => ({
+                    tabPress: event => {
+                        event.preventDefault();
+                        navigation.navigate("Community", {uid: firebase.auth().currentUser.uid})
+                    }
+                })}
                 options={{
                     tabBarIcon: ({ color, size }) => (
                         <MaterialCommunityIcons name="account-group" color={color} size={26} />
@@ -77,6 +84,6 @@ export class Main extends Component {
 const mapStateToProps = (store) => ({
     currentUser: store.userState.currentUser
 })
-const mapDispatchProps = (dispatch) => bindActionCreators({fetchUser, fetchUserEvents, fetchUserFollowing, clearData}, dispatch);
+const mapDispatchProps = (dispatch) => bindActionCreators({fetchUser, fetchUserEvents, fetchUserPhotos, fetchUserFollowing, clearData}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchProps)(Main);
