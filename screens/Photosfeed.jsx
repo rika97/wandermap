@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, Image, FlatList, Dimensions } from 'react-native';
+import { StyleSheet, View, Text, Image, FlatList, Dimensions, TouchableOpacity } from 'react-native';
 import firebase from 'firebase/app';
 require('firebase/firestore');
 import { connect } from 'react-redux';
@@ -8,6 +8,7 @@ const windowHeight = Dimensions.get('window').height;
 
 function Photosfeed(props) {
   const [photos, setPhotos] = useState([]);
+
   useEffect(() => {
     let photos = [];
     if(props.usersLoaded == props.following.length){
@@ -24,7 +25,6 @@ function Photosfeed(props) {
         setPhotos(photos);
     }
   }, [props.usersLoaded])
-  
   return (
     <View style={styles.container}>
       <View style={styles.containerGallery}>
@@ -35,11 +35,21 @@ function Photosfeed(props) {
           data={photos}
           renderItem={({item}) => (
             <View style={styles.containerImage}>
-              <Text>{item.user.name}</Text>
+              <TouchableOpacity onPress={() => 
+                props.navigation.navigate("Profile", {uid: item.user.uid})
+                }>
+                <Image
+                  style={styles.profilePic}
+                  source={{uri: item.user.downloadURL}}
+                />
+                <Text style={{fontSize: 17, marginTop: 5}}>{item.user.name}</Text>
+              </TouchableOpacity>
+              <Text>{item.caption}</Text>
+              <Text>{item.location}</Text>
               <Image
                 style={styles.image}
                 source={{uri: item.downloadURL}}
-              />
+                />
             </View>
           )}
         /> :
@@ -65,6 +75,10 @@ const styles = StyleSheet.create({
   image: {
     // flex: 1,
     aspectRatio: 1,
+  },
+  profilePic: {
+    width: 20,
+    height: 20
   }
 })
 

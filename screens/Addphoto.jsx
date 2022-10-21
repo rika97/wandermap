@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, Image, TouchableWithoutFeedback, Keyboard, ActivityIndicator, Dimensions } from 'react-native';
 import { TextInput } from 'react-native-paper';
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 import firebase from 'firebase/app'
 require("firebase/firestore")
-
-const windowHeight = Dimensions.get('window').height;
 
 const dismissKeyboard = () => { if (Platform.OS != "web"){ Keyboard.dismiss(); } }
 
 const Addphoto = (props) => {
   const [caption, setCaption] = useState("");
   const [loading, setLoading] = useState(false);
+  const [location, setLocation] = useState("");
+  const [locationCoords, setLocationCoords] = useState("");
 
   const childPath = `post/${firebase.auth().currentUser.uid}/${Math.random().toString(36)}`;
 
@@ -49,6 +50,8 @@ const Addphoto = (props) => {
         .add({
             downloadURL,
             caption,
+            location,
+            locationCoords,
             creator: props.route.params.user.name,
             creation: firebase.firestore.FieldValue.serverTimestamp()
         }).then((function(){
@@ -75,6 +78,19 @@ const Addphoto = (props) => {
                   onChangeText={(caption) => setCaption(caption)}
                   style={styles.textInput}
               />
+              <GooglePlacesAutocomplete
+                placeholder='Enter Location'
+                onPress={(data, details = null) => {
+                  setLocation(data.description)
+                  setLocationCoords([details.geometry.location.lat, details.geometry.location.lng])
+                }}
+                fetchDetails
+                query={{
+                  key: '',
+                  language: 'en',
+                }}
+                styles={styles.searchBar}
+              />
               <TouchableOpacity
                   style={styles.button}
                   onPress={() => {uploadImage()}}
@@ -96,6 +112,31 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 10,
   },
+  searchBar: {
+    container: {
+      marginTop: 10,
+    },
+    textInput: {
+      height: 45,
+      marginLeft: 0,
+      marginRight: 15,
+      marginTop: 0,
+      backgroundColor: 'white',
+    },
+    textInputContainer: {
+      backgroundColor: 'white',
+      borderRadius: 5,
+      height: 50,
+      marginLeft: 15,
+      marginRight: 15,
+      borderWidth: 1,
+      borderColor: 'grey',
+    },
+    listView: {
+      marginLeft: 20,
+      marginRight: 20,
+    }
+},
 });
 
 export default Addphoto;

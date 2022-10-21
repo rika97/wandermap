@@ -82,13 +82,17 @@ const Account = (props) => {
         data={userEvents}
         renderItem={({item}) => (
           <View style={styles.containerImage}>
-            <Image
+            <TouchableOpacity onPress={() => 
+              props.navigation.navigate("Eventviewer", {event: item, profilePic: props.currentUser.downloadURL })
+              }>
+              <Text>{item.title}</Text>
+              <Image
               style={styles.image}
               source={{uri: item.downloadURL}}
-            />
-            <Text>{item.title}</Text>
-            <Text>{item.startDate}</Text>
-            <Text>{item.location}</Text>
+              />
+              <Text>{item.startDate}</Text>
+              <Text>{item.location}</Text>
+            </TouchableOpacity>
           </View>
         )}
       />
@@ -100,11 +104,14 @@ const Account = (props) => {
           data={userPhotos}
           renderItem={({item}) => (
             <View style={styles.containerImage}>
-              <Image
-                style={styles.image}
-                source={{uri: item.downloadURL}}
-              />
-              <Text>{item.caption}</Text>
+              <TouchableOpacity onPress={() => 
+                props.navigation.navigate("Photoviewer", {photo: item})
+                }>
+                <Image
+                  style={styles.image}
+                  source={{uri: item.downloadURL}}
+                />
+              </TouchableOpacity>
             </View>
           )}
         />

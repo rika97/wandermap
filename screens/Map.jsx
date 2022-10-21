@@ -133,7 +133,7 @@ export default function Map() {
               <TouchableOpacity
                   style={styles.toggleButton}
                   onPress={() => setToggle(true)}
-              ><MaterialCommunityIcons name="account-group" size={26} /><Text>Friends</Text></TouchableOpacity>
+              ><MaterialCommunityIcons name="account-group" size={26} /><Text>Community</Text></TouchableOpacity>
           </View>
         }
       </TouchableWithoutFeedback>

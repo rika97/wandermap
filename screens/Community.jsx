@@ -10,7 +10,7 @@ const Community = (props) => {
       <View style={{ flex: 1, justifyContent: 'center' }}>
         <StatusBar />
         <Search navigation={props.navigation}/>
-        <Photosfeed uid={props.route.params.uid}/>
+        <Photosfeed uid={props.route.params.uid} navigation={props.navigation}/>
       </View>
   )
 };

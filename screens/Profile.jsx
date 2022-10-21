@@ -145,11 +145,14 @@ const Profile = (props) => {
           data={userPhotos}
           renderItem={({item}) => (
             <View style={styles.containerImage}>
-              <Image
-                style={styles.image}
-                source={{uri: item.downloadURL}}
-              />
-              <Text>{item.caption}</Text>
+              <TouchableOpacity onPress={() => 
+                props.navigation.navigate("Photoviewer", {photo: item})
+                }>
+                <Image
+                  style={styles.image}
+                  source={{uri: item.downloadURL}}
+                />
+              </TouchableOpacity>
             </View>
           )}
         />

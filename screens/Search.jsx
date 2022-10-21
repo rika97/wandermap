@@ -55,7 +55,7 @@ const Search = (props) => {
 
 const styles = StyleSheet.create({
   searchResultsContainer: {
-
+    backgroundColor: 'white'
   }
 });
 

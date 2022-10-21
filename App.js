@@ -28,6 +28,8 @@ import MainScreen from './screens/Main'
 import PhotoScreen from './screens/Photo'
 import SearchScreen from './screens/Search'
 import ProfileScreen from './screens/Profile'
+import EventviewerScreen from './screens/Eventviewer'
+import PhotoviewerScreen from './screens/Photoviewer'
 import CreateeventScreen from './screens/Createevent'
 import AddeventScreen from './screens/Addevent'
 import AddphotoScreen from './screens/Addphoto'
@@ -82,7 +84,7 @@ export class App extends Component {
     return (
       <Provider store={store}>
         <NavigationContainer>
-          <Stack.Navigator initialRouteName="Landing">
+          <Stack.Navigator initialRouteName="Main">
             <Stack.Screen name="Main" component={MainScreen} 
               options={{
                 title: 'WanderMap',
@@ -133,6 +135,24 @@ export class App extends Component {
             <Stack.Screen name="Profile" component={ProfileScreen} navigation={this.props.navigation}
             options={{
               title: 'User Profile',
+              headerStyle: {
+                backgroundColor: '#30b5c7',
+              },
+              headerTintColor: '#47515F',
+              headerBackTitle: 'Back',
+            }} />
+            <Stack.Screen name="Eventviewer" component={EventviewerScreen} navigation={this.props.navigation}
+            options={{
+              title: 'Event',
+              headerStyle: {
+                backgroundColor: '#30b5c7',
+              },
+              headerTintColor: '#47515F',
+              headerBackTitle: 'Back',
+            }} />
+            <Stack.Screen name="Photoviewer" component={PhotoviewerScreen} navigation={this.props.navigation}
+            options={{
+              title: 'Photo',
               headerStyle: {
                 backgroundColor: '#30b5c7',
               },
