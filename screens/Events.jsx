@@ -5,6 +5,7 @@ import Eventsfeed from './Eventsfeed';
 import { StatusBar } from 'expo-status-bar';
 
 const Events = (props) => {
+  console.log("Events", props)
   return (
     <View style={{ flex: 1, justifyContent: 'center' }}>
         <StatusBar />

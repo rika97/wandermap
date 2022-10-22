@@ -86,7 +86,7 @@ const Addphoto = (props) => {
                 }}
                 fetchDetails
                 query={{
-                  key: '',
+                  key: 'AIzaSyAfMkBC849cDs0ChbbncE_IXh-4SclMPpw',
                   language: 'en',
                 }}
                 styles={styles.searchBar}

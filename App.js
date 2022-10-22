@@ -14,7 +14,13 @@ import thunk from 'redux-thunk'
 const store = createStore(rootReducer, applyMiddleware(thunk))
 
 const firebaseConfig = {
-  
+  apiKey: "AIzaSyCsbA0GruKqC1RIf_BbHGwrW7foTWXUVAw",
+  authDomain: "wandermap-ec1a0.firebaseapp.com",
+  projectId: "wandermap-ec1a0",
+  storageBucket: "wandermap-ec1a0.appspot.com",
+  messagingSenderId: "784942620400",
+  appId: "1:784942620400:web:c4b231276037833e6c6c35",
+  measurementId: "G-GJYXYR0HGY"
 };
 
 if(firebase.apps.length === 0){

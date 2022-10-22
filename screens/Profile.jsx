@@ -87,6 +87,7 @@ const Profile = (props) => {
   return (
     <View style={styles.container}>
       <View style={styles.containerInfo}>
+        <Image source={{uri: user.downloadURL}} style={{ width: 80, height: 80}}/>
         <Text style={{fontSize: 20}}>{user.name}</Text>
           <View>
             {following ? (

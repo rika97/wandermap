@@ -28,7 +28,7 @@ function Eventsfeed(props) {
 
     }
   }, [props.usersLoaded])
-  
+  console.log("Eventsfeed", props)
   return (
     <View style={styles.container}>
       <View style={styles.containerGallery}>

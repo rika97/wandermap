@@ -116,7 +116,7 @@ const Createevent = ( props ) => {
     <TouchableWithoutFeedback onPress={() => dismissKeyboard()} accessible={false}>
         { loading ? 
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                <View style={{ marginTop: windowHeight/3 }}>
+                <View>
                     <ActivityIndicator size="large" color="#30b5c7" />
                 </View>
                 <Text style={{ fontSize: 15, marginTop: 10, color: "#30b5c7"}}>Creating Event...</Text>

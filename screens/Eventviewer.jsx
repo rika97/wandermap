@@ -14,7 +14,7 @@ const Eventviewer = (props) => {
     setUser(currentUser)
 
   }, [])
-
+  console.log(event)
   return (
     <View style={styles.container}>
         <Text>{event.title}</Text>
@@ -27,6 +27,10 @@ const Eventviewer = (props) => {
           source={{uri: props.route.params.profilePic}}
         />
         <Text style={{fontSize: 17, marginTop: 5}}>{event.creator}</Text>
+        <Image
+          style={styles.profilePic}
+          source={{uri: event.downloadURL}}
+        />
         <Text>{event.location}</Text>
         <Text>{event.startDate}</Text>
         <Text>{event.endDate}</Text>

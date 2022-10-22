@@ -52,7 +52,7 @@ export class Main extends Component {
                         <MaterialCommunityIcons name="account-group" color={color} size={26} />
                     ),
                 }} />
-            <Tab.Screen name="Map" component={MapScreen} 
+            <Tab.Screen name="Map" component={MapScreen} navigation={this.props.navigation}
                 options={{
                     tabBarIcon: ({ color, size }) => (
                         <MaterialCommunityIcons name="map-marker" color={color} size={26} />
