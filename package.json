@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@expo/webpack-config": "^0.17.0",
+    "@gorhom/bottom-sheet": "^4.4.5",
     "@react-native-community/datetimepicker": "6.2.0",
     "@react-native-community/geolocation": "^3.0.1",
     "@react-native-community/slider": "^4.3.2",
@@ -44,7 +45,8 @@
     "react-navigation": "^4.4.4",
     "react-redux": "^8.0.4",
     "redux": "^4.2.0",
-    "redux-thunk": "^2.4.1"
+    "redux-thunk": "^2.4.1",
+    "react-native-reanimated": "~2.9.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"

@@ -8,7 +8,8 @@ import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import { Marker } from 'react-native-maps';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import * as Location from 'expo-location';
- 
+
+import BottomSheet from '@gorhom/bottom-sheet';
  
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -17,6 +18,9 @@ const dismissKeyboard = () => { if (Platform.OS != "web"){ Keyboard.dismiss(); }
 function Map(props) {
  const [location, setLocation] = useState(null);
  const [errorMsg, setErrorMsg] = useState(null);
+ const [eventDetails, setEventDetails] = useState({title: "", description: "Click on a marker to see details"});
+ const [photoDetails, setPhotoDetails] = useState({caption: "Click on a marker to see details"});
+ const [toggleFilter, setToggleFilter] = useState(true);
  const [toggleViewer, setToggleViewer] = useState(false);
  
  useEffect(() => {
@@ -39,27 +43,26 @@ function Map(props) {
  }
 
  const [events, setEvents] = useState([]);
+ const [photos, setPhotos] = useState([]);
+
   useEffect(() => {
     let events = [];
+    let photos = [];
 
     if(props.usersLoaded == props.following.length){
         for(let i = 0; i < props.following.length; i++) {
             const user = props.users.find(element => element.uid === props.following[i])
-
             if(user != undefined) {
                 events = [...events, ...user.events]
+                photos = [...photos, ...user.photos]
             }
         }
 
-        events.sort(function(x,y) {
-            return x.creation - y.creation;
-        })
-
         setEvents(events);
+        setPhotos(photos);
 
     }
   }, [props.usersLoaded])
- 
  if (location === null) {
    return (
      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -69,6 +72,7 @@ function Map(props) {
        <Text style={{ fontSize: 15, marginTop: 10, color: "#30b5c7"}}>{text}</Text>
      </View>
    )}
+
  return (
      <TouchableWithoutFeedback onPress={() => dismissKeyboard()} accessible={false}>
          <View style={{ flex: 1, width: windowWidth, height: windowHeight-180 }}>
@@ -83,8 +87,8 @@ function Map(props) {
              loadingEnabled={true}
              rotateEnabled={true}
              scrollDuringRotateOrZoomEnabled={true}
-             initialRegion={{latitude: location[0], longitude: location[1], latitudeDelta: 0.04, longitudeDelta: 0.04}}
-             region={{latitude: location[0], longitude: location[1], latitudeDelta: 0.04, longitudeDelta: 0.04}}
+             initialRegion={{latitude: location[0], longitude: location[1], latitudeDelta: 0.3, longitudeDelta: 0.04}}
+             region={{latitude: location[0], longitude: location[1], latitudeDelta: 0.3, longitudeDelta: 0.04}}
              >
              <GooglePlacesAutocomplete
                placeholder='Search Location'
@@ -93,37 +97,95 @@ function Map(props) {
                }}
                fetchDetails
                query={{
-                 key: 'AIzaSyAfMkBC849cDs0ChbbncE_IXh-4SclMPpw',
+                 key: '',
                  language: 'en',
                }}
                renderLeftButton={()  => <MaterialCommunityIcons name="map-marker" color='grey' size={30} style={{marginLeft: 15, marginTop: 7.5}} />}
                styles={styles.searchBar}
              />
-             {events.map(event => (
-              <Marker 
-                coordinate={{
-                  latitude: event.locationCoords[0],
-                  longitude: event.locationCoords[1]
-                }}
-                title={event.title}
-                onPress={()=>{
-                  setToggleViewer(!toggleViewer)
-                  console.log(toggleViewer)}}
-              >
-                <View>
-                  <Image
-                    source={{uri: event.downloadURL}}
-                    style={styles.pinImage}
-                  />
-               </View>
-              </Marker>
-            ))}
+             {toggleFilter ?
+              events.map(event => (
+                <Marker 
+                  coordinate={{
+                    latitude: event.locationCoords[0],
+                    longitude: event.locationCoords[1]
+                  }}
+                  title={event.title}
+                  onPress={()=>{
+                    setEventDetails(event)
+                    }}
+                >
+                  <View>
+                    <Image
+                      source={{uri: event.downloadURL}}
+                      style={styles.pinImage}
+                    />
+                </View>
+                </Marker>
+              )) : 
+              photos.map(photo => (
+                <Marker 
+                  coordinate={{
+                    latitude: photo.locationCoords[0],
+                    longitude: photo.locationCoords[1]
+                  }}
+                  title={photo.caption}
+                  onPress={()=>{
+                    setPhotoDetails(photo)
+                    }}
+                >
+                  <View>
+                    <Image
+                      source={{uri: photo.downloadURL}}
+                      style={styles.pinImage}
+                    />
+                 </View>
+                </Marker>
+              ))
+             }
 
            </MapView>
-           {/* <TouchableOpacity
+           <TouchableOpacity
                style={styles.toggleButton}
-               onPress={() => setToggle(false)}
-           ><MaterialCommunityIcons name="calendar-month" size={23} /><Text>Events</Text></TouchableOpacity> */}
+               onPress={() => setToggleFilter(!toggleFilter)}
+           >
+            { toggleFilter ? 
+            <View><MaterialCommunityIcons name="account-group" size={23} /><Text>Community</Text></View> :
+            <View><MaterialCommunityIcons name="calendar-month" size={23} /><Text>Events</Text></View>
+            }
+           </TouchableOpacity>
+           {toggleFilter ?
+           <BottomSheet snapPoints={[60, 200, windowHeight-200]}>
+           <Text>{eventDetails.title}</Text>
+           <Image
+             style={styles.detailImage}
+             source={{uri: eventDetails.downloadURL}}
+           />
+           <Text>{eventDetails.location}</Text>
+           <Text>{eventDetails.creator}</Text>
+           <Image
+            style={styles.detailImage}
+            source={{uri: eventDetails.user.downloadURL}}
+          />
+           <Text>{eventDetails.startDate}</Text>
+           <Text>{eventDetails.endDate}</Text>
+           <Text>{eventDetails.price}</Text>
+           <Text>{eventDetails.description}</Text>
+          </BottomSheet> :
+          <BottomSheet snapPoints={[60, 200, windowHeight-200]}>
+          <Text>{photoDetails.caption}</Text>
+          <Image
+            style={styles.detailImage}
+            source={{uri: photoDetails.downloadURL}}
+          />
+          <Text>{photoDetails.location}</Text>
+          <Image
+            style={styles.detailImage}
+            source={{uri: photoDetails.user.downloadURL}}
+          />
+          <Text>{photoDetails.creator}</Text>
+         </BottomSheet>
+         }
          </View>
      </TouchableWithoutFeedback>
  )
@@ -133,13 +195,13 @@ function Map(props) {
 const styles = StyleSheet.create({
   toggleButton: {
     width: 100,
-    height: 40,
+    height: 30,
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
     padding: 10,
     borderRadius: 50,
-    bottom: 10,
+    top: 70,
     position: "absolute",
     backgroundColor: 'white',
     shadowColor: '#171717',
@@ -198,6 +260,10 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     borderColor: 'rgba(48, 181, 199, 0.3)',
     borderWidth: 6,
+  },
+  detailImage: {
+    width: 200,
+    height: 200,
   }
 })
 

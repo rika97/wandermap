@@ -21,7 +21,7 @@ const Createevent = ( props ) => {
               }}
               fetchDetails
               query={{
-                key: 'AIzaSyAfMkBC849cDs0ChbbncE_IXh-4SclMPpw',
+                key: '',
                 language: 'en',
               }}
               styles={styles.searchBar}

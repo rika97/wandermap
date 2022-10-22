@@ -1,5 +1,5 @@
-import React from 'react'
-import { View } from 'react-native'
+import React, { useCallback, useMemo, useRef } from 'react'
+import { View, Text } from 'react-native'
 import Photosfeed from './Photosfeed';
 import Search from './Search';
 

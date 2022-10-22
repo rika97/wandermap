@@ -8,7 +8,6 @@ const windowHeight = Dimensions.get('window').height;
 
 function Photosfeed(props) {
   const [photos, setPhotos] = useState([]);
-
   useEffect(() => {
     let photos = [];
     if(props.usersLoaded == props.following.length){
