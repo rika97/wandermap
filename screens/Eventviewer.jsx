@@ -5,6 +5,8 @@ import { Button, IconButton } from 'react-native-paper';
 import Slider from '@react-native-community/slider';
 import { connect } from 'react-redux';
 
+const windowWidth = Dimensions.get('window').width;
+
 const Eventviewer = (props) => {
   const event = props.route.params.event
   const [user, setUser] = useState(null);
@@ -14,34 +16,36 @@ const Eventviewer = (props) => {
     setUser(currentUser)
 
   }, [])
-  console.log(event)
   return (
     <View style={styles.container}>
-        <Text>{event.title}</Text>
+        <Text style={{marginLeft: 5, fontWeight: 'bold', fontSize: 25, marginTop: 10}}>{event.title}</Text>
+        <View style={{ flexDirection: 'row', justifyContent: 'flex-start', marginLeft: 5, marginBottom: 5}}>
+          <Image
+            style={styles.profilePic}
+            source={{uri: props.route.params.profilePic}}
+          />
+          <Text style={{fontWeight: 'bold', marginTop: 8, marginLeft: 5}}>{event.creator}</Text>
+        </View>
         <Image
             style={styles.image}
             source={{uri: event.downloadURL}}
         />
-        <Image
-          style={styles.profilePic}
-          source={{uri: props.route.params.profilePic}}
-        />
-        <Text style={{fontSize: 17, marginTop: 5}}>{event.creator}</Text>
-        <Image
-          style={styles.profilePic}
-          source={{uri: event.downloadURL}}
-        />
-        <Text>{event.location}</Text>
-        <Text>{event.startDate}</Text>
-        <Text>{event.endDate}</Text>
-        <Text>{event.description}</Text>
+        <View style={{marginLeft: 5}}>
+          <Text style={{fontSize: 17, fontWeight: 'bold'}}>Location:</Text>
+          <Text>{event.location}</Text>
+          <Text style={{fontSize: 17, fontWeight: 'bold'}}>Start:</Text>
+          <Text style={{fontSize: 17}}>{event.startDate}</Text>
+          <Text style={{fontSize: 17, fontWeight: 'bold'}}>End:</Text>
+          <Text style={{fontSize: 17}}>{event.endDate}</Text>
+          <Text style={{fontSize: 17, fontWeight: 'bold'}}>Description:</Text>
+          <Text style={{fontSize: 15}}>{event.description}</Text>
+        </View>
     </View>
   )};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
   },
   camera: {
     flex: 1,
@@ -74,8 +78,13 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   profilePic: {
-    width: 20,
-    height: 20
+    width: 35,
+    height: 35,
+  },
+  image: {
+    width: windowWidth,
+    height: undefined,
+    aspectRatio: 1
   }
 });
 

@@ -15,7 +15,7 @@ export const users = (state = initialState, action) => {
         case USERS_EVENTS_STATE_CHANGE:
             return {
                 ...state,
-                usersLoaded: state.usersLoaded + 1,
+                usersLoaded: state.usersLoaded + 0.5,
                 users: state.users.map(user => user.uid === action.uid ? 
                     
                     {...user, events: action.events} : user)
@@ -23,6 +23,7 @@ export const users = (state = initialState, action) => {
             case USERS_PHOTOS_STATE_CHANGE:
                 return {
                     ...state,
+                    usersLoaded: state.usersLoaded + 0.5,
                     users: state.users.map(user => user.uid === action.uid ? 
                         
                         {...user, photos: action.photos} : user)

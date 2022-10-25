@@ -18,8 +18,8 @@ const dismissKeyboard = () => { if (Platform.OS != "web"){ Keyboard.dismiss(); }
 function Map(props) {
  const [location, setLocation] = useState(null);
  const [errorMsg, setErrorMsg] = useState(null);
- const [eventDetails, setEventDetails] = useState({title: "", description: "Click on a marker to see details"});
- const [photoDetails, setPhotoDetails] = useState({caption: "Click on a marker to see details"});
+ const [eventDetails, setEventDetails] = useState({title: "Click on a marker to view event", description: ""});
+ const [photoDetails, setPhotoDetails] = useState({caption: "Click on a marker to view photo"});
  const [toggleFilter, setToggleFilter] = useState(true);
  const [toggleViewer, setToggleViewer] = useState(false);
  
@@ -36,7 +36,7 @@ function Map(props) {
      setLocation([location.coords.latitude, location.coords.longitude]);
    })();
  }, []);
- 
+
  let text = 'Fetching Location...';
  if (errorMsg) {
    text = errorMsg;
@@ -44,7 +44,6 @@ function Map(props) {
 
  const [events, setEvents] = useState([]);
  const [photos, setPhotos] = useState([]);
-
   useEffect(() => {
     let events = [];
     let photos = [];
@@ -52,6 +51,7 @@ function Map(props) {
     if(props.usersLoaded == props.following.length){
         for(let i = 0; i < props.following.length; i++) {
             const user = props.users.find(element => element.uid === props.following[i])
+
             if(user != undefined) {
                 events = [...events, ...user.events]
                 photos = [...photos, ...user.photos]
@@ -150,40 +150,52 @@ function Map(props) {
                onPress={() => setToggleFilter(!toggleFilter)}
            >
             { toggleFilter ? 
-            <View><MaterialCommunityIcons name="account-group" size={23} /><Text>Community</Text></View> :
-            <View><MaterialCommunityIcons name="calendar-month" size={23} /><Text>Events</Text></View>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}><MaterialCommunityIcons name="account-group" size={20} /><Text>Community</Text></View> :
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}><MaterialCommunityIcons name="calendar-month" size={20} /><Text>Events</Text></View>
             }
            </TouchableOpacity>
            {toggleFilter ?
-           <BottomSheet snapPoints={[60, 200, windowHeight-200]}>
-           <Text>{eventDetails.title}</Text>
+           <BottomSheet snapPoints={[20, 200, windowHeight-200]}>
+           <Text style={{fontSize: 25, fontWeight: 'bold', marginLeft: 5 }}>{eventDetails.title}</Text>
            <Image
              style={styles.detailImage}
              source={{uri: eventDetails.downloadURL}}
            />
-           <Text>{eventDetails.location}</Text>
-           <Text>{eventDetails.creator}</Text>
-           <Image
-            style={styles.detailImage}
-            source={{uri: eventDetails.user.downloadURL}}
-          />
-           <Text>{eventDetails.startDate}</Text>
-           <Text>{eventDetails.endDate}</Text>
-           <Text>{eventDetails.price}</Text>
-           <Text>{eventDetails.description}</Text>
+           <View style={{ flexDirection: 'row', justifyContent: 'flex-start', marginLeft: 5, marginTop: 5 }}>
+            <Image
+              style={styles.profileImage}
+              source={{uri: eventDetails.user?.downloadURL || "https://raw.githubusercontent.com/rika97/wandermap/main/assets/defaultuser-icon.png"}}
+            />
+            <Text style={{fontWeight: 'bold', marginTop: 8, marginLeft: 5}}>{eventDetails.creator}</Text>
+          </View>
+           <View style={{marginLeft: 5, marginTop: 5}}>
+            <Text style={{fontSize: 17, fontWeight: 'bold'}}>Location:</Text>
+            <Text>{eventDetails.location}</Text>
+            <Text style={{fontSize: 17, fontWeight: 'bold'}}>Date & Time:</Text>
+            <Text style={{fontSize: 17}}>{eventDetails.startDate} ~ {eventDetails.endDate}</Text>
+            <Text style={{fontSize: 17, fontWeight: 'bold'}}>Price:</Text>
+            <Text style={{fontSize: 17}}>{eventDetails.price}</Text>
+            <Text style={{fontSize: 17, fontWeight: 'bold'}}>Description:</Text>
+            <Text>{eventDetails.description}</Text>
+          </View>
           </BottomSheet> :
-          <BottomSheet snapPoints={[60, 200, windowHeight-200]}>
-          <Text>{photoDetails.caption}</Text>
+          <BottomSheet snapPoints={[30, 200, windowHeight-200]}>
+          <Text style={{fontSize: 25, fontWeight: 'bold', marginLeft: 5 }}>{photoDetails.caption}</Text>
           <Image
             style={styles.detailImage}
             source={{uri: photoDetails.downloadURL}}
           />
-          <Text>{photoDetails.location}</Text>
-          <Image
-            style={styles.detailImage}
-            source={{uri: photoDetails.user.downloadURL}}
-          />
-          <Text>{photoDetails.creator}</Text>
+          <View style={{marginLeft: 5, marginTop: 5}}>
+            <Text style={{fontSize: 17, fontWeight: 'bold'}}>Location:</Text>
+            <Text>{photoDetails.location}</Text>
+          </View>
+          <View style={{ flexDirection: 'row', justifyContent: 'flex-start', marginLeft: 5, marginTop: 5 }}>
+            <Image
+              style={styles.profileImage}
+              source={{uri: photoDetails.user?.downloadURL || "https://raw.githubusercontent.com/rika97/wandermap/main/assets/defaultuser-icon.png"}}
+            />
+            <Text style={{fontWeight: 'bold', marginTop: 8, marginLeft: 5}}>{photoDetails.creator}</Text>
+          </View>
          </BottomSheet>
          }
          </View>
@@ -194,12 +206,14 @@ function Map(props) {
 
 const styles = StyleSheet.create({
   toggleButton: {
-    width: 100,
-    height: 30,
+    flex: 1,
+    flexDirection: "row",
+    width: 115,
+    height: 35,
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
-    padding: 10,
+    padding: 7,
     borderRadius: 50,
     top: 70,
     position: "absolute",
@@ -262,8 +276,13 @@ const styles = StyleSheet.create({
     borderWidth: 6,
   },
   detailImage: {
-    width: 200,
-    height: 200,
+    width: windowWidth,
+    height: windowWidth,
+    aspectRatio: 1,
+  },
+  profileImage: {
+    width: 35,
+    height: 35,
   }
 })
 

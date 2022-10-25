@@ -4,13 +4,12 @@ import firebase from 'firebase/app';
 require('firebase/firestore');
 import { connect } from 'react-redux';
 
-const windowHeight = Dimensions.get('window').height;
+const windowWidth = Dimensions.get('window').width;
 
 function Eventsfeed(props) {
   const [events, setEvents] = useState([]);
   useEffect(() => {
     let events = [];
-
     if(props.usersLoaded == props.following.length){
         for(let i = 0; i < props.following.length; i++) {
             const user = props.users.find(element => element.uid === props.following[i])
@@ -28,11 +27,16 @@ function Eventsfeed(props) {
 
     }
   }, [props.usersLoaded])
-  console.log("Eventsfeed", props)
   return (
     <View style={styles.container}>
-      <View style={styles.containerGallery}>
         { (events.length !== 0) ? 
+        <View style={styles.containerGallery}>
+          <View styles={{backgroundColor: '#30b5c7'}}>
+            <Image
+              style={styles.headerImage}
+              source={require('../assets/EventsfeedHeader.png')}
+            />
+          </View>  
           <FlatList
           numColumns={1}
           horizontal={false}
@@ -41,18 +45,20 @@ function Eventsfeed(props) {
             <View style={styles.containerImage}>
               <TouchableOpacity onPress={() => 
                 props.navigation.navigate("Profile", {uid: item.user.uid})
-                }>
+                }
+                style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
                 <Image
                   style={styles.profilePic}
                   source={{uri: item.user.downloadURL}}
                 />
-                <Text style={{fontSize: 17, marginTop: 5}}>{item.user.name}</Text>
+                <Text style={{fontWeight: 'bold', marginTop: 8, marginLeft: 5}}>{item.user.name}</Text>
               </TouchableOpacity>
-              <Text>{item.location}</Text>
-              <Text>{item.startDate}</Text>
               <TouchableOpacity onPress={() => 
                 props.navigation.navigate("Eventviewer", {event: item, profilePic: item.user.downloadURL})
                 }>
+                <Text style={{marginLeft: 5, fontWeight: 'bold', fontSize: 25}}>{item.title}</Text>
+                <Text style={{marginLeft: 5, fontSize: 20}}>{item.startDate}</Text>
+                <Text style={{marginLeft: 5}}>Location: {item.location}</Text>
                 <Image
                 style={styles.image}
                 source={{uri: item.downloadURL}}
@@ -60,10 +66,15 @@ function Eventsfeed(props) {
               </TouchableOpacity>
             </View>
           )}
-        /> :
-        <Text>No events available.</Text>
+        />
+        </View> :
+        <View styles={{backgroundColor: '#30b5c7'}}>
+          <Image
+            style={styles.blankImage}
+            source={require('../assets/NoEvents.png')}
+          />
+        </View>
       }
-      </View>
     </View>
   )
 }
@@ -76,8 +87,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   containerImage: {
-    width: windowHeight/6,
-    height: windowHeight/6,
+    marginTop: 10,
     overflow: 'hidden',
   },
   image: {
@@ -85,9 +95,20 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
   },
   profilePic: {
-    width: 20,
-    height: 20
-  }
+    width: 35,
+    height: 35,
+  },
+  blankImage: {
+    width: windowWidth,
+    height: undefined,
+    aspectRatio: 850 / 1294,
+    marginTop: 70
+  },
+  headerImage: {
+    width: windowWidth,
+    height: undefined,
+    aspectRatio: 1518 / 162,
+  },
 })
 
 const mapStateToProps = (store) => ({

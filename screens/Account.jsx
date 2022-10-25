@@ -36,20 +36,15 @@ const Account = (props) => {
   return (
     <View style={styles.container}>
       <View style={styles.containerInfo}>
-        <View>
-          <Image
-          style={styles.profilePicture}
-          source={{
-            uri: user.downloadURL,
-          }}
-          />
-          <Text style={{fontSize: 20}}>{user.name}</Text>
+        <View style={{ flexDirection: 'row', justifyContent: 'flex-start', marginLeft: 5, marginBottom: 5}}>
+          <Image source={{uri: user.downloadURL}} style={{ width: 60, height: 60}}/>
+          <Text style={{fontSize: 20, marginTop: 20, marginLeft: 10, fontWeight: 'bold'}}>{user.name}</Text>
         </View>
         <Text>Email: {user.email}</Text>
-        <TouchableOpacity 
+        {/* <TouchableOpacity 
           style={styles.button}
           // onPress={() => onLogout()}
-        ><Text style={{color: 'white'}}>Edit Profile</Text></TouchableOpacity>
+        ><Text style={{color: 'white'}}>Edit Profile</Text></TouchableOpacity> */}
         <TouchableOpacity 
           style={styles.button}
           onPress={() => onLogout()}
@@ -81,17 +76,18 @@ const Account = (props) => {
         horizontal={false}
         data={userEvents}
         renderItem={({item}) => (
-          <View style={styles.containerImage}>
+          <View>
             <TouchableOpacity onPress={() => 
               props.navigation.navigate("Eventviewer", {event: item, profilePic: props.currentUser.downloadURL })
               }>
-              <Text>{item.title}</Text>
               <Image
-              style={styles.image}
-              source={{uri: item.downloadURL}}
-              />
-              <Text>{item.startDate}</Text>
-              <Text>{item.location}</Text>
+                  style={styles.image}
+                  source={{uri: item.downloadURL}}
+                />
+                <Text style={{fontSize: 20, fontWeight: 'bold'}}>{item.title}</Text>
+                <Text style={{fontSize: 17, fontWeight: 'bold'}}>{item.startDate}</Text>
+                <Text style={{width: windowWidth - 100}}>Location: {item.location}</Text>
+
             </TouchableOpacity>
           </View>
         )}
@@ -125,8 +121,8 @@ const Account = (props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // alignItems: 'center',
-    // width: windowWidth,
+    alignItems: 'center',
+    width: windowWidth,
   },
   containerInfo: {
     margin: 20,
@@ -135,9 +131,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   containerImage: {
-    width: windowHeight/6,
-    height: windowHeight/6,
-    overflow: 'hidden',
+    flex: 1,
+    alignItems: 'center'
   },
   profilePicture: {
     width: 80,

@@ -14,6 +14,7 @@ const Profile = (props) => {
   const [following, setFollowing] = useState(false);
   const [segmentedValue, setSegmentedValue] = React.useState('events');
 
+  
   useEffect(() => {
       firebase.firestore()
             .collection("users")
@@ -87,8 +88,10 @@ const Profile = (props) => {
   return (
     <View style={styles.container}>
       <View style={styles.containerInfo}>
-        <Image source={{uri: user.downloadURL}} style={{ width: 80, height: 80}}/>
-        <Text style={{fontSize: 20}}>{user.name}</Text>
+        <View style={{ flexDirection: 'row', justifyContent: 'flex-start', marginLeft: 5, marginBottom: 5}}>
+          <Image source={{uri: user.downloadURL}} style={{ width: 60, height: 60}}/>
+          <Text style={{fontSize: 20, marginTop: 20, marginLeft: 10, fontWeight: 'bold'}}>{user.name}</Text>
+        </View>
           <View>
             {following ? (
               <TouchableOpacity 
@@ -132,9 +135,9 @@ const Profile = (props) => {
               style={styles.image}
               source={{uri: item.downloadURL}}
             />
-            <Text>{item.title}</Text>
-            <Text>{item.startDate}</Text>
-            <Text>{item.location}</Text>
+            <Text style={{fontSize: 20, fontWeight: 'bold'}}>{item.title}</Text>
+            <Text style={{fontSize: 17, fontWeight: 'bold'}}>{item.startDate}</Text>
+            <Text style={{width: windowWidth - 100}}>Location: {item.location}</Text>
           </View>
         )}
       />
@@ -177,7 +180,6 @@ const styles = StyleSheet.create({
   },
   containerImage: {
     flex: 1,
-    alignItems: 'center'
   },
   image: {
     flex: 1,

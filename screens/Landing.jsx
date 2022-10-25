@@ -16,11 +16,11 @@ const Landing = ({ navigation }) => {
         <TouchableOpacity 
             style={styles.button}
             onPress={() => navigation.navigate("Register")}
-        ><Text style={{color: 'white'}}>SIGN-UP</Text></TouchableOpacity>
+        ><Text style={{color: '#30b5c7'}}>SIGN-UP</Text></TouchableOpacity>
         <TouchableOpacity
             style={styles.button}
             onPress={() => navigation.navigate("Login")}
-        ><Text style={{color: 'white'}}>LOG-IN</Text></TouchableOpacity>
+        ><Text style={{color: '#30b5c7'}}>LOG-IN</Text></TouchableOpacity>
     </SafeAreaView>
   )
 }
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   },
   button: {
     alignItems: "center",
-    backgroundColor: "#8abbc2",
+    backgroundColor: "#bce3e8",
     padding: 10,
     borderRadius: 20,
     width: 250,

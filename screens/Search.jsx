@@ -26,7 +26,8 @@ const Search = (props) => {
   return (
       <View>
         <TextInput
-          label="Search User"
+          style={{marginTop: -5}}
+          placeholder="Search Users"
           onChangeText={ (search)=>{
             fetchUsers(search);
             setSearchValue(search);
