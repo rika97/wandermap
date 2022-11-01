@@ -122,91 +122,98 @@ const Createevent = ( props ) => {
                 <Text style={{ fontSize: 15, marginTop: 10, color: "#30b5c7"}}>Creating Event...</Text>
             </View>:
             <View style={StyleSheet.absoluteFillObject}>
-              <TextInput 
-                  label='Event Title'
-                  placeholder='Give it a cool name!'
-                  mode='outlined'
-                  onChangeText={(title) => setTitle(title)}
-                  style={styles.textInput}
-              />
-              <TouchableOpacity
-                  style={styles.button}
-                  onPress={() => pickImage()}
-              ><Text style={{color: 'white'}}>Choose Image</Text></TouchableOpacity>
-              <Image source={{ uri: image }} style={{ width: windowHeight/6, height: windowHeight/6 }} />
-              <TextInput 
-                  label='Description'
-                  placeholder='Enter description'
-                  mode='outlined'
-                  multiline
-                  onChangeText={(description) => setDescription(description)}
-                  style={styles.textInput}
-              />
-              <TextInput 
-                  label='Price (units)'
-                  mode='outlined'
-                  onChangeText={(price) => setPrice(price)}
-                  style={styles.textInput}
-              />
-                  <Button title="Choose Start Date" onPress={()=>{
-                    setModalState(1);
-                    showDatePicker();
-                    }} />
-                  <Text>{startDate}</Text>
-                  <Button title="Choose End Date" onPress={()=>{
-                    setModalState(2);
-                    showDatePicker();
-                    }} />
-                  <Text>{endDate}</Text>
-                  <DateTimePickerModal
-                      isVisible={isDatePickerVisible}
-                      mode="datetime"
-                      date={defaultDate}
-                      onConfirm={(date)=>{
-                          if (modalState === 1) {
-                            if (FormatDate(date) < FormatDate(new Date())) {
-                              setStartDate("");
-                              setErrorMsg("Start date must be later than current date.");
-                            } else {
-                              setStartDate(FormatDate(date));
-                              setDefaultDate(date);
-                              setErrorMsg("");
-                            }
+              <View style={styles.wrapper}>
+                <TextInput 
+                    label='Event Title'
+                    placeholder='Give it a cool name!'
+                    mode='outlined'
+                    onChangeText={(title) => setTitle(title)}
+                    style={styles.textInput}
+                />
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => pickImage()}
+                ><Text style={{color: 'white'}}>Choose Image</Text></TouchableOpacity>
+                <Image source={{ uri: image }} style={{ width: windowHeight/5, height: windowHeight/5, marginTop: 20 }} />
+                <TextInput 
+                    label='Description'
+                    placeholder='Enter description'
+                    mode='outlined'
+                    multiline
+                    onChangeText={(description) => setDescription(description)}
+                    style={styles.textInput}
+                />
+                <TextInput 
+                    label='Price (units)'
+                    mode='outlined'
+                    onChangeText={(price) => setPrice(price)}
+                    style={styles.textInput}
+                />
+                <Button title="Choose Start Date" onPress={()=>{
+                  setModalState(1);
+                  showDatePicker();
+                  }} />
+                <Text>{startDate}</Text>
+                <Button title="Choose End Date" onPress={()=>{
+                  setModalState(2);
+                  showDatePicker();
+                  }} />
+                <Text>{endDate}</Text>
+                <DateTimePickerModal
+                    isVisible={isDatePickerVisible}
+                    mode="datetime"
+                    date={defaultDate}
+                    onConfirm={(date)=>{
+                        if (modalState === 1) {
+                          if (FormatDate(date) < FormatDate(new Date())) {
+                            setStartDate("");
+                            setErrorMsg("Start date must be later than current date.");
                           } else {
-                            if (FormatDate(date) < startDate) {
-                              setEndDate("");
-                              setErrorMsg("End date must be later than start date.");
-                            } else {
-                              setEndDate(FormatDate(date));
-                              setErrorMsg("");
-                            }
+                            setStartDate(FormatDate(date));
+                            setDefaultDate(date);
+                            setErrorMsg("");
                           }
-                          hideDatePicker();
-                      }}
-                      onCancel={hideDatePicker}
-                      textColor={'black'}
-                  />
-                  <Text style={{color: 'red'}}>{errorMsg}</Text>
-                  <TouchableOpacity
-                      style={styles.button}
-                      onPress={() => {
-                        if (title == "" || title == " " || description == "" || description == " " || price == "" || startDate == "" || endDate == "") {
-                          setErrorMsg("You must fill in all required fields.")
                         } else {
-                          uploadImage()
+                          if (FormatDate(date) < startDate) {
+                            setEndDate("");
+                            setErrorMsg("End date must be later than start date.");
+                          } else {
+                            setEndDate(FormatDate(date));
+                            setErrorMsg("");
+                          }
                         }
-                      }}
-                  ><Text style={{color: 'white'}}>Create Event</Text></TouchableOpacity>
+                        hideDatePicker();
+                    }}
+                    onCancel={hideDatePicker}
+                    textColor={'black'}
+                />
+                <Text style={{color: 'red'}}>{errorMsg}</Text>
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => {
+                      if (title == "" || title == " " || description == "" || description == " " || price == "" || startDate == "" || endDate == "") {
+                        setErrorMsg("You must fill in all required fields.")
+                      } else {
+                        uploadImage()
+                      }
+                    }}
+                ><Text style={{color: 'white'}}>Create Event</Text></TouchableOpacity>
               </View>
+            </View>
         }
     </TouchableWithoutFeedback>
   );
 };
 
 const styles = StyleSheet.create({
+    wrapper: {
+      alignSelf: 'center',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
     textInput: {
       width: windowWidth-50,
-      marginTop: 40,
+      marginTop: 10,
     },
     button: {
       alignItems: "center",

@@ -38,7 +38,7 @@ const Photo = (props) => {
     return (
       <View style={styles.container}>
         <Text style={{ textAlign: 'center' }}>We need your permission to show the camera</Text>
-        <Button onPress={requestPermission} title="grant permission" />
+        <Button styles={{color: 'blue'}} onPress={requestPermission} title="grant permission" />
       </View>
     );
   }

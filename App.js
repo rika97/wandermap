@@ -13,8 +13,20 @@ import rootReducer from './components/redux/reducers'
 import thunk from 'redux-thunk'
 const store = createStore(rootReducer, applyMiddleware(thunk))
 
+import { LogBox } from 'react-native';
+
+LogBox.ignoreLogs(['Warning: ...']);
+
+LogBox.ignoreAllLogs();
+
 const firebaseConfig = {
-  
+  apiKey: "AIzaSyCsbA0GruKqC1RIf_BbHGwrW7foTWXUVAw",
+  authDomain: "wandermap-ec1a0.firebaseapp.com",
+  projectId: "wandermap-ec1a0",
+  storageBucket: "wandermap-ec1a0.appspot.com",
+  messagingSenderId: "784942620400",
+  appId: "1:784942620400:web:953e5d10da8fb0e06c6c35",
+  measurementId: "G-9VVT8CD89E"
 };
 
 if(firebase.apps.length === 0){

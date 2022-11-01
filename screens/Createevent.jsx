@@ -3,6 +3,7 @@ import { View, TouchableWithoutFeedback, Keyboard, Text, Dimensions, StyleSheet,
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 const dismissKeyboard = () => { if (Platform.OS != "web"){ Keyboard.dismiss(); } }
+const windowHeight = Dimensions.get('window').height;
 
 const Createevent = ( props ) => {
   const [location, setLocation] = useState("");
@@ -21,7 +22,7 @@ const Createevent = ( props ) => {
               }}
               fetchDetails
               query={{
-                key: '',
+                key: 'AIzaSyBaJ7dpl-26vdAaduqMQs_nTouCootslNE',
                 language: 'en',
               }}
               styles={styles.searchBar}
@@ -43,14 +44,15 @@ const Createevent = ( props ) => {
 
 const styles = StyleSheet.create({
     button: {
-      alignItems: "center",
+      alignSelf: "center",
+      alignItems: 'center',
       backgroundColor: "#8abbc2",
       padding: 10,
       borderRadius: 20,
       width: 250,
       height: 45,
       justifyContent: 'center',
-      marginTop: 10,
+      marginBottom: 70,
     },
     searchBar: {
       container: {

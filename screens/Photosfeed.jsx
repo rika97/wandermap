@@ -28,7 +28,7 @@ function Photosfeed(props) {
 
   const timestampToDate = (timestamp) => {
     let hours = Math.floor((new Date() - timestamp.toDate())/1000/3600);
-    if (hours < 2) {
+    if (1 <= hours < 2) {
       return hours + " hour ago"
     } else if (hours < 24) {
       return hours + " hours ago"
@@ -76,9 +76,9 @@ function Photosfeed(props) {
             </View>
           )}
         /> :
-        <View style={{backgroundColor: '#30b5c7'}}>
+        <View>
           <Image
-            style={styles.headerImage}
+            style={styles.blankImage}
             source={require('../assets/NoFollowing.png')}
           />
         </View>
@@ -108,6 +108,12 @@ const styles = StyleSheet.create({
   profilePic: {
     width: 35,
     height: 35
+  },
+  blankImage: {
+    width: windowWidth,
+    height: undefined,
+    aspectRatio: 850 / 1294,
+    marginTop: 10
   },
   headerImage: {
     width: windowWidth,

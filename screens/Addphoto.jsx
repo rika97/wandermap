@@ -8,6 +8,8 @@ require("firebase/firestore")
 
 const dismissKeyboard = () => { if (Platform.OS != "web"){ Keyboard.dismiss(); } }
 
+const windowWidth = Dimensions.get('window').width;
+
 const Addphoto = (props) => {
   const [caption, setCaption] = useState("");
   const [loading, setLoading] = useState(false);
@@ -56,7 +58,7 @@ const Addphoto = (props) => {
             creation: firebase.firestore.FieldValue.serverTimestamp()
         }).then((function(){
             console.log('task completed')
-            props.navigation.navigate("Community")
+            props.navigation.navigate("Account")
         }))
   }
 
@@ -86,7 +88,7 @@ const Addphoto = (props) => {
                 }}
                 fetchDetails
                 query={{
-                  key: '',
+                  key: 'AIzaSyBaJ7dpl-26vdAaduqMQs_nTouCootslNE',
                   language: 'en',
                 }}
                 styles={styles.searchBar}
@@ -103,18 +105,24 @@ const Addphoto = (props) => {
 
 const styles = StyleSheet.create({
   button: {
-    alignItems: "center",
+    alignSelf: "center",
+    alignItems: 'center',
     backgroundColor: "#8abbc2",
     padding: 10,
     borderRadius: 20,
     width: 250,
     height: 45,
     justifyContent: 'center',
-    marginTop: 10,
+    marginBottom: 70,
+  },
+  textInput: {
+    marginTop: 15,
+    width: windowWidth-30,
+    alignSelf: 'center',
   },
   searchBar: {
     container: {
-      marginTop: 10,
+      marginTop: 15,
     },
     textInput: {
       height: 45,

@@ -9,7 +9,7 @@ import { Marker } from 'react-native-maps';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import * as Location from 'expo-location';
 
-import BottomSheet from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
  
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -63,6 +63,7 @@ function Map(props) {
 
     }
   }, [props.usersLoaded])
+
  if (location === null) {
    return (
      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -97,10 +98,10 @@ function Map(props) {
                }}
                fetchDetails
                query={{
-                 key: '',
+                 key: 'AIzaSyBaJ7dpl-26vdAaduqMQs_nTouCootslNE',
                  language: 'en',
                }}
-               renderLeftButton={()  => <MaterialCommunityIcons name="map-marker" color='grey' size={30} style={{marginLeft: 15, marginTop: 7.5}} />}
+               renderLeftButton={()  => <MaterialCommunityIcons name="map-marker" color='grey' size={30} style={{marginLeft: 20, marginTop: 7.5, top: 15}} />}
                styles={styles.searchBar}
              />
              {toggleFilter ?
@@ -155,31 +156,33 @@ function Map(props) {
             }
            </TouchableOpacity>
            {toggleFilter ?
-           <BottomSheet snapPoints={[20, 200, windowHeight-200]}>
-           <Text style={{fontSize: 25, fontWeight: 'bold', marginLeft: 5 }}>{eventDetails.title}</Text>
-           <Image
-             style={styles.detailImage}
-             source={{uri: eventDetails.downloadURL}}
-           />
-           <View style={{ flexDirection: 'row', justifyContent: 'flex-start', marginLeft: 5, marginTop: 5 }}>
-            <Image
-              style={styles.profileImage}
-              source={{uri: eventDetails.user?.downloadURL || "https://raw.githubusercontent.com/rika97/wandermap/main/assets/defaultuser-icon.png"}}
-            />
-            <Text style={{fontWeight: 'bold', marginTop: 8, marginLeft: 5}}>{eventDetails.creator}</Text>
-          </View>
-           <View style={{marginLeft: 5, marginTop: 5}}>
-            <Text style={{fontSize: 17, fontWeight: 'bold'}}>Location:</Text>
-            <Text>{eventDetails.location}</Text>
-            <Text style={{fontSize: 17, fontWeight: 'bold'}}>Date & Time:</Text>
-            <Text style={{fontSize: 17}}>{eventDetails.startDate} ~ {eventDetails.endDate}</Text>
-            <Text style={{fontSize: 17, fontWeight: 'bold'}}>Price:</Text>
-            <Text style={{fontSize: 17}}>{eventDetails.price}</Text>
-            <Text style={{fontSize: 17, fontWeight: 'bold'}}>Description:</Text>
-            <Text>{eventDetails.description}</Text>
-          </View>
+           <BottomSheet snapPoints={[25, 200, windowHeight-200]}>
+            <BottomSheetScrollView>
+              <Text style={{fontSize: 25, fontWeight: 'bold', marginLeft: 5 }}>{eventDetails.title}</Text>
+              <Image
+                style={styles.detailImage}
+                source={{uri: eventDetails.downloadURL}}
+              />
+              <View style={{ flexDirection: 'row', justifyContent: 'flex-start', marginLeft: 5, marginTop: 5 }}>
+                <Image
+                  style={styles.profileImage}
+                  source={{uri: eventDetails.user?.downloadURL || "https://raw.githubusercontent.com/rika97/wandermap/main/assets/defaultuser-icon.png"}}
+                />
+                <Text style={{fontWeight: 'bold', marginTop: 8, marginLeft: 5}}>{eventDetails.creator}</Text>
+              </View>
+              <View style={{marginLeft: 5, marginTop: 5}}>
+                <Text style={{fontSize: 17, fontWeight: 'bold'}}>Location:</Text>
+                <Text>{eventDetails.location}</Text>
+                <Text style={{fontSize: 17, fontWeight: 'bold'}}>Date & Time:</Text>
+                <Text style={{fontSize: 17}}>{eventDetails.startDate} ~ {eventDetails.endDate}</Text>
+                <Text style={{fontSize: 17, fontWeight: 'bold'}}>Price:</Text>
+                <Text style={{fontSize: 17}}>{eventDetails.price}</Text>
+                <Text style={{fontSize: 17, fontWeight: 'bold'}}>Description:</Text>
+                <Text>{eventDetails.description}</Text>
+              </View>
+            </BottomSheetScrollView>
           </BottomSheet> :
-          <BottomSheet snapPoints={[30, 200, windowHeight-200]}>
+          <BottomSheet snapPoints={[25, 200, windowHeight-200]}>
           <Text style={{fontSize: 25, fontWeight: 'bold', marginLeft: 5 }}>{photoDetails.caption}</Text>
           <Image
             style={styles.detailImage}
@@ -215,7 +218,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     padding: 7,
     borderRadius: 50,
-    top: 70,
+    bottom: 40,
     position: "absolute",
     backgroundColor: 'white',
     shadowColor: '#171717',
@@ -240,18 +243,18 @@ const styles = StyleSheet.create({
   },
   searchBar: {
       container: {
-        marginTop: 15,
         shadowColor: '#171717',
         shadowOffset: {width: -2, height: 4},
         shadowOpacity: 0.2,
         shadowRadius: 3,
+        top: 15,
       },
       textInput: {
         height: 45,
         marginLeft: 0,
         marginRight: 15,
-        marginTop: 0,
         backgroundColor: 'white',
+        top: 15,
       },
       textInputContainer: {
         backgroundColor: 'white',
@@ -259,14 +262,12 @@ const styles = StyleSheet.create({
         height: 45,
         marginLeft: 15,
         marginRight: 15,
+        marginTop: 0,
       },
       listView: {
         marginLeft: 35,
         marginRight: 35,
       }
-  },
-  pin: {
-
   },
   pinImage: {
     width: 50,

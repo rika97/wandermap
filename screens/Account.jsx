@@ -40,11 +40,7 @@ const Account = (props) => {
           <Image source={{uri: user.downloadURL}} style={{ width: 60, height: 60}}/>
           <Text style={{fontSize: 20, marginTop: 20, marginLeft: 10, fontWeight: 'bold'}}>{user.name}</Text>
         </View>
-        <Text>Email: {user.email}</Text>
-        {/* <TouchableOpacity 
-          style={styles.button}
-          // onPress={() => onLogout()}
-        ><Text style={{color: 'white'}}>Edit Profile</Text></TouchableOpacity> */}
+        <Text style={{marginBottom: 10}}>Email: {user.email}</Text>
         <TouchableOpacity 
           style={styles.button}
           onPress={() => onLogout()}
@@ -70,13 +66,13 @@ const Account = (props) => {
         style={styles.segmentedButton}
    />
     { segmentedValue === "events" ? 
-      <View style={styles.containerGallery}>
+    <View style={styles.containerGallery}>
       <FlatList
         numColumns={1}
         horizontal={false}
         data={userEvents}
         renderItem={({item}) => (
-          <View>
+          <View style={styles.containerImage}>
             <TouchableOpacity onPress={() => 
               props.navigation.navigate("Eventviewer", {event: item, profilePic: props.currentUser.downloadURL })
               }>
@@ -86,7 +82,7 @@ const Account = (props) => {
                 />
                 <Text style={{fontSize: 20, fontWeight: 'bold'}}>{item.title}</Text>
                 <Text style={{fontSize: 17, fontWeight: 'bold'}}>{item.startDate}</Text>
-                <Text style={{width: windowWidth - 100}}>Location: {item.location}</Text>
+                <Text style={{width: windowWidth - 50}}>Location: {item.location}</Text>
 
             </TouchableOpacity>
           </View>
@@ -107,6 +103,8 @@ const Account = (props) => {
                   style={styles.image}
                   source={{uri: item.downloadURL}}
                 />
+                <Text style={{fontSize: 17, fontWeight: 'bold'}}>{item.caption}</Text>
+                <Text>{item.location}</Text>
               </TouchableOpacity>
             </View>
           )}
@@ -134,14 +132,12 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center'
   },
-  profilePicture: {
-    width: 80,
-    height: 80,
-  },
   image: {
     flex: 1,
     aspectRatio: 1,
     marginTop: 10,
+    width: windowWidth-50,
+    height: undefined
   },
   button: {
     alignItems: "center",

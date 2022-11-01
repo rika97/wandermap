@@ -5,6 +5,8 @@ require('firebase/firestore');
 import { connect } from 'react-redux';
 
 const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
+console.log(windowHeight, windowWidth)
 
 function Eventsfeed(props) {
   const [events, setEvents] = useState([]);
@@ -102,7 +104,7 @@ const styles = StyleSheet.create({
     width: windowWidth,
     height: undefined,
     aspectRatio: 850 / 1294,
-    marginTop: 70
+    marginTop: 85
   },
   headerImage: {
     width: windowWidth,

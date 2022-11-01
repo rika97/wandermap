@@ -1,7 +1,8 @@
 {
   "expo": {
     "name": "WanderMap",
-    "slug": "WanderMap",
+    "slug": "wandermap",
+    "description": "Don't be bored.",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/app-icon.png",
@@ -21,7 +22,7 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.example.ProjectName",
       "config": {
-      "googleMapsApiKey": ""
+      "googleMapsApiKey": "AIzaSyBaJ7dpl-26vdAaduqMQs_nTouCootslNE"
       }
       },
     "android": {

@@ -130,7 +130,7 @@ const Profile = (props) => {
         horizontal={false}
         data={userEvents}
         renderItem={({item}) => (
-          <View style={styles.containerImage}>
+          <View style={styles.containerEvent}>
             <Image
               style={styles.image}
               source={{uri: item.downloadURL}}
@@ -156,6 +156,8 @@ const Profile = (props) => {
                   style={styles.image}
                   source={{uri: item.downloadURL}}
                 />
+                <Text style={{fontSize: 18, marginLeft: 5, fontWeight: 'bold'}}>{item.caption}</Text>
+                <Text style={{fontSize: 14, marginLeft: 5}}>{item.location}</Text>
               </TouchableOpacity>
             </View>
           )}
@@ -177,9 +179,14 @@ const styles = StyleSheet.create({
   },
   containerGallery: {
     flex: 1,
+    marginBottom: 10,
   },
   containerImage: {
     flex: 1,
+  },
+  containerEvent: {
+    flex: 1,
+    alignSelf: 'center'
   },
   image: {
     flex: 1,

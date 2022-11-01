@@ -5,6 +5,8 @@ import { Button, IconButton } from 'react-native-paper';
 import Slider from '@react-native-community/slider';
 import { connect } from 'react-redux';
 
+const windowWidth = Dimensions.get('window').width;
+
 const Photoviewer = (props) => {
   const photo = props.route.params.photo
   const [user, setUser] = useState(null);
@@ -13,24 +15,28 @@ const Photoviewer = (props) => {
     setUser(currentUser)
 
   }, [])
+  console.log(photo)
   return (
     <View style={styles.container}>
-        <Image
+        <View style={{ flexDirection: 'row', justifyContent: 'flex-start', marginLeft: 5, marginBottom: 5, marginTop: 10}}>
+          <Image
             style={styles.profilePic}
             source={{uri: props.currentUser.downloadURL}}
-        />
-        <Text style={{fontSize: 17, marginTop: 5}}>{photo.creator}</Text>
+          />
+          <Text style={{fontWeight: 'bold', marginTop: 8, marginLeft: 5}}>{photo.creator}</Text>
+        </View>
+
         <Image
             style={styles.image}
             source={{uri: photo.downloadURL}}
         />
-        <Text>{photo.caption}</Text>
+        <Text style={{fontSize: 18, marginLeft: 5, fontWeight: 'bold'}}>{photo.caption}</Text>
+        <Text style={{fontSize: 14, marginLeft: 5}}>{photo.location}</Text>
     </View>
   )};
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     justifyContent: 'center',
   },
   camera: {
@@ -64,9 +70,14 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   profilePic: {
-    width: 20,
-    height: 20
-  }
+    width: 35,
+    height: 35,
+  },
+  image: {
+    aspectRatio: 1,
+    width: windowWidth,
+    height: undefined
+  },
 });
 
 const mapStateToProps = (store) => ({
