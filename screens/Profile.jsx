@@ -261,7 +261,7 @@ const styles = StyleSheet.create({
   photoImage: {
     flex: 1,
     aspectRatio: 1,
-    marginTop: 10,
+    marginTop: 0,
     width: windowWidth/3,
     height: undefined,
     borderWidth: 0.5,

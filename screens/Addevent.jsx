@@ -207,6 +207,8 @@ const Createevent = ( props ) => {
                             { label: 'Race', value: 'race' },
                             { label: 'Attraction', value: 'attraction' },
                             { label: 'Sports', value: 'sports' },
+                            { label: 'Education', value: 'education' },
+                            { label: 'Other', value: 'other' },
                         ]}
                     />
                     </TouchableOpacity>

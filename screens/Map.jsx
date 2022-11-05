@@ -8,6 +8,7 @@ import { Marker } from 'react-native-maps';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import * as Location from 'expo-location';
 import MapView from "react-native-map-clustering";
+import MapViewDirections from 'react-native-maps-directions'
 import getDirections from 'react-native-google-maps-directions'
 
 import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
@@ -15,6 +16,8 @@ import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 const dismissKeyboard = () => { if (Platform.OS != "web"){ Keyboard.dismiss(); } }
+
+const api_key = ''
  
 function Map(props) {
  const [currentLocation, setCurrentLocation] = useState(null);
@@ -140,12 +143,28 @@ function Map(props) {
                }}
                fetchDetails
                query={{
-                 key: '',
+                 key: api_key,
                  language: 'en',
                }}
                renderLeftButton={()  => <MaterialCommunityIcons name="map-marker" color='grey' size={30} style={{marginLeft: 20, marginTop: 7.5, top: 15}} />}
                styles={styles.searchBar}
              />
+             {eventDetails.locationCoords && currentLocation ? 
+              <MapViewDirections
+                  origin={{
+                    latitude: currentLocation[0],
+                    longitude: currentLocation[1]
+                  }}
+                  destination={{
+                    latitude: eventDetails.locationCoords[0],
+                    longitude: eventDetails.locationCoords[1]
+                  }}
+                  apikey={api_key}
+                  strokeWidth={4}
+                  strokeColor="#30b5c7"
+                /> 
+                : ""
+                }
              {toggleFilter ?
               events.map(event => (
                 ((event.endDateTimestamp > new Date().getTime()) && ((new Date().getTime() - event.startDateTimestamp) < 24*3600*30*1000 )) ? 
@@ -208,7 +227,7 @@ function Map(props) {
             <BottomSheetScrollView>
               <Text style={{fontSize: 25, fontWeight: 'bold', marginLeft: 10 }}>{eventDetails.title}</Text>
               <Image
-                style={styles.detailImage}
+                style={styles.detailEventImage}
                 source={{uri: eventDetails.downloadURL}}
               />
               <View style={{marginHorizontal: 10, marginTop: -50, backgroundColor: '#bce3e8', borderRadius: 30, padding: 10}}>
@@ -241,22 +260,24 @@ function Map(props) {
             </BottomSheetScrollView>
           </BottomSheet> :
           <BottomSheet snapPoints={[25, 200, windowHeight-200]}>
-          <Text style={{fontSize: 25, fontWeight: 'bold', marginLeft: 5 }}>{photoDetails.caption}</Text>
-          <Image
-            style={styles.detailImage}
-            source={{uri: photoDetails.downloadURL}}
-          />
-          <View style={{marginLeft: 5, marginTop: 5}}>
-            <Text style={{fontSize: 17, fontWeight: 'bold'}}>Location:</Text>
-            <Text>{photoDetails.location}</Text>
-          </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'flex-start', marginLeft: 5, marginTop: 5 }}>
+            <Text style={{fontSize: 25, fontWeight: 'bold', marginLeft: 5 }}>{photoDetails.caption}</Text>
             <Image
-              style={styles.profileImage}
-              source={{uri: photoDetails.user?.downloadURL || "https://raw.githubusercontent.com/rika97/wandermap/main/assets/defaultuser-icon.png"}}
+              style={styles.detailPhotoImage}
+              source={{uri: photoDetails.downloadURL}}
             />
-            <Text style={{fontWeight: 'bold', marginTop: 8, marginLeft: 5}}>{photoDetails.creator}</Text>
-          </View>
+            <View style={{marginHorizontal: 10, marginTop: 0, backgroundColor: '#bce3e8', borderRadius: 30, padding: 10}}>
+              <View style={{ flexDirection: 'row', justifyContent: 'flex-start', marginLeft: 5, marginTop: 5 }}>
+                <Image
+                  style={styles.profileImage}
+                  source={{uri: photoDetails.user?.downloadURL || "https://raw.githubusercontent.com/rika97/wandermap/main/assets/defaultuser-icon.png"}}
+                />
+                <Text style={{fontWeight: 'bold', marginTop: 8, marginLeft: 5}}>{photoDetails.creator}</Text>
+              </View>
+              <View style={{marginLeft: 5, marginTop: 5}}>
+                <Text style={{fontSize: 17, fontWeight: 'bold'}}>Location:</Text>
+                <Text>{photoDetails.location}</Text>
+              </View>
+            </View>
          </BottomSheet>
          }
          </View>
@@ -345,12 +366,19 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(48, 181, 199, 0.3)',
     borderWidth: 6,
   },
-  detailImage: {
+  detailEventImage: {
     width: windowWidth-20,
     height: windowWidth-20,
     aspectRatio: 1,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
+    margin: 10
+  },
+  detailPhotoImage: {
+    width: windowWidth-20,
+    height: windowWidth-20,
+    aspectRatio: 1,
+    borderRadius: 30,
     margin: 10
   },
   profileImage: {

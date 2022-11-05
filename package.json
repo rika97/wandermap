@@ -40,6 +40,7 @@
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-map-clustering": "^3.4.2",
     "react-native-maps": "0.31.1",
+    "react-native-maps-directions": "^1.9.0",
     "react-native-modal-datetime-picker": "^14.0.0",
     "react-native-paper": "^5.0.0-rc.6",
     "react-native-picker-select": "^8.0.4",

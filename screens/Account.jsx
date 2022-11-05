@@ -46,7 +46,7 @@ const Account = (props) => {
         <View style={styles.container}>
           <View style={styles.containerInfo}>
             <View style={{ flexDirection: 'row', justifyContent: 'flex-start', marginLeft: 5, marginBottom: 5}}>
-              <Image source={{uri: user.downloadURL}} style={{ width: 60, height: 60}}/>
+              <Image source={{uri: user.downloadURL}} style={{ width: 60, height: 60, marginTop: 20}}/>
               <View style={{flexDirection: "column"}}>
                 <Text style={{fontSize: 20, marginTop: 20, marginLeft: 10, fontWeight: 'bold'}}>Welcome,</Text>
                 <Text style={{fontSize: 25, marginTop: 5, marginLeft: 10, fontWeight: 'bold'}}>{user.name}! 👋</Text>
@@ -181,7 +181,7 @@ const styles = StyleSheet.create({
   photoImage: {
     flex: 1,
     aspectRatio: 1,
-    marginTop: 10,
+    marginTop: 0,
     width: windowWidth/3,
     height: undefined,
     borderWidth: 0.5,

@@ -79,6 +79,8 @@ function Eventsfeed(props) {
                         { label: 'Race', value: 'race' },
                         { label: 'Attraction', value: 'attraction' },
                         { label: 'Sports', value: 'sports' },
+                        { label: 'Education', value: 'education' },
+                        { label: 'Other', value: 'other' },
                     ]}
                 />
               </View>
@@ -89,7 +91,7 @@ function Eventsfeed(props) {
           horizontal={false}
           data={events}
           renderItem={({item}) => (
-            ((item.endDateTimestamp > new Date().getTime()) && (item.category == category)) ? 
+            ((item.endDateTimestamp > new Date().getTime()) && ((category == item.category) || (category == null))) ? 
               <TouchableOpacity onPress={() => 
                 props.navigation.navigate("Eventviewer", {event: item, profilePic: item.user.downloadURL})
                 }
