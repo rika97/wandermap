@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity, StyleSheet, Image, TouchableWithoutFeedback, Keyboard, ActivityIndicator, Dimensions } from 'react-native';
-import { TextInput } from 'react-native-paper';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet, TouchableWithoutFeedback, Keyboard, ActivityIndicator, Dimensions, TextInput } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 import firebase from 'firebase/app'
 require("firebase/firestore")
 
 const dismissKeyboard = () => { if (Platform.OS != "web"){ Keyboard.dismiss(); } }
-
-const windowWidth = Dimensions.get('window').width;
 
 const Addphoto = (props) => {
   const [caption, setCaption] = useState("");
@@ -72,14 +69,16 @@ const Addphoto = (props) => {
                 <Text style={{ fontSize: 15, marginTop: 10, color: "#30b5c7"}}>Uploading Photo...</Text>
             </View>:
             <View style={StyleSheet.absoluteFillObject}>
-              <TextInput 
-                  label='Caption'
-                  placeholder='Enter caption'
-                  mode='outlined'
-                  multiline
-                  onChangeText={(caption) => setCaption(caption)}
-                  style={styles.textInput}
-              />
+              <View style={styles.container}>
+                <Text style={styles.header}>Caption:</Text>
+                <TextInput 
+                    placeholder='Enter caption'
+                    mode='outlined'
+                    onChangeText={(caption) => setCaption(caption)}
+                    style={styles.textInput}
+                />
+              </View>
+              <Text style={styles.header}>Location:</Text>
               <GooglePlacesAutocomplete
                 placeholder='Enter Location'
                 onPress={(data, details = null) => {
@@ -88,7 +87,7 @@ const Addphoto = (props) => {
                 }}
                 fetchDetails
                 query={{
-                  key: 'AIzaSyBaJ7dpl-26vdAaduqMQs_nTouCootslNE',
+                  key: '',
                   language: 'en',
                 }}
                 styles={styles.searchBar}
@@ -107,44 +106,56 @@ const styles = StyleSheet.create({
   button: {
     alignSelf: "center",
     alignItems: 'center',
-    backgroundColor: "#8abbc2",
+    backgroundColor: "#30b5c7",
     padding: 10,
-    borderRadius: 20,
+    borderRadius: 30,
     width: 250,
     height: 45,
     justifyContent: 'center',
-    marginBottom: 70,
-  },
-  textInput: {
-    marginTop: 15,
-    width: windowWidth-30,
-    alignSelf: 'center',
+    marginBottom: 130,
   },
   searchBar: {
     container: {
-      marginTop: 15,
+      marginTop: 10,
     },
     textInput: {
       height: 45,
-      marginLeft: 0,
+      marginLeft: 15,
       marginRight: 15,
       marginTop: 0,
       backgroundColor: 'white',
     },
     textInputContainer: {
       backgroundColor: 'white',
-      borderRadius: 5,
+      borderRadius: 30,
       height: 50,
       marginLeft: 15,
       marginRight: 15,
       borderWidth: 1,
-      borderColor: 'grey',
+      borderColor: 'white',
     },
     listView: {
-      marginLeft: 20,
-      marginRight: 20,
+      marginLeft: 35,
+      marginRight: 35,
     }
-},
+  },
+  header: {
+    fontSize: 16,
+    fontWeight: "bold",
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: 30,
+    marginTop: 10,
+  },
+  textInput: {
+    marginTop: 5,
+    backgroundColor: "white",
+    borderRadius: 30,
+    fontSize: 16,
+    padding: 10,
+    marginHorizontal: 15,
+    height: 45,
+  },
 });
 
 export default Addphoto;

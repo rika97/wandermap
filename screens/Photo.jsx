@@ -3,6 +3,7 @@ import { Camera, CameraType } from 'expo-camera';
 import { Image, StyleSheet, Text, TouchableOpacity, View, ActivityIndicator, Dimensions, ImageBackground } from 'react-native';
 import { Button, IconButton } from 'react-native-paper';
 import Slider from '@react-native-community/slider';
+
 import { connect } from 'react-redux';
 
 const windowHeight = Dimensions.get('window').height;

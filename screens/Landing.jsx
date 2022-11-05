@@ -1,6 +1,5 @@
 import React from 'react';
 import { Text, Image, Dimensions, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-native';
-
 import { StatusBar } from 'expo-status-bar';
 
 const windowWidth = Dimensions.get('window').width;
@@ -16,11 +15,11 @@ const Landing = ({ navigation }) => {
         <TouchableOpacity 
             style={styles.button}
             onPress={() => navigation.navigate("Register")}
-        ><Text style={{color: '#30b5c7'}}>SIGN-UP</Text></TouchableOpacity>
+        ><Text style={{color: '#143F73'}}>SIGN-UP</Text></TouchableOpacity>
         <TouchableOpacity
             style={styles.button}
             onPress={() => navigation.navigate("Login")}
-        ><Text style={{color: '#30b5c7'}}>LOG-IN</Text></TouchableOpacity>
+        ><Text style={{color: '#143F73'}}>LOG-IN</Text></TouchableOpacity>
     </SafeAreaView>
   )
 }
@@ -42,7 +41,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#bce3e8",
     padding: 10,
-    borderRadius: 20,
+    borderRadius: 30,
     width: 250,
     height: 45,
     justifyContent: 'center',

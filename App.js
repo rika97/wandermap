@@ -1,8 +1,21 @@
+import LandingScreen from './screens/Landing'
+import RegisterScreen from './screens/Register'
+import LoginScreen from './screens/Login'
+import MainScreen from './screens/Main'
+import PhotoScreen from './screens/Photo'
+import SearchScreen from './screens/Search'
+import ProfileScreen from './screens/Profile'
+import EventviewerScreen from './screens/Eventviewer'
+import PhotoviewerScreen from './screens/Photoviewer'
+import CreateeventScreen from './screens/Createevent'
+import AddeventScreen from './screens/Addevent'
+import AddphotoScreen from './screens/Addphoto'
+
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import React, { Component } from 'react'
-import { View, Text, Image } from 'react-native';
+import { View, Text } from 'react-native';
 
 import firebase from 'firebase/app'
 import "firebase/auth"
@@ -16,35 +29,15 @@ const store = createStore(rootReducer, applyMiddleware(thunk))
 import { LogBox } from 'react-native';
 
 LogBox.ignoreLogs(['Warning: ...']);
-
 LogBox.ignoreAllLogs();
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCsbA0GruKqC1RIf_BbHGwrW7foTWXUVAw",
-  authDomain: "wandermap-ec1a0.firebaseapp.com",
-  projectId: "wandermap-ec1a0",
-  storageBucket: "wandermap-ec1a0.appspot.com",
-  messagingSenderId: "784942620400",
-  appId: "1:784942620400:web:953e5d10da8fb0e06c6c35",
-  measurementId: "G-9VVT8CD89E"
+  
 };
 
 if(firebase.apps.length === 0){
   firebase.initializeApp(firebaseConfig)
 }
-
-import LandingScreen from './screens/Landing'
-import RegisterScreen from './screens/Register'
-import LoginScreen from './screens/Login'
-import MainScreen from './screens/Main'
-import PhotoScreen from './screens/Photo'
-import SearchScreen from './screens/Search'
-import ProfileScreen from './screens/Profile'
-import EventviewerScreen from './screens/Eventviewer'
-import PhotoviewerScreen from './screens/Photoviewer'
-import CreateeventScreen from './screens/Createevent'
-import AddeventScreen from './screens/Addevent'
-import AddphotoScreen from './screens/Addphoto'
 
 const Stack = createStackNavigator();
 

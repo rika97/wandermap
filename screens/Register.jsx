@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import { SafeAreaView, View, Image, StyleSheet, Dimensions, TouchableOpacity, Text, TouchableWithoutFeedback, Keyboard, Platform } from 'react-native';
-import { TextInput } from 'react-native-paper';
+import { SafeAreaView, View, Image, StyleSheet, Dimensions, TouchableOpacity, Text, TouchableWithoutFeedback, Keyboard, Platform, TextInput } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import firebase from 'firebase';
@@ -102,14 +101,20 @@ const styles = StyleSheet.create({
     aspectRatio: 1324 / 1254,
   },
   textInput: {
-    width: windowWidth-50,
-    marginTop: 15,
+    width: windowWidth-80,
+    marginTop: 10,
+    backgroundColor: "#cfe3e6",
+    borderRadius: 30,
+    fontSize: 16,
+    padding: 20,
+    marginHorizontal: 15,
+    height: 55,
   },
   button: {
     alignItems: "center",
     backgroundColor: "#8abbc2",
     padding: 10,
-    borderRadius: 20,
+    borderRadius: 30,
     width: 250,
     height: 45,
     justifyContent: 'center',

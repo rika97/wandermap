@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { Button, Image, View, TouchableWithoutFeedback, Keyboard, Text, ActivityIndicator, Dimensions, StyleSheet, TouchableOpacity, Platform } from 'react-native';
-import { TextInput } from 'react-native-paper';
+import { Image, View, TouchableWithoutFeedback, Keyboard, Text, ActivityIndicator, Dimensions, StyleSheet, TouchableOpacity, Platform, TextInput } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import RNPickerSelect from 'react-native-picker-select';
 
-const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
 
 const dismissKeyboard = () => { if (Platform.OS != "web"){ Keyboard.dismiss(); } }
@@ -18,12 +17,15 @@ const Createevent = ( props ) => {
   const [modalState, setModalState] = useState(1);
   const [defaultDate, setDefaultDate] = useState(new Date());
   const [startDate, setStartDate] = useState("");
+  const [startDateTimestamp, setStartDateTimestamp] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [endDateTimestamp, setEndDateTimestamp] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [loading, setLoading] = useState(false);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [category, setCategory] = useState("");
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -102,8 +104,11 @@ const Createevent = ( props ) => {
             location: props.route.params.location,
             locationCoords: props.route.params.locationCoords,
             price,
+            category,
             startDate,
+            startDateTimestamp,
             endDate,
+            endDateTimestamp,
             creator: props.route.params.name,
             creation: firebase.firestore.FieldValue.serverTimestamp()
         }).then((function(){
@@ -123,62 +128,133 @@ const Createevent = ( props ) => {
             </View>:
             <View style={StyleSheet.absoluteFillObject}>
               <View style={styles.wrapper}>
-                <TextInput 
-                    label='Event Title'
-                    placeholder='Give it a cool name!'
-                    mode='outlined'
-                    onChangeText={(title) => setTitle(title)}
-                    style={styles.textInput}
-                />
+                <View style={styles.container}>
+                  <Text style={styles.header}>Event Title:</Text>
+                  <TextInput 
+                      placeholder='Enter title'
+                      mode='outlined'
+                      onChangeText={(title) => setTitle(title)}
+                      style={styles.textInput}
+                  />
+                </View>
+                <View style={styles.container}>
+                  <View style={styles.containerRow}>
+                    <Text style={styles.header}>Starts:</Text>
+                    <Text style={styles.body}>{startDate}</Text>
+                    <TouchableOpacity
+                      style={styles.select}
+                      onPress={()=>{
+                        setModalState(1);
+                        showDatePicker();
+                        }}
+                    ><Text style={{color: 'white'}}>Select</Text></TouchableOpacity>
+                  </View>
+                  <View style={styles.containerRow}>
+                    <Text style={styles.header}>Ends:</Text>
+                    <Text style={styles.body}>{endDate}</Text>
+                    <TouchableOpacity
+                      style={styles.select}
+                      onPress={()=>{
+                        setModalState(2);
+                        showDatePicker();
+                        }}
+                    ><Text style={{color: 'white'}}>Select</Text></TouchableOpacity>
+                  </View>
+                </View>
+                <View style={styles.container}>
+                  <Text style={styles.header}>Description:</Text>
+                  <TextInput 
+                      placeholder='Enter description'
+                      mode='outlined'
+                      multiline
+                      numberOfLines={5}
+                      onChangeText={(description) => setDescription(description)}
+                      style={styles.descriptionInput}
+                  />
+                </View>
+                <View style={styles.container}>
+                  <View style={styles.containerRow}>
+                    <Text style={styles.header}>Price:</Text>
+                    <TextInput 
+                        placeholder='Enter price (units)'
+                        mode='outlined'
+                        onChangeText={(price) => setPrice(price)}
+                        style={styles.rowInput}
+                    />
+                  </View>
+                </View>
+                <View style={styles.container}>
+                  <View style={styles.containerRow}>
+                    <Text style={styles.header}>Category:</Text>
+                    <TouchableOpacity style={styles.dropdown}>
+                      <RNPickerSelect
+                        placeholder={{label: "Select a category"}}
+                        onValueChange={(value) => setCategory(value)}
+                        items={[
+                            { label: 'Music', value: 'music' },
+                            { label: 'Food & Drinks', value: 'food' },
+                            { label: 'Party', value: 'party' },
+                            { label: 'Festival', value: 'festival' },
+                            { label: 'Performance', value: 'performance' },
+                            { label: 'Screening', value: 'screening' },
+                            { label: 'Tournament', value: 'tournament' },
+                            { label: 'Networking', value: 'networking' },
+                            { label: 'Expo', value: 'expo' },
+                            { label: 'Business', value: 'business' },
+                            { label: 'Game', value: 'game' },
+                            { label: 'Convention', value: 'convention' },
+                            { label: 'Seminar', value: 'seminar' },
+                            { label: 'Race', value: 'race' },
+                            { label: 'Attraction', value: 'attraction' },
+                            { label: 'Sports', value: 'sports' },
+                        ]}
+                    />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+                <View style={styles.container}>
+                  <View style={styles.containerRow}>
+                    <Text style={styles.header}>Image:</Text>
+                    <TouchableOpacity
+                      style={styles.select}
+                      onPress={() => pickImage()}
+                    ><Text style={{color: 'white'}}>Select</Text></TouchableOpacity>
+                  </View>
+                  <Image source={{ uri: image }} style={{ width: 80, height: 80 }} />
+                </View>
+                <Text style={{color: 'red', margin: 5}}>{errorMsg}</Text>
                 <TouchableOpacity
                     style={styles.button}
-                    onPress={() => pickImage()}
-                ><Text style={{color: 'white'}}>Choose Image</Text></TouchableOpacity>
-                <Image source={{ uri: image }} style={{ width: windowHeight/5, height: windowHeight/5, marginTop: 20 }} />
-                <TextInput 
-                    label='Description'
-                    placeholder='Enter description'
-                    mode='outlined'
-                    multiline
-                    onChangeText={(description) => setDescription(description)}
-                    style={styles.textInput}
-                />
-                <TextInput 
-                    label='Price (units)'
-                    mode='outlined'
-                    onChangeText={(price) => setPrice(price)}
-                    style={styles.textInput}
-                />
-                <Button title="Choose Start Date" onPress={()=>{
-                  setModalState(1);
-                  showDatePicker();
-                  }} />
-                <Text>{startDate}</Text>
-                <Button title="Choose End Date" onPress={()=>{
-                  setModalState(2);
-                  showDatePicker();
-                  }} />
-                <Text>{endDate}</Text>
+                    onPress={() => {
+                      if (title == "" || title == " " || description == "" || description == " " || price == "" || category == "" || startDate == "" || endDate == "") {
+                        setErrorMsg("You must fill in all required fields.")
+                      } else {
+                        uploadImage()
+                      }
+                    }}
+                ><Text style={{color: 'white'}}>Create Event</Text></TouchableOpacity>
                 <DateTimePickerModal
                     isVisible={isDatePickerVisible}
                     mode="datetime"
                     date={defaultDate}
                     onConfirm={(date)=>{
                         if (modalState === 1) {
-                          if (FormatDate(date) < FormatDate(new Date())) {
+                          if (date.getTime() < new Date().getTime()) {
                             setStartDate("");
                             setErrorMsg("Start date must be later than current date.");
                           } else {
                             setStartDate(FormatDate(date));
+                            setStartDateTimestamp(date.getTime())
                             setDefaultDate(date);
                             setErrorMsg("");
                           }
                         } else {
-                          if (FormatDate(date) < startDate) {
+                          if (date.getTime() < defaultDate.getTime()) {
                             setEndDate("");
                             setErrorMsg("End date must be later than start date.");
                           } else {
                             setEndDate(FormatDate(date));
+                            setEndDateTimestamp(date.getTime());
                             setErrorMsg("");
                           }
                         }
@@ -187,17 +263,6 @@ const Createevent = ( props ) => {
                     onCancel={hideDatePicker}
                     textColor={'black'}
                 />
-                <Text style={{color: 'red'}}>{errorMsg}</Text>
-                <TouchableOpacity
-                    style={styles.button}
-                    onPress={() => {
-                      if (title == "" || title == " " || description == "" || description == " " || price == "" || startDate == "" || endDate == "") {
-                        setErrorMsg("You must fill in all required fields.")
-                      } else {
-                        uploadImage()
-                      }
-                    }}
-                ><Text style={{color: 'white'}}>Create Event</Text></TouchableOpacity>
               </View>
             </View>
         }
@@ -207,50 +272,96 @@ const Createevent = ( props ) => {
 
 const styles = StyleSheet.create({
     wrapper: {
+      marginTop: 5,
       alignSelf: 'center',
       alignItems: 'center',
       justifyContent: 'center',
     },
     textInput: {
-      width: windowWidth-50,
-      marginTop: 10,
+      marginTop: 5,
+      backgroundColor: "#cfe3e6",
+      borderRadius: 10,
+      fontSize: 16,
+      padding: 10,
+    },
+    rowInput: {
+      marginTop: -7,
+      marginBottom: -7,
+      marginLeft: 70,
+      backgroundColor: "#cfe3e6",
+      borderColor: "#cfe3e6",
+      borderRadius: 10,
+      fontSize: 16,
+      padding: 10,
+      width: 200,
+    },
+    descriptionInput: {
+      marginTop: 5,
+      backgroundColor: "#cfe3e6",
+      borderRadius: 10,
+      fontSize: 16,
+      padding: 10,
+      height: 130,
+    },
+    dropdown: {
+      marginTop: -7,
+      marginBottom: -7,
+      marginLeft: 40,
+      backgroundColor: "#cfe3e6",
+      borderColor: "#cfe3e6",
+      borderRadius: 10,
+      padding: 10,
+      width: 200,
+      height: 40,
+      
     },
     button: {
       alignItems: "center",
-      backgroundColor: "#8abbc2",
+      backgroundColor: "#30b5c7",
       padding: 10,
       borderRadius: 20,
       width: 250,
       height: 45,
       justifyContent: 'center',
-      marginTop: 10,
     },
-    searchBar: {
-      container: {
-        marginTop: 10,
-        // marginBottom: 10,
-      },
-      textInput: {
-        height: 45,
-        marginLeft: 0,
-        marginRight: 15,
-        marginTop: 0,
-        backgroundColor: 'white',
-      },
-      textInputContainer: {
-        backgroundColor: 'white',
-        borderRadius: 5,
-        height: 50,
-        marginLeft: 15,
-        marginRight: 15,
-        borderWidth: 1,
-        borderColor: 'grey',
-      },
-      listView: {
-        marginLeft: 20,
-        marginRight: 20,
-      }
-  },
+    select: {
+      alignItems: "center",
+      backgroundColor: "#30b5c7",
+      padding: 5,
+      borderRadius: 15,
+      width: 70,
+      height: 30,
+      position: 'absolute',
+      right: 0,
+      marginTop: -3,
+    },
+    container: {
+      backgroundColor: "#8abbc2",
+      borderRadius: 15,
+      padding: 12,
+      marginTop: 10,
+      marginLeft: 15,
+      marginRight: 15,
+      width: windowWidth-30,
+    },
+    containerRow: {
+      flexDirection: "row",
+      marginBottom: 7,
+      marginTop: 7,
+    },
+    header: {
+      fontSize: 16,
+      fontWeight: "bold",
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    body: {
+      fontSize: 16,
+      fontWeight: 'bold',
+      position: 'absolute',
+      left: 60,
+      color: "#143F73"
+    }
   });
 
 export default Createevent;

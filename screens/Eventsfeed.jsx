@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, Image, FlatList, Dimensions, TouchableOpacity } from 'react-native';
+import { IconButton } from 'react-native-paper';
+import RNPickerSelect from 'react-native-picker-select';
+
 import firebase from 'firebase/app';
 require('firebase/firestore');
 import { connect } from 'react-redux';
 
 const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
-console.log(windowHeight, windowWidth)
 
 function Eventsfeed(props) {
   const [events, setEvents] = useState([]);
+  const [category, setCategory] = useState(null);
+  
   useEffect(() => {
     let events = [];
     if(props.usersLoaded == props.following.length){
@@ -22,51 +25,88 @@ function Eventsfeed(props) {
         }
 
         events.sort(function(x,y) {
-            return x.creation - y.creation;
+            return x.startDateTimestamp - y.startDateTimestamp;
         })
 
         setEvents(events);
 
     }
   }, [props.usersLoaded])
+
+  const daysCalculator = (itemDate) => {
+    const time = Math.floor((itemDate-new Date().getTime())/3600/1000/24)
+    if (time < 1) {
+      return "Today"
+    } else if (time < 2) {
+      return "in" + time + " day"
+    } else {
+      return "in" + time + " days"
+    }
+  }
+
   return (
     <View style={styles.container}>
         { (events.length !== 0) ? 
         <View style={styles.containerGallery}>
-          <View styles={{backgroundColor: '#30b5c7'}}>
-            <Image
-              style={styles.headerImage}
-              source={require('../assets/EventsfeedHeader.png')}
-            />
+          <View styles={{flexDirection: "row", flex: 1}}>
+            <Text style={{fontSize: 25, fontWeight: "bold", marginLeft: 10, marginTop: 10, marginBottom: 5}}>Upcoming Events</Text>
+            <TouchableOpacity style={styles.filterButton}>
+              <IconButton
+                size={20}
+                icon="filter-variant"
+                iconColor='white'
+                style={{marginTop: -7, marginHorizontal: 0 }}
+              />
+              <View style={{width: 140, marginTop: 2}}>
+                <RNPickerSelect
+                    placeholder={{label: "All Categories"}}
+                    onValueChange={(value) => setCategory(value)}
+                    style={{width:40}}
+                    items={[
+                        { label: 'Music', value: 'music' },
+                        { label: 'Food & Drinks', value: 'food' },
+                        { label: 'Party', value: 'party' },
+                        { label: 'Festival', value: 'festival' },
+                        { label: 'Performance', value: 'performance' },
+                        { label: 'Screening', value: 'screening' },
+                        { label: 'Tournament', value: 'tournament' },
+                        { label: 'Networking', value: 'networking' },
+                        { label: 'Expo', value: 'expo' },
+                        { label: 'Business', value: 'business' },
+                        { label: 'Game', value: 'game' },
+                        { label: 'Convention', value: 'convention' },
+                        { label: 'Seminar', value: 'seminar' },
+                        { label: 'Race', value: 'race' },
+                        { label: 'Attraction', value: 'attraction' },
+                        { label: 'Sports', value: 'sports' },
+                    ]}
+                />
+              </View>
+            </TouchableOpacity>
           </View>  
           <FlatList
           numColumns={1}
           horizontal={false}
           data={events}
           renderItem={({item}) => (
-            <View style={styles.containerImage}>
-              <TouchableOpacity onPress={() => 
-                props.navigation.navigate("Profile", {uid: item.user.uid})
-                }
-                style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
-                <Image
-                  style={styles.profilePic}
-                  source={{uri: item.user.downloadURL}}
-                />
-                <Text style={{fontWeight: 'bold', marginTop: 8, marginLeft: 5}}>{item.user.name}</Text>
-              </TouchableOpacity>
+            ((item.endDateTimestamp > new Date().getTime()) && (item.category == category)) ? 
               <TouchableOpacity onPress={() => 
                 props.navigation.navigate("Eventviewer", {event: item, profilePic: item.user.downloadURL})
-                }>
-                <Text style={{marginLeft: 5, fontWeight: 'bold', fontSize: 25}}>{item.title}</Text>
-                <Text style={{marginLeft: 5, fontSize: 20}}>{item.startDate}</Text>
-                <Text style={{marginLeft: 5}}>Location: {item.location}</Text>
+                }
+                style={styles.containerEvent}>
                 <Image
                 style={styles.image}
                 source={{uri: item.downloadURL}}
                 />
-              </TouchableOpacity>
-            </View>
+                <View style={{flexShrink: 1, marginLeft: 7, marginRight: 7}}>
+                  <View style={{width: 230, padding: 5, backgroundColor: "#30b5c7", alignItems: 'center', borderRadius: 20}}>
+                    <Text style={{fontWeight: "bold", fontSize: 17, color: "white"}}>{item.startDate} ({daysCalculator(item.startDateTimestamp)})</Text>
+                  </View>
+                  <Text style={{fontWeight: 'bold', fontSize: 20, marginTop: 3}}>{item.title}</Text>
+                  <Text style={{marginTop: 5}}>{item.location}</Text>
+                  <Text style={{fontWeight: 'bold', marginTop: 5}}>Hosted by: {item.user.name}</Text>
+                </View>
+              </TouchableOpacity> : ""
           )}
         />
         </View> :
@@ -88,13 +128,23 @@ const styles = StyleSheet.create({
   containerGallery: {
     flex: 1,
   },
-  containerImage: {
+  containerEvent: {
     marginTop: 10,
+    marginLeft: 10,
+    marginRight: 10,
     overflow: 'hidden',
+    flex: 1,
+    flexDirection: "row",
+    padding: 10,
+    borderRadius: 10,
+    backgroundColor: "#8abbc2"
   },
   image: {
     // flex: 1,
     aspectRatio: 1,
+    width: 120,
+    height: 120,
+    borderRadius: 5,
   },
   profilePic: {
     width: 35,
@@ -106,11 +156,20 @@ const styles = StyleSheet.create({
     aspectRatio: 850 / 1294,
     marginTop: 85
   },
-  headerImage: {
-    width: windowWidth,
-    height: undefined,
-    aspectRatio: 1518 / 162,
-  },
+  filterButton: {
+    position: 'absolute',
+    // right: 0,
+    backgroundColor: "#30b5c7",
+    padding: 5,
+    borderRadius: 30,
+    width: 140,
+    height: 35,
+    position: 'absolute',
+    right: 0,
+    flexDirection: "row",
+    marginRight: 10,
+    marginTop: 10,
+  }
 })
 
 const mapStateToProps = (store) => ({

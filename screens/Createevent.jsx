@@ -13,31 +13,32 @@ const Createevent = ( props ) => {
 
   return (
     <TouchableWithoutFeedback onPress={() => dismissKeyboard()} accessible={false}>
-      <View style={StyleSheet.absoluteFillObject}>
-        <GooglePlacesAutocomplete
-              placeholder='Enter Location'
-              onPress={(data, details = null) => {
-                setLocation(data.description)
-                setLocationCoords([details.geometry.location.lat, details.geometry.location.lng])
+        <View style={StyleSheet.absoluteFillObject}>
+          <Text style={{fontSize: 25, fontWeight: "bold", alignSelf: "center", marginTop: windowHeight/4, marginBottom: 20}}>Enter Location:</Text>
+          <GooglePlacesAutocomplete
+                placeholder='Enter Location'
+                onPress={(data, details = null) => {
+                  setLocation(data.description)
+                  setLocationCoords([details.geometry.location.lat, details.geometry.location.lng])
+                }}
+                fetchDetails
+                query={{
+                  key: '',
+                  language: 'en',
+                }}
+                styles={styles.searchBar}
+              />
+          <TouchableOpacity
+              style={styles.button}
+              onPress={() => {
+                if (location == "") {
+                  setErrorMsg("You must enter a location.")
+                } else {
+                  props.navigation.navigate('Addevent', { location, locationCoords, name })
+                }
               }}
-              fetchDetails
-              query={{
-                key: 'AIzaSyBaJ7dpl-26vdAaduqMQs_nTouCootslNE',
-                language: 'en',
-              }}
-              styles={styles.searchBar}
-            />
-        <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              if (location == "") {
-                setErrorMsg("You must enter a location.")
-              } else {
-                props.navigation.navigate('Addevent', { location, locationCoords, name })
-              }
-            }}
-        ><Text style={{color: 'white'}}>Next</Text></TouchableOpacity>
-      </View>
+          ><Text style={{color: 'white'}}>Next</Text></TouchableOpacity>
+        </View>
     </TouchableWithoutFeedback>
   );
 };
@@ -46,13 +47,13 @@ const styles = StyleSheet.create({
     button: {
       alignSelf: "center",
       alignItems: 'center',
-      backgroundColor: "#8abbc2",
+      backgroundColor: "#30b5c7",
       padding: 10,
-      borderRadius: 20,
+      borderRadius: 30,
       width: 250,
       height: 45,
       justifyContent: 'center',
-      marginBottom: 70,
+      marginBottom: 130,
     },
     searchBar: {
       container: {
@@ -60,25 +61,25 @@ const styles = StyleSheet.create({
       },
       textInput: {
         height: 45,
-        marginLeft: 0,
+        marginLeft: 15,
         marginRight: 15,
         marginTop: 0,
         backgroundColor: 'white',
       },
       textInputContainer: {
         backgroundColor: 'white',
-        borderRadius: 5,
+        borderRadius: 30,
         height: 50,
         marginLeft: 15,
         marginRight: 15,
         borderWidth: 1,
-        borderColor: 'grey',
+        borderColor: 'white',
       },
       listView: {
-        marginLeft: 20,
-        marginRight: 20,
+        marginLeft: 35,
+        marginRight: 35,
       }
-  },
+    },
   });
 
 export default Createevent;

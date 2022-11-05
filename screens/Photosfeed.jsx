@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, Image, FlatList, Dimensions, TouchableOpacity } from 'react-native';
+
 import firebase from 'firebase/app';
 require('firebase/firestore');
 import { connect } from 'react-redux';
@@ -28,14 +29,25 @@ function Photosfeed(props) {
 
   const timestampToDate = (timestamp) => {
     let hours = Math.floor((new Date() - timestamp.toDate())/1000/3600);
-    if (1 <= hours < 2) {
+    if ( hours < 1) {
+      return Math.floor((new Date() - timestamp.toDate())/1000/60) + " minutes ago"
+    } else if (hours < 2) {
       return hours + " hour ago"
     } else if (hours < 24) {
       return hours + " hours ago"
-    } else {
+    } else if (hours < 24*7) {
       return  Math.floor((new Date() - timestamp.toDate())/1000/3600/24) + " days ago"
+    } else if (hours < 24*7*2) {
+      return  Math.floor((new Date() - timestamp.toDate())/1000/3600/24/7) + " week ago"
+    } else if (hours < 24*31) {
+      return  Math.floor((new Date() - timestamp.toDate())/1000/3600/24/7) + " weeks ago"
+    } else if (hours < 24*365) {
+      return  Math.floor((new Date() - timestamp.toDate())/1000/3600/24/31) + " months ago"
+    } else {
+      return  Math.floor((new Date() - timestamp.toDate())/1000/3600/24/365) + " years ago"
     }
   };
+
   return (
     <View style={styles.container}>
       <View style={styles.containerGallery}>
@@ -45,7 +57,7 @@ function Photosfeed(props) {
           horizontal={false}
           data={photos}
           renderItem={({item}) => (
-            <View style={styles.containerImage}>
+            <View style={styles.containerImage} key={item.id}>
               <TouchableOpacity onPress={() => 
                 props.navigation.navigate("Profile", {uid: item.user.uid})
                 } style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
@@ -56,7 +68,7 @@ function Photosfeed(props) {
                 <Text style={{fontWeight: 'bold', marginTop: 8, marginLeft: 5}}>{item.user.name}</Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => 
-                  props.navigation.navigate("Map")
+                  props.navigation.navigate("Map", {coords: item.locationCoords})
                   }>
                   <Text style={{marginLeft: 5}}>{item.location}</Text>
               </TouchableOpacity>
@@ -97,10 +109,9 @@ const styles = StyleSheet.create({
   },
   containerImage: {
     overflow: 'hidden',
-    marginBottom: 10
+    marginTop: 10
   },
   image: {
-    // flex: 1,
     aspectRatio: 1,
     width: windowWidth,
     height: windowWidth,

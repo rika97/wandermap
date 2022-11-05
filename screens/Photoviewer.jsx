@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Camera, CameraType } from 'expo-camera';
-import { Image, StyleSheet, Text, TouchableOpacity, View, ActivityIndicator, Dimensions, ImageBackground } from 'react-native';
-import { Button, IconButton } from 'react-native-paper';
-import Slider from '@react-native-community/slider';
+import { Image, StyleSheet, Text, View, Dimensions } from 'react-native';
+
 import { connect } from 'react-redux';
 
 const windowWidth = Dimensions.get('window').width;
@@ -14,8 +12,29 @@ const Photoviewer = (props) => {
     const { currentUser } = props
     setUser(currentUser)
 
-  }, [])
-  console.log(photo)
+  }, []);
+
+  const timestampToDate = (timestamp) => {
+    let hours = Math.floor((new Date() - timestamp.toDate())/1000/3600);
+    if ( hours < 1) {
+      return Math.floor((new Date() - timestamp.toDate())/1000/60) + " minutes ago"
+    } else if (hours < 2) {
+      return hours + " hour ago"
+    } else if (hours < 24) {
+      return hours + " hours ago"
+    } else if (hours < 24*7) {
+      return  Math.floor((new Date() - timestamp.toDate())/1000/3600/24) + " days ago"
+    } else if (hours < 24*7*2) {
+      return  Math.floor((new Date() - timestamp.toDate())/1000/3600/24/7) + " week ago"
+    } else if (hours < 24*31) {
+      return  Math.floor((new Date() - timestamp.toDate())/1000/3600/24/7) + " weeks ago"
+    } else if (hours < 24*365) {
+      return  Math.floor((new Date() - timestamp.toDate())/1000/3600/24/31) + " months ago"
+    } else {
+      return  Math.floor((new Date() - timestamp.toDate())/1000/3600/24/365) + " years ago"
+    }
+  };
+
   return (
     <View style={styles.container}>
         <View style={{ flexDirection: 'row', justifyContent: 'flex-start', marginLeft: 5, marginBottom: 5, marginTop: 10}}>
@@ -32,6 +51,7 @@ const Photoviewer = (props) => {
         />
         <Text style={{fontSize: 18, marginLeft: 5, fontWeight: 'bold'}}>{photo.caption}</Text>
         <Text style={{fontSize: 14, marginLeft: 5}}>{photo.location}</Text>
+        <Text style={{marginLeft: 5, fontSize: 12}}>{timestampToDate(photo.creation)}</Text>
     </View>
   )};
 

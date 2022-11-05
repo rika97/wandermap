@@ -22,7 +22,7 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.example.ProjectName",
       "config": {
-      "googleMapsApiKey": "AIzaSyBaJ7dpl-26vdAaduqMQs_nTouCootslNE"
+      "googleMapsApiKey": ""
       }
       },
     "android": {

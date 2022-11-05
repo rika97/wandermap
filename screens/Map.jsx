@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Image, View, Text, StyleSheet, Dimensions, Keyboard, TouchableWithoutFeedback, Platform, ActivityIndicator, TouchableOpacity } from 'react-native';
-import { TextInput } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { connect } from 'react-redux';
  
-import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import { PROVIDER_GOOGLE } from 'react-native-maps';
 import { Marker } from 'react-native-maps';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import * as Location from 'expo-location';
+import MapView from "react-native-map-clustering";
+import getDirections from 'react-native-google-maps-directions'
 
 import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
  
@@ -16,12 +17,11 @@ const windowHeight = Dimensions.get('window').height;
 const dismissKeyboard = () => { if (Platform.OS != "web"){ Keyboard.dismiss(); } }
  
 function Map(props) {
- const [location, setLocation] = useState(null);
+ const [currentLocation, setCurrentLocation] = useState(null);
  const [errorMsg, setErrorMsg] = useState(null);
  const [eventDetails, setEventDetails] = useState({title: "Click on a marker to view event", description: ""});
  const [photoDetails, setPhotoDetails] = useState({caption: "Click on a marker to view photo"});
  const [toggleFilter, setToggleFilter] = useState(true);
- const [toggleViewer, setToggleViewer] = useState(false);
  
  useEffect(() => {
    (async () => {
@@ -33,7 +33,8 @@ function Map(props) {
      }
  
      let location = await Location.getCurrentPositionAsync({});
-     setLocation([location.coords.latitude, location.coords.longitude]);
+     setCurrentLocation([location.coords.latitude, location.coords.longitude]);
+
    })();
  }, []);
 
@@ -64,7 +65,13 @@ function Map(props) {
     }
   }, [props.usersLoaded])
 
- if (location === null) {
+  const mapRef = useRef(null);
+  const animate = (coordinate) => {
+    let newRegion = {latitude: coordinate[0], longitude: coordinate[1], latitudeDelta: 0.1, longitudeDelta: 0.04};
+    mapRef.current.animateToRegion(newRegion, 800);
+  }
+
+ if (currentLocation === null) {
    return (
      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
        <View>
@@ -74,12 +81,42 @@ function Map(props) {
      </View>
    )}
 
+  const handleGetDirections = () => {
+    const data = {
+      source: {
+        latitude: currentLocation[0],
+        longitude: currentLocation[1]
+      },
+      destination: {
+        latitude: eventDetails.locationCoords[0],
+        longitude: eventDetails.locationCoords[1]
+      }
+    }
+    getDirections(data);
+  };
+
+  const timestampFormatter = (timestamp) => {
+    var date = new Date(timestamp);
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
+
+    const getMonthName = (monthNumber) => {
+      const date = new Date();
+      date.setMonth(monthNumber - 1);
+    
+      return date.toLocaleString('en-US', { month: 'short' });
+    }
+
+    return [getMonthName(month), day]
+  }
+
  return (
      <TouchableWithoutFeedback onPress={() => dismissKeyboard()} accessible={false}>
          <View style={{ flex: 1, width: windowWidth, height: windowHeight-180 }}>
            <MapView
              style={StyleSheet.absoluteFillObject}
              provider={PROVIDER_GOOGLE}
+             ref={mapRef}
              showsUserLocation={true}
              followsUserLocation={true}
              showsMyLocationButton={true}
@@ -88,17 +125,22 @@ function Map(props) {
              loadingEnabled={true}
              rotateEnabled={true}
              scrollDuringRotateOrZoomEnabled={true}
-             initialRegion={{latitude: location[0], longitude: location[1], latitudeDelta: 0.3, longitudeDelta: 0.04}}
-             region={{latitude: location[0], longitude: location[1], latitudeDelta: 0.3, longitudeDelta: 0.04}}
+             initialRegion={{latitude: currentLocation[0], longitude: currentLocation[1], latitudeDelta: 0.3, longitudeDelta: 0.04}}
+             onClusterPress={(coordinate) => {
+              animate([coordinate.geometry.coordinates[1], coordinate.geometry.coordinates[0]])
+            }}
+             clustering = {true}
+             clusterColor="#30b5c7"
+             radius = {50}
              >
              <GooglePlacesAutocomplete
                placeholder='Search Location'
                onPress={(data, details = null) => {
-                 setLocation([details.geometry.location.lat, details.geometry.location.lng])
+                animate([details.geometry.location.lat, details.geometry.location.lng])
                }}
                fetchDetails
                query={{
-                 key: 'AIzaSyBaJ7dpl-26vdAaduqMQs_nTouCootslNE',
+                 key: '',
                  language: 'en',
                }}
                renderLeftButton={()  => <MaterialCommunityIcons name="map-marker" color='grey' size={30} style={{marginLeft: 20, marginTop: 7.5, top: 15}} />}
@@ -106,25 +148,29 @@ function Map(props) {
              />
              {toggleFilter ?
               events.map(event => (
-                <Marker 
+                ((event.endDateTimestamp > new Date().getTime()) && ((new Date().getTime() - event.startDateTimestamp) < 24*3600*30*1000 )) ? 
+                  <Marker 
                   coordinate={{
                     latitude: event.locationCoords[0],
                     longitude: event.locationCoords[1]
                   }}
                   title={event.title}
                   onPress={()=>{
+                    animate([event.locationCoords[0], event.locationCoords[1]])
                     setEventDetails(event)
                     }}
+                  key={event.id}
                 >
                   <View>
                     <Image
                       source={{uri: event.downloadURL}}
                       style={styles.pinImage}
                     />
-                </View>
-                </Marker>
+                  </View>
+                </Marker> : ""
               )) : 
               photos.map(photo => (
+                (new Date().getTime() - 1000*photo.creation.seconds < 3600*24*1000) ? 
                 <Marker 
                   coordinate={{
                     latitude: photo.locationCoords[0],
@@ -132,8 +178,10 @@ function Map(props) {
                   }}
                   title={photo.caption}
                   onPress={()=>{
+                    animate([photo.locationCoords[0], photo.locationCoords[1]])
                     setPhotoDetails(photo)
                     }}
+                  key={photo.id}
                 >
                   <View>
                     <Image
@@ -141,7 +189,7 @@ function Map(props) {
                       style={styles.pinImage}
                     />
                  </View>
-                </Marker>
+                </Marker> : ""
               ))
              }
 
@@ -158,27 +206,37 @@ function Map(props) {
            {toggleFilter ?
            <BottomSheet snapPoints={[25, 200, windowHeight-200]}>
             <BottomSheetScrollView>
-              <Text style={{fontSize: 25, fontWeight: 'bold', marginLeft: 5 }}>{eventDetails.title}</Text>
+              <Text style={{fontSize: 25, fontWeight: 'bold', marginLeft: 10 }}>{eventDetails.title}</Text>
               <Image
                 style={styles.detailImage}
                 source={{uri: eventDetails.downloadURL}}
               />
-              <View style={{ flexDirection: 'row', justifyContent: 'flex-start', marginLeft: 5, marginTop: 5 }}>
-                <Image
-                  style={styles.profileImage}
-                  source={{uri: eventDetails.user?.downloadURL || "https://raw.githubusercontent.com/rika97/wandermap/main/assets/defaultuser-icon.png"}}
-                />
-                <Text style={{fontWeight: 'bold', marginTop: 8, marginLeft: 5}}>{eventDetails.creator}</Text>
-              </View>
-              <View style={{marginLeft: 5, marginTop: 5}}>
-                <Text style={{fontSize: 17, fontWeight: 'bold'}}>Location:</Text>
+              <View style={{marginHorizontal: 10, marginTop: -50, backgroundColor: '#bce3e8', borderRadius: 30, padding: 10}}>
+                <View style={{ flexDirection: 'row', justifyContent: 'flex-start', marginLeft: 5, marginTop: 5 }}>
+                  <Image
+                    style={styles.profileImage}
+                    source={{uri: eventDetails.user?.downloadURL || "https://raw.githubusercontent.com/rika97/wandermap/main/assets/defaultuser-icon.png"}}
+                  />
+                  <Text style={{fontWeight: 'bold', marginTop: 8, marginLeft: 5}}>{eventDetails.creator}</Text>
+                </View>
+                <Text style={styles.textDetailHeader}>Location:</Text>
                 <Text>{eventDetails.location}</Text>
-                <Text style={{fontSize: 17, fontWeight: 'bold'}}>Date & Time:</Text>
-                <Text style={{fontSize: 17}}>{eventDetails.startDate} ~ {eventDetails.endDate}</Text>
-                <Text style={{fontSize: 17, fontWeight: 'bold'}}>Price:</Text>
-                <Text style={{fontSize: 17}}>{eventDetails.price}</Text>
-                <Text style={{fontSize: 17, fontWeight: 'bold'}}>Description:</Text>
+                <Text style={styles.textDetailHeader}>Date & Time:</Text>
+                <Text>{eventDetails.startDate} ~ {eventDetails.endDate}</Text>
+                <Text style={styles.textDetailHeader}>Price:</Text>
+                <Text>{eventDetails.price}</Text>
+                <Text style={styles.textDetailHeader}>Description:</Text>
                 <Text>{eventDetails.description}</Text>
+                { eventDetails.location ? <TouchableOpacity onPress={handleGetDirections} style={styles.getDirectionsButton}>
+                  <Text style={{color: "white"}}>
+                    Get Directions
+                  </Text>
+                </TouchableOpacity>
+                : ""}
+              </View>
+              <View style={{backgroundColor: "#30b5c7", borderRadius: 30, width: 80, height: 80, position: 'absolute', top: 370, right: 20, alignItems: 'center'}}>
+                <Text style={{color: 'white', fontSize: 40}}>{timestampFormatter(eventDetails.startDateTimestamp)[1]}</Text>
+                <Text style={{color: 'white', fontSize: 16}}>{timestampFormatter(eventDetails.startDateTimestamp)[0]}</Text>
               </View>
             </BottomSheetScrollView>
           </BottomSheet> :
@@ -226,6 +284,18 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 3,
   },
+  getDirectionsButton: {
+    alignSelf: "center",
+    alignItems: "center",
+    backgroundColor: "#30b5c7",
+    padding: 10,
+    borderRadius: 30,
+    width: 200,
+    height: 45,
+    justifyContent: 'center',
+    marginTop: 10,
+    marginBottom: 15,
+  },
   chips: {
     width: 80,
     height: 30,
@@ -265,8 +335,7 @@ const styles = StyleSheet.create({
         marginTop: 0,
       },
       listView: {
-        marginLeft: 35,
-        marginRight: 35,
+        marginHorizontal: 35
       }
   },
   pinImage: {
@@ -277,13 +346,21 @@ const styles = StyleSheet.create({
     borderWidth: 6,
   },
   detailImage: {
-    width: windowWidth,
-    height: windowWidth,
+    width: windowWidth-20,
+    height: windowWidth-20,
     aspectRatio: 1,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    margin: 10
   },
   profileImage: {
     width: 35,
     height: 35,
+  },
+  textDetailHeader: {
+    fontSize: 17,
+    fontWeight: 'bold',
+    marginTop: 5,
   }
 })
 

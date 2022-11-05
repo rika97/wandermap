@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import firebase from 'firebase/app'
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-import { fetchUser, fetchUserEvents, fetchUserPhotos, fetchUserFollowing, clearData } from '../components/redux/actions/index'
 
 import MapScreen from './Map'
 import EventsScreen from './Events'
 import CommunityScreen from './Community'
 import AccountScreen from './Account'
+
+import firebase from 'firebase/app'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { fetchUser, fetchUserEvents, fetchUserPhotos, fetchUserFollowing, clearData } from '../components/redux/actions/index'
 
 const Tab = createMaterialBottomTabNavigator();
 
