@@ -38,9 +38,9 @@ function Eventsfeed(props) {
     if (time < 1) {
       return "Today"
     } else if (time < 2) {
-      return "in" + time + " day"
+      return "in " + time + " day"
     } else {
-      return "in" + time + " days"
+      return "in " + time + " days"
     }
   }
 
