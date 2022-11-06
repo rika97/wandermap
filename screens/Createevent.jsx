@@ -5,6 +5,8 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 const dismissKeyboard = () => { if (Platform.OS != "web"){ Keyboard.dismiss(); } }
 const windowHeight = Dimensions.get('window').height;
 
+const api_key = ''
+
 const Createevent = ( props ) => {
   const [location, setLocation] = useState("");
   const [locationCoords, setLocationCoords] = useState("");
@@ -23,7 +25,7 @@ const Createevent = ( props ) => {
                 }}
                 fetchDetails
                 query={{
-                  key: '',
+                  key: api_key,
                   language: 'en',
                 }}
                 styles={styles.searchBar}

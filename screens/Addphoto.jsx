@@ -5,6 +5,8 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import firebase from 'firebase/app'
 require("firebase/firestore")
 
+const api_key = ''
+
 const dismissKeyboard = () => { if (Platform.OS != "web"){ Keyboard.dismiss(); } }
 
 const Addphoto = (props) => {
@@ -87,7 +89,7 @@ const Addphoto = (props) => {
                 }}
                 fetchDetails
                 query={{
-                  key: '',
+                  key: api_key,
                   language: 'en',
                 }}
                 styles={styles.searchBar}
