@@ -1,4 +1,13 @@
 # WanderMap
+<img src="https://raw.githubusercontent.com/rika97/wandermap/main/assets/full-logo.png" width="350">
+
+### Ever walked past an event you wish you could join?
+
+![GitHub issues](https://img.shields.io/github/issues-raw/rika97/wandermap)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/y/rika97/wandermap)
+![GitHub last commit](https://img.shields.io/github/last-commit/rika97/wandermap)
+![GitHub package.json dependency version (subfolder of monorepo)](https://img.shields.io/github/package-json/dependency-version/rika97/wandermap/react-native)
+![GitHub](https://img.shields.io/github/license/rika97/wandermap)
 
 ## Live Link
 [https://expo.dev/@technotech/wandermap](https://expo.dev/@technotech/wandermap)
@@ -130,6 +139,8 @@ View [demo video](#id-demo) for more details.
 - [ ] Optimize performance 
     - [ ] Fetching user location with Expo geolocation takes time, consider switching to Google Maps Geolocation API, which also allows fetching location without depending on GPS.
     - [ ] A lot of bandwidth is required to render contents in the app, especially rendering user uploaded images. Consider using low resolutions.
+- [ ] Optimize database: Firestore might not be the most suitable database for this app
+- [ ] Better positioning of myLocation button in MapView
 - [ ] Increase in variety of languages offered
 - [ ] Create web version of app
 
@@ -185,3 +196,5 @@ Distributed under the MIT License. See License.txt for more information.
     * [React Native Vector Icons Directory](https://oblador.github.io/react-native-vector-icons/)
 * **Fonts:** 
     * "Cocogoose" by [Zetafonts](https://www.zetafonts.com/)
+    
+If you like this project, give it a star ⭐️
