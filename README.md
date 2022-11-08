@@ -1,13 +1,17 @@
 # WanderMap
-<img src="https://raw.githubusercontent.com/rika97/wandermap/main/assets/full-logo.png" width="350">
+<p align="center">
+  <img src="https://raw.githubusercontent.com/rika97/wandermap/main/assets/full-logo.png" width="450" />
+</p>
 
 ### Ever walked past an event you wish you could join?
 
-![GitHub issues](https://img.shields.io/github/issues-raw/rika97/wandermap)
-![GitHub commit activity](https://img.shields.io/github/commit-activity/y/rika97/wandermap)
-![GitHub last commit](https://img.shields.io/github/last-commit/rika97/wandermap)
-![GitHub package.json dependency version (subfolder of monorepo)](https://img.shields.io/github/package-json/dependency-version/rika97/wandermap/react-native)
-![GitHub](https://img.shields.io/github/license/rika97/wandermap)
+<div align="center">
+  ![GitHub issues](https://img.shields.io/github/issues-raw/rika97/wandermap)
+  ![GitHub commit activity](https://img.shields.io/github/commit-activity/y/rika97/wandermap)
+  ![GitHub last commit](https://img.shields.io/github/last-commit/rika97/wandermap)
+  ![GitHub package.json dependency version (subfolder of monorepo)](https://img.shields.io/github/package-json/dependency-version/rika97/wandermap/react-native)
+  ![GitHub](https://img.shields.io/github/license/rika97/wandermap)
+</div>
 
 ## Live Link
 [https://expo.dev/@technotech/wandermap](https://expo.dev/@technotech/wandermap)
@@ -31,7 +35,7 @@
 ## Overview
 “Don’t be bored” – this is our slogan in reference to Google’s previous slogan “Don’t be evil.” WanderMap is a social networking app that allows users to share events within their own communities and view events within close proximity on a map. Currently, there are event apps such as “Eventbrite” which are geared towards professional use and “Meetup.com” which is a little bit more casual but is not really oriented towards interacting with friends. There are social media apps which can be a bit easier when it comes to sharing events. For example, with “Snapchat” users can share photos in a discreet format and view real-time friend locations. “Instagram” allows users to share photos/videos to their followers in a more public setting. However, they’re more geared towards social interactions and are not the best when it comes to sharing events on a map. WanderMap was created in hope to make it easier for users to discover events, especially when they are spending their days with no particular plans.
 
-Furthermore, this could be a beneficial addition to Alphabet as Google does not currently have a major social media app as one of their products. Having WanderMap could encourage users to upload photos at different locations and if the user chooses to make the image available as a review on Google Maps, that would increase the amount of image data available for their Places API. If WanderMap implemented “likes” as one of the features for user photos and events, Google can also collect a large amount of data to predict user habits and build a better recommendation system across multiple platforms. This would also be a great addition because users can currently Google search for events to see a list of event data scraped from third party websites but they do not have an official platform. If they use WanderMap as a prototype for “Google Events”, it would encourage even more users to use their products. With “Instagram” using Apple Maps and “Snapchat” using Mapbox to display their maps, it would be further beneficial for Google to attempt to compete in a social media app using Google Maps Platform as they have a large database and a wide variety of APIs.
+This could be a beneficial addition to Alphabet as Google does not currently have a major social media app as one of their products. Having WanderMap could encourage users to upload photos at different locations and if the user chooses to make the image available as a review on Google Maps, that would increase the amount of image data available for their Places API. If WanderMap implemented “likes” as one of the features for user photos and events, Google can also collect a large amount of data to predict user habits and build a better recommendation system across multiple platforms. This would also be a great addition because users can currently Google search for events to see a list of event data scraped from third party websites but they do not have an official platform. If they use WanderMap as a prototype for “Google Events”, it would encourage even more users to use their products. With “Instagram” using Apple Maps and “Snapchat” using Mapbox to display their maps, it would be further beneficial for Google to attempt to compete in a social media app using Google Maps Platform as they have a large database and a wide variety of APIs.
 
 Another motivation behind this project was also to create a platform where users can share what they are up to whilst being more “down to earth”, avoiding the adversarial effects of social media. Currently, most of the major social media platforms involve users becoming in a sense “addicted to” manipulating their online social presence, which could possibly lead to deterioration in one’s mental health. WanderMap attempts to resolve this problem by motivating users to meet up in real life and by having minimal features that could likely cause them to bear negative thoughts. For example, users can share photos from an event they are currently attending to attract their followers to join them. However, they can neither edit photos nor can they upload photos from their own camera roll. Users are also not able to view a list or even the number of followers they have to prevent them from thinking about their online popularity. Instead, they can share events which encourage users to physically meet up and have real life interactions.
 
@@ -46,7 +50,7 @@ Another motivation behind this project was also to create a platform where users
 
 <a name="id-demo"></a>
 ## Demo
-Link to demo video (coming soon)
+[View demo video](https://www.youtube.com/watch?v=z5VGz9_IxI4) (Youtube)
 
 <a name="id-installation"></a>
 ## Installation
@@ -142,7 +146,7 @@ View [demo video](#id-demo) for more details.
 - [ ] Optimize database: Firestore might not be the most suitable database for this app
 - [ ] Better positioning of myLocation button in MapView
 - [ ] Increase in variety of languages offered
-- [ ] Create web version of app
+- [ ] Create a web version of the app
 
 <a name="id-releasehistory"></a>
 ## Release History
