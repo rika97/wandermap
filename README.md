@@ -1,17 +1,15 @@
 # WanderMap
 <p align="center">
   <img src="https://raw.githubusercontent.com/rika97/wandermap/main/assets/full-logo.png" width="450" />
-</p>
 
-### Ever walked past an event you wish you could join?
+  ### Ever walked past an event you wish you could join?
 
-<div align="center">
   ![GitHub issues](https://img.shields.io/github/issues-raw/rika97/wandermap)
   ![GitHub commit activity](https://img.shields.io/github/commit-activity/y/rika97/wandermap)
   ![GitHub last commit](https://img.shields.io/github/last-commit/rika97/wandermap)
   ![GitHub package.json dependency version (subfolder of monorepo)](https://img.shields.io/github/package-json/dependency-version/rika97/wandermap/react-native)
   ![GitHub](https://img.shields.io/github/license/rika97/wandermap)
-</div>
+</p>
 
 ## Live Link
 [https://expo.dev/@technotech/wandermap](https://expo.dev/@technotech/wandermap)
