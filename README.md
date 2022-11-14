@@ -161,7 +161,7 @@ To report a bug or suggest a new idea, submit an [issue](https://github.com/rika
 
 If you have any further questions, comments, or concerns, please contact at this email address:
 
-📩 technotechapps@gmail.com
+📩 technotechapps@gmail.com (my personal email for coding projects)
 
 <a name="id-contributing"></a>
 ## Contributing
